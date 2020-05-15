@@ -1,0 +1,131 @@
+<scroll-view id="main" scroll-y class="DrawerPage {{modalName=='viewModal'?'show':''}}">
+  <cu-custom bgColor="bg-gradual-blue" isBack="{{false}}">
+    <view slot="backText">返回</view>
+    <view slot="content">茶会所</view>
+  </cu-custom>
+  <view class="box">
+    <view class="cu-bar search bg-white fixed" style="top:{{CustomBar}}px">
+      <view class="cu-avatar round" style="background-image:url({{userInfo.avatarUrl}});" bindtap="showModal" data-target="viewModal"></view>
+      <view class="search-form round">
+        <text class="cuIcon-search"></text>
+        <input type="text" placeholder="搜索产品、包厢、文章" confirm-type="search"></input>
+      </view>
+      <view class="action text-gray">
+        <view class="cuIcon-cart">
+          <view class="cu-tag badge">99</view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view id="article" style="margin-top:50px">
+    <cu-swiper swiperList="{{swiperList}}"></cu-swiper>
+  </view>
+  <view id="category">
+    <view class="bg-white padding">
+      <view class="flex">
+        <view class="flex-sub text-center">
+          <view class="cu-avatar round lg margin-left bg-green light">
+            <text class="avatar-text">文章</text>
+          </view>
+        </view>
+        <view class="flex-sub text-center">
+          <view class="cu-avatar round lg margin-left bg-olive light">
+            <text class="avatar-text">产品</text>
+          </view>
+        </view>
+        <view class="flex-sub text-center">
+          <view class="cu-avatar round lg margin-left bg-cyan light">
+            <text class="avatar-text">预约</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view id="hot-product" class="margin-top">
+    <view class="cu-bar bg-white solid-bottom">
+      <view class="action">
+        <text class="cuIcon-title text-blue"></text>热销产品
+      </view>
+      <view class="action text-grey text-sm">
+        查看全部
+        <text class="cuIcon-right xsm text-grey"></text>
+      </view>
+    </view>
+    <view class="cu-list grid col-3 no-border">
+      <view class="cu-item" wx:for="{{iconList}}" wx:key="unique">
+        <view class="cuIcon-{{item.icon}} text-{{item.color}}"></view>
+        <text>{{item.name}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view id="hot-box" class="margin-top margin-bottom">
+    <view class="cu-bar bg-white solid-bottom">
+      <view class="action">
+        <text class="cuIcon-title text-blue"></text>热门包厢
+      </view>
+      <view class="action text-grey text-sm">
+        查看全部
+        <text class="cuIcon-right xsm text-grey"></text>
+      </view>
+    </view>
+    <view class="cu-list grid col-3 no-border">
+      <view class="cu-item" wx:for="{{iconList}}" wx:key="unique">
+        <view class="cuIcon-{{item.icon}} text-{{item.color}}"></view>
+        <text>{{item.name}}</text>
+      </view>
+    </view>
+  </view>
+</scroll-view>
+
+
+<view class="DrawerClose {{modalName=='viewModal'?'show':''}}" bindtap="hideModal">
+  <text class="cuIcon-pullright"></text>
+</view>
+<scroll-view scroll-y class="DrawerWindow {{modalName=='viewModal'?'show':''}}">
+  <view class="cu-card dynamic margin-top">
+    <view class="cu-item shadow">
+      <view class="cu-list menu-avatar">
+        <view class="cu-item">
+          <view class="cu-avatar round lg" style="background-image:url({{userInfo.avatarUrl}});"></view>
+          <view class="content flex-sub">
+            <view>{{userInfo.nickName}}</view>
+            <view class="text-gray text-sm flex justify-between">
+              注册vip
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="cu-list menu sm-border card-menu margin-top">
+    <view class="cu-item arrow">
+      <button class="cu-btn content">
+        <text class="cuIcon-deliver text-grey"></text>
+        <text class="text-grey">我的订单</text>
+      </button>
+    </view>
+    <view class="cu-item arrow">
+      <button class="cu-btn content">
+        <text class="cuIcon-send text-olive"></text>
+        <text class="text-grey">我的预约</text>
+      </button>
+    </view>
+    <view class="cu-item arrow">
+      <navigator hover-class="none" url="../list/list" open-type="redirect">
+        <button class="cu-btn content">
+          <text class="cuIcon-addressbook text-orange"></text>
+          <text class="text-grey">我的地址</text>
+        </button>
+      </navigator>
+    </view>
+    <view class="cu-item arrow">
+      <navigator hover-class="none" url="../list/list" open-type="redirect">
+        <button class="cu-btn content">
+          <text class="cuIcon-noticefill text-pink"></text>
+          <text class="text-grey">我的通知</text>
+        </button>
+      </navigator>
+    </view>
+  </view>
+</scroll-view>
