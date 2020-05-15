@@ -44,7 +44,7 @@
   <view id="hot-product" class="margin-top">
     <view class="cu-bar bg-white solid-bottom">
       <view class="action">
-        <text class="cuIcon-title text-blue"></text>热销产品
+        <text class="cuIcon-title text-blue"></text>热销产品{{signature}}
       </view>
       <view class="action text-grey text-sm">
         查看全部
@@ -120,11 +120,19 @@
       </navigator>
     </view>
     <view class="cu-item arrow">
-      <navigator hover-class="none" url="../list/list" open-type="redirect">
+      <navigator hover-class="none" url="../logs/logs" open-type="redirect">
         <button class="cu-btn content">
           <text class="cuIcon-noticefill text-pink"></text>
           <text class="text-grey">我的通知</text>
-        </button>
+        </button> 
+      </navigator>
+    </view>
+    <view class="cu-item arrow">
+      <navigator hover-class="none" url="../logs/logs" open-type="redirect">
+        <button class="cu-btn content">
+          <text class="cuIcon-cartfill text-red"></text>
+          <text class="text-grey">购物车</text>
+        </button> 
       </navigator>
     </view>
   </view>
