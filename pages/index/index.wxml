@@ -44,7 +44,7 @@
   <view id="hot-product" class="margin-top">
     <view class="cu-bar bg-white solid-bottom">
       <view class="action">
-        <text class="cuIcon-title text-blue"></text>热销产品{{signature}}
+        <text class="cuIcon-title text-blue"></text>热销产品{{ret}}
       </view>
       <view class="action text-grey text-sm">
         查看全部
