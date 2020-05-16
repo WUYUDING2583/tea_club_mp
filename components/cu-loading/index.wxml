@@ -1,0 +1,5 @@
+<!--components/cu-loading/index.wxml-->
+<view class='cu-load load-modal' wx:if="{{loadModal}}">
+  <image src='/assets/default.jpg' class='png' mode='aspectFit'></image>
+  <view class='gray-text'>加载中...</view>
+</view>

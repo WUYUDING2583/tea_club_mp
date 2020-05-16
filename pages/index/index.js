@@ -7,6 +7,8 @@ import {
 import {
   url
 } from "../../utils/url.js";
+import {app as appActions} from "../../mobx/app.js";
+import {product} from "../../mobx/product.js";
 
 const app = getApp()
 
@@ -19,19 +21,6 @@ Page({
     drawerVisible: false,
     bottomModalVisible: false,
     scrollLeft: 0,
-    swiperList: [{
-      id: 0,
-      type: 'image',
-      url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big84000.jpg'
-    }, {
-      id: 1,
-      type: 'image',
-      url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big84001.jpg',
-    }, {
-      id: 2,
-      type: 'image',
-      url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big39000.jpg'
-    }],
     iconList: [{
       icon: 'cardboardfill',
       color: 'red',
@@ -54,6 +43,16 @@ Page({
       store: user,
       fields: ['userInfo'],
       actions: ['setUserInfo', 'setPhoneNumber'],
+    }); 
+    this.storeBindings = createStoreBindings(this, {
+      store: appActions,
+      fields: ['retrieveRequestQuantity', 'updateRequestQuantity','swiperList'],
+      actions: ['startRetrieveRequest', 'startUpdateRequest', 'finishRetrieveRequest', 'finishUpdateRequest','fetchSwiperList'],
+    });
+    this.storeBindings = createStoreBindings(this, {
+      store: product,
+      fields: ['byProducts', 'hotProducts'],
+      actions: ['fetchHotProducts'],
     });
     const thiz=this;
 
@@ -75,33 +74,10 @@ Page({
       }
     });
 
-    //获取走马灯展示
-    wx.request({
-      url: url.swiper(), 
-      header: {
-        'content-type': 'application/json' // 默认值
-      },
-      success(res) {
-        thiz.handleSwiperList(res.data.data);
-      }
-    })
-  },
-  //处理获取后台返回的走马灯数据
-  handleSwiperList:function(data){
-    let swiperList=new Array();
-    data.forEach(item=>{
-      const url = `data:image/jpeg;base64,${item.photo}`;
-      let type="";
-      for(var key in item){
-        if(key!="photo"&&item[key]!=0){
-          type=key.substring(0,key.length-2);
-        }
-      }
-      swiperList.push({uid:item.uid,type,url});
-    });
-    this.setData({
-      swiperList
-    })
+    // //获取走马灯展示
+    this.fetchSwiperList();
+    //获取热销产品
+    this.fetchHotProducts();
   },
   //用户确定登录
   getPhoneNumber(e) {

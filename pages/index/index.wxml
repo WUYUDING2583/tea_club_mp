@@ -52,9 +52,10 @@
       </view>
     </view>
     <view class="cu-list grid col-3 no-border">
-      <view class="cu-item" wx:for="{{iconList}}" wx:key="unique">
-        <view class="cuIcon-{{item.icon}} text-{{item.color}}"></view>
-        <text>{{item.name}}</text>
+      <view class="cu-item" wx:for="{{hotProducts}}" wx:key="{{item.productId}}">
+        <view class="flex justify-center">
+          <view class="cu-avatar xl" style="background-image:url({{item.photo}})"></view>
+        </view>
       </view>
     </view>
   </view>
@@ -93,6 +94,7 @@
       </view>
     </view>
   </view>
+  <cu-loading load-modal="{{retrieveRequestQuantity>0}}"></cu-loading>
 </scroll-view>
 
 

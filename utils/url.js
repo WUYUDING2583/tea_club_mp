@@ -5,4 +5,5 @@ export const url={
   test:()=>`${HOST}/test`,
   decryptPhoneNumber:(data)=>`${HOME}/decryptPhoneNumber/${data}`,
   swiper:()=>`${HOME}/swipers`,
+  fetchHotProducts:()=>`${HOME}/product/hot`,
 }
