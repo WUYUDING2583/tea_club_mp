@@ -1,3 +1,5 @@
 {
-  "usingComponents": {}
+  "usingComponents": {
+    "cu-swiper":"../components/cu-swiper/index"
+  }
 }

@@ -1,11 +1,11 @@
-<scroll-view id="main" scroll-y class="DrawerPage {{modalName=='viewModal'?'show':''}}">
+<scroll-view id="main" scroll-y class="DrawerPage {{drawerVisible?'show':''}}">
   <cu-custom bgColor="bg-gradual-blue" isBack="{{false}}">
     <view slot="backText">返回</view>
     <view slot="content">茶会所</view>
   </cu-custom>
   <view class="box">
     <view class="cu-bar search bg-white fixed" style="top:{{CustomBar}}px">
-      <view class="cu-avatar round" style="background-image:url({{userInfo.avatarUrl}});" bindtap="showModal" data-target="viewModal"></view>
+      <view class="cu-avatar round" style="background-image:url({{userInfo.avatarUrl}});" bindtap="showDrawer"></view>
       <view class="search-form round">
         <text class="cuIcon-search"></text>
         <input type="text" placeholder="搜索产品、包厢、文章" confirm-type="search"></input>
@@ -18,7 +18,7 @@
     </view>
   </view>
   <view id="article" style="margin-top:50px">
-    <cu-swiper swiperList="{{swiperList}}"></cu-swiper>
+    <cu-swiper swiper-list="{{swiperList}}"></cu-swiper>
   </view>
   <view id="category">
     <view class="bg-white padding">
@@ -44,7 +44,7 @@
   <view id="hot-product" class="margin-top">
     <view class="cu-bar bg-white solid-bottom">
       <view class="action">
-        <text class="cuIcon-title text-blue"></text>热销产品{{ret}}
+        <text class="cuIcon-title text-blue"></text>热销产品
       </view>
       <view class="action text-grey text-sm">
         查看全部
@@ -76,22 +76,40 @@
       </view>
     </view>
   </view>
+  <view id="getUserInfo" class="cu-modal bottom-modal {{bottomModalVisible?'show':''}}">
+    <view class="cu-dialog">
+      <view class="cu-bar bg-white">
+        <view class="action text-blue" bindtap="hideBottomModal">
+          <text class="cuIcon-close lg text-gray"></text>
+
+        </view>
+      </view>
+      <view class="padding">
+        <text>是否授权自动登录</text>
+        <view class=" flex flex-wrap justify-between align-center margin-top">
+          <button class="cu-btn bg-white shadow margin" bindtap="hideBottomModal">取消</button>
+          <button class="cu-btn bg-olive shadow" open-type="getUserInfo" bindgetuserinfo="getUserInfo">授权</button>
+        </view>
+      </view>
+    </view>
+  </view>
 </scroll-view>
 
 
-<view class="DrawerClose {{modalName=='viewModal'?'show':''}}" bindtap="hideModal">
+<view class="DrawerClose {{drawerVisible?'show':''}}" bindtap="hideDrawer">
   <text class="cuIcon-pullright"></text>
 </view>
-<scroll-view scroll-y class="DrawerWindow {{modalName=='viewModal'?'show':''}}">
+<scroll-view scroll-y class="DrawerWindow {{drawerVisible?'show':''}}">
   <view class="cu-card dynamic margin-top">
     <view class="cu-item shadow">
       <view class="cu-list menu-avatar">
         <view class="cu-item">
           <view class="cu-avatar round lg" style="background-image:url({{userInfo.avatarUrl}});"></view>
           <view class="content flex-sub">
-            <view>{{userInfo.nickName}}</view>
+            <view>{{userInfo.name?userInfo.name:userInfo.nickName}}</view>
             <view class="text-gray text-sm flex justify-between">
-              注册vip
+              {{userInfo.vip?userInfo.vip:"未注册用户"}}
+              <text wx:if="{{!userInfo.vip}}" class="text-blue" style="text-decoration:under-line">注册</text>
             </view>
           </view>
         </view>
@@ -124,7 +142,7 @@
         <button class="cu-btn content">
           <text class="cuIcon-noticefill text-pink"></text>
           <text class="text-grey">我的通知</text>
-        </button> 
+        </button>
       </navigator>
     </view>
     <view class="cu-item arrow">
@@ -132,7 +150,7 @@
         <button class="cu-btn content">
           <text class="cuIcon-cartfill text-red"></text>
           <text class="text-grey">购物车</text>
-        </button> 
+        </button>
       </navigator>
     </view>
   </view>

@@ -10,8 +10,7 @@
     "navigationBarTextStyle": "white"
   },
   "usingComponents": {
-    "cu-custom": "/colorui/components/cu-custom",
-    "cu-swiper":"/components/cu-swiper/index"
+    "cu-custom": "/colorui/components/cu-custom"
   },
   "style": "v2",
   "sitemapLocation": "sitemap.json"

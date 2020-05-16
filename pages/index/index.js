@@ -1,6 +1,12 @@
-import {createStoreBindings} from 'mobx-miniprogram-bindings'
-import {user} from '../../mobx/user';
-import {url} from "../../utils/url.js";
+import {
+  createStoreBindings
+} from 'mobx-miniprogram-bindings'
+import {
+  user
+} from '../../mobx/user';
+import {
+  url
+} from "../../utils/url.js";
 
 const app = getApp()
 
@@ -9,11 +15,9 @@ Page({
     StatusBar: app.globalData.StatusBar,
     CustomBar: app.globalData.CustomBar,
     Custom: app.globalData.Custom,
-    token:app.globalData.token,
-    hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo'),
     TabCur: 1,
-    ret: "asdf",
+    drawerVisible: false,
+    bottomModalVisible: false,
     scrollLeft: 0,
     swiperList: [{
       id: 0,
@@ -27,22 +31,6 @@ Page({
       id: 2,
       type: 'image',
       url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big39000.jpg'
-    }, {
-      id: 3,
-      type: 'image',
-      url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg'
-    }, {
-      id: 4,
-      type: 'image',
-      url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big25011.jpg'
-    }, {
-      id: 5,
-      type: 'image',
-      url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big21016.jpg'
-    }, {
-      id: 6,
-      type: 'image',
-      url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg'
     }],
     iconList: [{
       icon: 'cardboardfill',
@@ -62,58 +50,116 @@ Page({
     }],
   },
   onLoad: function() {
-    this.request();
     this.storeBindings = createStoreBindings(this, {
-      store:user,
+      store: user,
       fields: ['userInfo'],
-      actions: ['setUserInfo'],
+      actions: ['setUserInfo', 'setPhoneNumber'],
+    });
+    const thiz=this;
+
+    // 获取用户信息
+    wx.getSetting({
+      success: res => {
+        if (res.authSetting['scope.userInfo']) {
+          // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
+          wx.getUserInfo({
+            success: res => {
+              this.setUserInfo(res.userInfo);
+            }
+          })
+        } else {
+          this.setData({
+            bottomModalVisible: true
+          });
+        }
+      }
     });
 
-    if (app.globalData.userInfo) {
-      this.setUserInfo(app.globalData.userInfo);
-      this.setData({
-        hasUserInfo: true
-      })
-    } else if (this.data.canIUse) {
-      // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-      // 所以此处加入 callback 以防止这种情况
-      app.userInfoReadyCallback = res => {
-        this.setUserInfo(res.userInfo);
-        this.setData({
-          hasUserInfo: true,
-        })
+    //获取走马灯展示
+    wx.request({
+      url: url.swiper(), 
+      header: {
+        'content-type': 'application/json' // 默认值
+      },
+      success(res) {
+        thiz.handleSwiperList(res.data.data);
       }
-    } else {
-      // 在没有 open-type=getUserInfo 版本的兼容处理
-      wx.getUserInfo({
-        success: res => {
-          app.globalData.userInfo = res.userInfo
-          this.setUserInfo(res.userInfo);
-          this.setData({
-            hasUserInfo: true
-          })
+    })
+  },
+  //处理获取后台返回的走马灯数据
+  handleSwiperList:function(data){
+    let swiperList=new Array();
+    data.forEach(item=>{
+      const url = `data:image/jpeg;base64,${item.photo}`;
+      let type="";
+      for(var key in item){
+        if(key!="photo"&&item[key]!=0){
+          type=key.substring(0,key.length-2);
         }
-      })
-    }
+      }
+      swiperList.push({uid:item.uid,type,url});
+    });
+    this.setData({
+      swiperList
+    })
+  },
+  //用户确定登录
+  getPhoneNumber(e) {
+    //发送到后台解密
+    // console.log("login")
+    // const thiz = this;
+    // wx.request({
+    //   url: url.decryptPhoneNumber(e.detail.encryptedData),
+    //   header: {
+    //     'content-type': 'application/json'
+    //   },
+    //   success(res) { //后台传回包含用户电话号码的用户信息
+    //     console.log("success res", res);
+    //     if (res.statusCode == 200) {
+    //       thiz.setUserInfo(res.data);
+    //       thiz.setPhoneNumber(res.data.contact);
+    //     } else { //若解析失败贼只获取用户微信信息
+    //       wx.getUserInfo({
+    //         success: res => {
+    //           console.log("user info", res.userInfo);
+    //           thiz.setUserInfo(res.userInfo);
+    //         }
+    //       })
+    //     }
+    //   },
+    //   fail(res) { //若解析失败贼只获取用户微信信息
+    //     console.log("fail res", res);
+    //     wx.getUserInfo({
+    //       success: res => {
+    //         console.log("user info", res.userInfo);
+    //         thiz.setUserInfo(res.userInfo);
+    //       }
+    //     })
+    //   }
+    // })
+  },
+  getUserInfo:function(e){
+    this.setUserInfo(e.detail.userInfo);
+    this.setData({
+      bottomModalVisible: false
+    })
+  },
+  hideBottomModal() {
+    this.setData({
+      bottomModalVisible: false
+    })
   },
   onUnload() {
     this.storeBindings.destroyStoreBindings()
   },
-  showModal(e) {
+  showDrawer() {
     this.setData({
-      modalName: e.currentTarget.dataset.target
+      drawerVisible: true
     })
   },
-  hideModal(e) {
+  hideDrawer() {
     this.setData({
-      modalName: null
-    })
-  },
-  tabSelect(e) {
-    console.log(e);
-    this.setData({
-      TabCur: e.currentTarget.dataset.id,
-      scrollLeft: (e.currentTarget.dataset.id - 1) * 60
+      drawerVisible: false
     })
   },
   request() {

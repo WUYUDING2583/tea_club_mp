@@ -13,14 +13,14 @@ export const user = observable({
 
   // 数据字段
   userInfo: new Object(),
-  token:"",
+  phoneNumber:"",
 
   // actions
   setUserInfo: action(function(userInfo) {
    this.userInfo=userInfo;
   }),
-  setToken:action(function(token){
-    this.token=token;
+  setPhoneNumber: action(function (phoneNumber){
+    this.phoneNumber = phoneNumber;
   })
 
 })
