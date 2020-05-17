@@ -1,0 +1,6 @@
+<!--pages/article/articleDetail/index.wxml-->
+<view class="page-body">
+  <view class="page-section page-section-gap">
+    <web-view src="https://mp.weixin.qq.com/s/MctAz1BU4TFjiyWZF_y4VA"></web-view>
+  </view>
+</view>

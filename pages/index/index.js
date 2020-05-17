@@ -9,7 +9,8 @@ import {
 } from "../../utils/url.js";
 import {app as appActions} from "../../mobx/app.js";
 import {product} from "../../mobx/product.js";
-import {box} from "../../mobx/box.js"
+import {box} from "../../mobx/box.js";
+import {cart} from "../../mobx/cart.js";
 
 const app = getApp()
 
@@ -21,23 +22,7 @@ Page({
     TabCur: 1,
     drawerVisible: false,
     bottomModalVisible: false,
-    scrollLeft: 0,
-    iconList: [{
-      icon: 'cardboardfill',
-      color: 'red',
-      badge: 120,
-      name: 'VR'
-    }, {
-      icon: 'recordfill',
-      color: 'orange',
-      badge: 1,
-      name: '录像'
-    }, {
-      icon: 'picfill',
-      color: 'yellow',
-      badge: 0,
-      name: '图像'
-    }],
+    scrollLeft: 0
   },
   onLoad: function() {
     this.storeBindings = createStoreBindings(this, {
@@ -59,6 +44,10 @@ Page({
       store: box,
       fields: ['hotBoxes'],
       actions: ['fetchHotBoxes'],
+    });
+    this.storeBindings = createStoreBindings(this, {
+      store: cart,
+      fields: ['cartTotal'],
     });
     const thiz=this;
 

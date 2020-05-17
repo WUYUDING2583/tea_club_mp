@@ -1,7 +1,7 @@
 <scroll-view id="main" scroll-y class="DrawerPage {{drawerVisible?'show':''}}">
   <cu-custom bgColor="bg-gradual-blue" isBack="{{false}}">
     <view slot="backText">返回</view>
-    <view slot="content">茶会所</view>
+    <view slot="content">研茶</view>
   </cu-custom>
   <view class="box">
     <view class="cu-bar search bg-white fixed" style="top:{{CustomBar}}px">
@@ -12,7 +12,7 @@
       </view>
       <view class="action text-gray">
         <view class="cuIcon-cart">
-          <view class="cu-tag badge">99</view>
+          <view class="cu-tag badge" wx:if="{{cartTotal>0}}">{{cartTotal}}</view>
         </view>
       </view>
     </view>
@@ -24,9 +24,11 @@
     <view class="bg-white padding">
       <view class="flex">
         <view class="flex-sub text-center">
-          <view class="cu-avatar round lg margin-left bg-green light">
-            <text class="avatar-text">文章</text>
-          </view>
+          <navigator hover-class="navigator-hover" url="../article/articleList/index" open-type="navigate">
+            <view class="cu-avatar round lg margin-left bg-green light">
+              <text class="avatar-text">文章</text>
+            </view>
+          </navigator>
         </view>
         <view class="flex-sub text-center">
           <view class="cu-avatar round lg margin-left bg-olive light">

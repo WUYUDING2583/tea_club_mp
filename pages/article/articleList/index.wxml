@@ -1,0 +1,31 @@
+<!--pages/article/articleList/index.wxml-->
+<wxs src="../../tool.wxs" module="tool" />
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">研茶</view>
+</cu-custom>
+<scroll-view>
+  <view wx:for="{{articles}}" wx:key="unique">
+    <navigator hover-class="navigator-hover" url="../articleDetail/index?uid={{item}}" open-type="navigate">
+      <view class="cu-card article">
+        <view class="cu-item shadow">
+          <view class="title flex">
+            <view class="text-cut flex-sub">{{byArticles[item].title}}</view>
+            <view class="text-grey text-sm flex-sub text-right">{{tool.dateFormat(byArticles[item].time)}}</view>
+          </view>
+          <view class="content">
+            <image src="{{byArticles[item].photo}}" mode="aspectFill"></image>
+            <view class="desc">
+              <view class="text-cut text-content">{{byArticles[item].description}}</view>
+              <view class="flex">
+                <view wx:for="{{byArticles[item].tags}}" wx:key="unique">
+                  <view class="cu-tag bg-{{tagColor[tool.arrayLengthRandom(tagColor)].name}} light sm round margin-left">{{item.name}}</view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </navigator>
+  </view>
+</scroll-view>

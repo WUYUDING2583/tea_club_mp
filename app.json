@@ -1,13 +1,15 @@
 {
-  "pages":[
+  "pages": [
     "pages/index/index",
-    "pages/logs/logs"
+    "pages/logs/logs",
+    "pages/article/articleList/index",
+    "pages/article/articleDetail/index"
   ],
   "window": {
-    "navigationBarBackgroundColor": "#39b54a",
-    "navigationBarTitleText": "Color UI",
+    "navigationBarBackgroundColor": "#0081ff",
+    "navigationBarTitleText": "研茶",
     "navigationStyle": "custom",
-    "navigationBarTextStyle": "white"
+    "navigationBarTextStyle": "black"
   },
   "usingComponents": {
     "cu-custom": "/colorui/components/cu-custom"

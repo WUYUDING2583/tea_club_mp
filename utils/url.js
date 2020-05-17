@@ -7,4 +7,5 @@ export const url={
   swiper:()=>`${HOME}/swipers`,
   fetchHotProducts:()=>`${HOME}/product/hot`,
   fetchHotBoxes:()=>`${HOME}/box/hot`,
+  fetchArticles:()=>`${HOME}/article`,
 }
