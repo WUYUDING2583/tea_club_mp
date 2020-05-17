@@ -6,10 +6,11 @@
     "pages/article/articleDetail/index"
   ],
   "window": {
+    "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#0081ff",
     "navigationBarTitleText": "研茶",
-    "navigationStyle": "custom",
-    "navigationBarTextStyle": "black"
+    "navigationBarTextStyle": "black",
+    "navigationStyle": "custom"
   },
   "usingComponents": {
     "cu-custom": "/colorui/components/cu-custom"

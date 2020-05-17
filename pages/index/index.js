@@ -33,7 +33,7 @@ Page({
     this.storeBindings = createStoreBindings(this, {
       store: appActions,
       fields: ['retrieveRequestQuantity', 'updateRequestQuantity','swiperList'],
-      actions: ['startRetrieveRequest', 'startUpdateRequest', 'finishRetrieveRequest', 'finishUpdateRequest','fetchSwiperList'],
+      actions: ['fetchSwiperList'],
     });
     this.storeBindings = createStoreBindings(this, {
       store: product,

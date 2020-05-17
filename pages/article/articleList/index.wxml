@@ -28,4 +28,5 @@
       </view>
     </navigator>
   </view>
+  <cu-loading load-modal="{{retrieveRequestQuantity>0}}"></cu-loading>
 </scroll-view>

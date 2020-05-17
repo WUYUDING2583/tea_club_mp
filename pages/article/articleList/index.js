@@ -1,6 +1,7 @@
 // pages/article/articleList/index.js
 import {createStoreBindings} from 'mobx-miniprogram-bindings';
-import {article} from "../../../mobx/article.js";
+import { article } from "../../../mobx/article.js";
+import { app as appActions } from "../../../mobx/app.js";
 Page({
 
   /**
@@ -93,7 +94,11 @@ Page({
       store: article,
       fields: ['articles','byArticles'],
       actions: ['fetchArticles'],
-    }); 
+    });
+    this.storeBindings = createStoreBindings(this, {
+      store: appActions,
+      fields: ['retrieveRequestQuantity', 'updateRequestQuantity', 'swiperList'],
+    });
 
     //获取文章列表
     this.fetchArticles()

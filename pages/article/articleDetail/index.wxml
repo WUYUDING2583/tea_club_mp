@@ -1,6 +1,7 @@
 <!--pages/article/articleDetail/index.wxml-->
 <view class="page-body">
   <view class="page-section page-section-gap">
-    <web-view src="https://mp.weixin.qq.com/s/MctAz1BU4TFjiyWZF_y4VA"></web-view>
+    <web-view src="{{byArticles[articleId].url}}"></web-view>
   </view>
+  <cu-loading load-modal="{{retrieveRequestQuantity>0}}"></cu-loading>
 </view>

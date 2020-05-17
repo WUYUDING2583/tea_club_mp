@@ -21,7 +21,7 @@ export const article = observable({
         'content-type': 'application/json' // 默认值
       },
       success(res) {
-        console.log("hot box res", res);
+        console.log("fetch articles res", res);
         thiz.convertArticlesToPlainStructure(res.data.data);
       },
       complete() {

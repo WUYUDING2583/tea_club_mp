@@ -24,7 +24,7 @@
     <view class="bg-white padding">
       <view class="flex">
         <view class="flex-sub text-center">
-          <navigator hover-class="navigator-hover" url="../article/articleList/index" open-type="navigate">
+          <navigator hover-class="none" url="../article/articleList/index" open-type="navigate">
             <view class="cu-avatar round lg margin-left bg-green light">
               <text class="avatar-text">文章</text>
             </view>

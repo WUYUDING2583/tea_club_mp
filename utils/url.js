@@ -8,4 +8,7 @@ export const url={
   fetchHotProducts:()=>`${HOME}/product/hot`,
   fetchHotBoxes:()=>`${HOME}/box/hot`,
   fetchArticles:()=>`${HOME}/article`,
+  fetchReadingActivity:()=>`${HOME}/reading/activity`,
+  addIngot:(userId,ingot)=>`${HOME}/balance/ingot/add/${userId}/${ingot}`,
+  addCredit: (userId, credit) => `${HOME}/balance/credit/add/${userId}/${credit}`,
 }
