@@ -9,6 +9,7 @@ import {
 } from "../../utils/url.js";
 import {app as appActions} from "../../mobx/app.js";
 import {product} from "../../mobx/product.js";
+import {box} from "../../mobx/box.js"
 
 const app = getApp()
 
@@ -53,6 +54,11 @@ Page({
       store: product,
       fields: ['byProducts', 'hotProducts'],
       actions: ['fetchHotProducts'],
+    }); 
+    this.storeBindings = createStoreBindings(this, {
+      store: box,
+      fields: ['hotBoxes'],
+      actions: ['fetchHotBoxes'],
     });
     const thiz=this;
 
@@ -78,6 +84,8 @@ Page({
     this.fetchSwiperList();
     //获取热销产品
     this.fetchHotProducts();
+    //获取热门包厢
+    this.fetchHotBoxes();
   },
   //用户确定登录
   getPhoneNumber(e) {

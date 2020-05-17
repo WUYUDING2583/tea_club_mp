@@ -52,7 +52,7 @@
       </view>
     </view>
     <view class="cu-list grid col-3 no-border">
-      <view class="cu-item" wx:for="{{hotProducts}}" wx:key="{{item.productId}}">
+      <view class="cu-item" wx:for="{{hotProducts}}" wx:key="unique">
         <view class="flex justify-center">
           <view class="cu-avatar xl" style="background-image:url({{item.photo}})"></view>
         </view>
@@ -71,9 +71,10 @@
       </view>
     </view>
     <view class="cu-list grid col-3 no-border">
-      <view class="cu-item" wx:for="{{iconList}}" wx:key="unique">
-        <view class="cuIcon-{{item.icon}} text-{{item.color}}"></view>
-        <text>{{item.name}}</text>
+      <view class="cu-item" wx:for="{{hotBoxes}}" wx:key="unique">
+        <view class="flex justify-center">
+          <view class="cu-avatar xl" style="background-image:url({{item.photo}})"></view>
+        </view>
       </view>
     </view>
   </view>
@@ -152,6 +153,14 @@
         <button class="cu-btn content">
           <text class="cuIcon-cartfill text-red"></text>
           <text class="text-grey">购物车</text>
+        </button>
+      </navigator>
+    </view>
+    <view class="cu-item arrow">
+      <navigator hover-class="none" url="../logs/logs" open-type="redirect">
+        <button class="cu-btn content">
+          <text class="cuIcon-myfill text-purple"></text>
+          <text class="text-grey">我的账户</text>
         </button>
       </navigator>
     </view>

@@ -19,10 +19,6 @@ export const product = observable({
   products: new Array(),
   hotProducts: new Array(),
 
-  // 计算属性
-  get sum() {
-    return this.numA + this.numB
-  },
 
   // actions
   fetchHotProducts: action(function() {

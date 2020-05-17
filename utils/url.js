@@ -6,4 +6,5 @@ export const url={
   decryptPhoneNumber:(data)=>`${HOME}/decryptPhoneNumber/${data}`,
   swiper:()=>`${HOME}/swipers`,
   fetchHotProducts:()=>`${HOME}/product/hot`,
+  fetchHotBoxes:()=>`${HOME}/box/hot`,
 }
