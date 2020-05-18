@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "cu-bottom-modal":"../../components/cu-bottom-modal/index"
+  }
+}

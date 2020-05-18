@@ -15,7 +15,7 @@
           <text class='cuIcon-title text-green'></text>{{byProductTypes[item].name}} </view>
       </view>
       <view class="cu-list menu-avatar">
-        <view class="cu-item" wx:for="{{byProductTypes[item].products}}" wx:key="unique">
+        <view class="cu-item" wx:for="{{byProductTypes[item].products}}" wx:key="unique" bindtap="navigateToDetail" data-id="{{item}}">
           <view class="cu-avatar round lg" style="background-image:url({{byProducts[item].photo}});"></view>
           <view class="content">
             <view class="text-grey">{{byProducts[item].name}}</view>

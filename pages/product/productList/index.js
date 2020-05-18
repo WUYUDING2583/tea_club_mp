@@ -9,9 +9,6 @@ Page({
    * 页面的初始数据
    */
   data: {
-    StatusBar: app.globalData.StatusBar,
-    CustomBar: app.globalData.CustomBar,
-    Custom: app.globalData.Custom,
     TabCur: 0,
     MainCur: 0,
     VerticalNavTop: 0,
@@ -47,6 +44,12 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
+    
+  },
+  navigateToDetail:function(e){
+    wx.navigateTo({
+      url: `../productDetail/index?uid=${e.currentTarget.dataset.id}`
+    })
     
   },
   tabSelect(e) {

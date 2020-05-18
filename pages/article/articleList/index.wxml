@@ -19,7 +19,7 @@
               <view class="text-cut text-content">{{byArticles[item].description}}</view>
               <view class="flex">
                 <view wx:for="{{byArticles[item].tags}}" wx:key="unique">
-                  <view class="cu-tag bg-{{tagColor[tool.arrayLengthRandom(tagColor)].name}} light sm round margin-left">{{item.name}}</view>
+                  <view class="cu-tag bg-{{ColorList[tool.arrayLengthRandom(ColorList)].name}} light sm round margin-left">{{item.name}}</view>
                 </view>
               </view>
             </view>

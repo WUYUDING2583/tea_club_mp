@@ -12,4 +12,5 @@ export const url={
   addIngot:(userId,ingot)=>`${HOME}/balance/ingot/add/${userId}/${ingot}`,
   addCredit: (userId, credit) => `${HOME}/balance/credit/add/${userId}/${credit}`,
   fetchProducts:()=>`${HOME}/product`,
+  fetchProduct:(uid)=>`${HOME}/product/${uid}`,
 }

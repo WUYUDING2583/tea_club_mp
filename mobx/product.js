@@ -15,9 +15,29 @@ export const product = observable({
   hotProducts: new Array(),
   productTypes:new Array(),
   byProductTypes:new Object(),
+  byProductPhotos:new Object(),
 
 
   // actions
+  fetchProduct:action(function(uid){
+    get(url.fetchProduct(uid))
+      .then(res => {
+        this.convertProductToPlainStructure(res);
+      })
+  }),
+  convertProductToPlainStructure:action(function(data){
+    let byProductPhotos=new Object();
+    let photos=new Array();
+    data.photos.forEach(item=>{
+      photos.push(item.uid);
+      if(!byProductPhotos[item.uid]){
+        byProductPhotos[item.uid] = `data:image/jpeg;base64,${item.photo}`
+      }
+    });
+    let byProducts=this.byProducts;
+    this.byProducts = { ...byProducts, [data.uid]: {...byProducts[data.uid],...data,photos} };
+    this.byProductPhotos=byProductPhotos;
+  }),
   fetchProducts:action(function(){
     return new Promise((resolve,reject)=>{
       get(url.fetchProducts())
