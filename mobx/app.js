@@ -1,5 +1,6 @@
 import { configure, observable, action } from 'mobx-miniprogram'
 import {url} from "../utils/url.js";
+import {get} from "../utils/request.js";
 
 // 不允许在动作外部修改状态
 configure({ enforceActions: 'observed' });
@@ -24,20 +25,11 @@ export const app = observable({
   finishUpdateRequest:action(function(){
     this.updateRequestQuantity-=1;
   }),
-  fetchSwiperList:action(function(){
-    this.startRetrieveRequest();
+  fetchSwiperList: action(function () {
     const thiz=this;
-    wx.request({
-      url: url.swiper(),
-      header: {
-        'content-type': 'application/json' // 默认值
-      },
-      success(res) {
-        thiz.handleSwiperList(res.data.data);
-      },
-      complete(){
-        thiz.finishRetrieveRequest();
-      }
+    get(url.swiper())
+    .then((res)=>{
+      this.handleSwiperList(res);
     })
   }),
   //处理获取后台返回的走马灯数据

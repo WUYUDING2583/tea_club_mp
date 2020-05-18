@@ -1,6 +1,6 @@
 import { configure, observable, action } from 'mobx-miniprogram';
-import {app} from "./app.js";
 import {url} from "../utils/url.js";
+import { get } from "../utils/request.js";
 
 // 不允许在动作外部修改状态
 configure({ enforceActions: 'observed' });
@@ -13,20 +13,9 @@ export const box = observable({
 
   // actions
   fetchHotBoxes: action(function () {
-    app.startRetrieveRequest();
-    const thiz = this;
-    wx.request({
-      url: url.fetchHotBoxes(),
-      header: {
-        'content-type': 'application/json' // 默认值
-      },
-      success(res) {
-        console.log("hot box res", res);
-        thiz.convertBoxesToPlainStructure(res.data.data);
-      },
-      complete() {
-        app.finishRetrieveRequest();
-      }
+    get(url.fetchHotBoxes())
+    .then(res=>{
+      this.convertBoxesToPlainStructure(res);
     })
   }),
   convertBoxesToPlainStructure:action(function(data){

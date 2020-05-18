@@ -50,7 +50,8 @@ Page({
     const thiz=this;
     //获取阅读活动
     this.fetchReadingActivity()
-      .then(function (data) {
+      .then((data)=> {
+        console.log("after",data);
         thiz.setData({
           readingActivity:data
         })

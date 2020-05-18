@@ -1,12 +1,6 @@
-import {
-  configure,
-  observable,
-  action
-} from 'mobx-miniprogram';
-import {
-  app
-} from "./app.js";
+import {configure,observable,action} from 'mobx-miniprogram';
 import {url} from "../utils/url.js";
+import { get } from "../utils/request.js";
 
 // 不允许在动作外部修改状态
 configure({
@@ -22,20 +16,9 @@ export const product = observable({
 
   // actions
   fetchHotProducts: action(function() {
-    app.startRetrieveRequest();
-    const thiz = this;
-    wx.request({
-      url: url.fetchHotProducts(),
-      header: {
-        'content-type': 'application/json' // 默认值
-      },
-      success(res) {
-        console.log("hot product res",res);
-        thiz.convertProductsToPlainStructure(res.data.data);
-      },
-      complete() {
-        app.finishRetrieveRequest();
-      }
+    get(url.fetchHotProducts())
+    .then((res)=>{
+      this.convertProductsToPlainStructure(res);
     })
   }),
   convertProductsToPlainStructure:action(function(data){

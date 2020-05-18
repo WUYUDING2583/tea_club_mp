@@ -1,6 +1,6 @@
 import { configure, observable, action } from 'mobx-miniprogram';
-import { url } from "../utils/url.js";
-import { app } from "./app.js";
+import {url} from "../utils/url.js";
+import { get } from "../utils/request.js";
 
 // 不允许在动作外部修改状态
 configure({ enforceActions: 'observed' });
@@ -13,21 +13,25 @@ export const article = observable({
 
   // actions
   fetchArticles: action(function () {
-    app.startRetrieveRequest();
-    const thiz = this;
-    wx.request({
-      url: url.fetchArticles(),
-      header: {
-        'content-type': 'application/json' // 默认值
-      },
-      success(res) {
-        console.log("fetch articles res", res);
-        thiz.convertArticlesToPlainStructure(res.data.data);
-      },
-      complete() {
-        app.finishRetrieveRequest();
-      }
+    get(url.fetchArticles())
+    .then((res)=>{
+      this.convertArticlesToPlainStructure(res);
     })
+    // app.startRetrieveRequest();
+    // const thiz = this;
+    // wx.request({
+    //   url: url.fetchArticles(),
+    //   header: {
+    //     'content-type': 'application/json' // 默认值
+    //   },
+    //   success(res) {
+    //     console.log("fetch articles res", res);
+    //     thiz.convertArticlesToPlainStructure(res.data.data);
+    //   },
+    //   complete() {
+    //     app.finishRetrieveRequest();
+    //   }
+    // })
   }),
   convertArticlesToPlainStructure:action(function(data){
     let articles=new Array();
