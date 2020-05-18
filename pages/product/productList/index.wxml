@@ -1,0 +1,38 @@
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">研茶</view>
+</cu-custom>
+<view class="VerticalBox">
+  <scroll-view class="VerticalNav nav" scroll-y scroll-with-animation scroll-top="{{VerticalNavTop}}" style="height:calc(100vh - 60px)">
+    <view class="cu-item {{index==TabCur?'text-green cur':''}}" wx:for="{{productTypes}}" wx:key="unique" bindtap='tabSelect' data-id="{{index}}">
+      {{byProductTypes[item].name}}
+    </view>
+  </scroll-view>
+  <scroll-view class="VerticalMain" scroll-y scroll-with-animation style="height:calc(100vh - 60px)" scroll-into-view="main-{{MainCur}}" bindscroll="VerticalMain">
+    <view class="padding-top padding-lr" wx:for="{{productTypes}}" wx:key="unique" id="main-{{index}}">
+      <view class='cu-bar solid-bottom bg-white'>
+        <view class='action'>
+          <text class='cuIcon-title text-green'></text>{{byProductTypes[item].name}} </view>
+      </view>
+      <view class="cu-list menu-avatar">
+        <view class="cu-item" wx:for="{{byProductTypes[item].products}}" wx:key="unique">
+          <view class="cu-avatar round lg" style="background-image:url({{byProducts[item].photo}});"></view>
+          <view class="content">
+            <view class="text-grey">{{byProducts[item].name}}</view>
+            <view class="text-gray text-sm flex">
+              <text class="text-cut">
+								{{byProducts[item].description}}
+              </text>
+            </view>
+          </view>
+          <view class="action">
+            <view class="text-grey text-xs">
+              <text wx:if="{{byProducts[item].price.ingot>0}}">{{byProducts[item].price.ingot}}元宝</text>
+              <text wx:if="{{byProducts[item].price.credit>0}}">{{byProducts[item].price.credit}}积分</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>

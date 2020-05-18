@@ -1,8 +1,9 @@
 // request.js
-import {app} from "../mobx/app.js";
-
 export const get=(url)=>{
-  app.startRetrieveRequest();
+  wx.showLoading({
+    title: '加载中...',
+    mask: true
+  });
   return new Promise(function (resolve, reject) {
     wx.request({
       url: url,
@@ -10,8 +11,12 @@ export const get=(url)=>{
         'content-type': 'application/json' // 默认值
       },
       complete(res) {
-        app.finishRetrieveRequest();
+        wx.hideLoading()
         console.log(`request ${url} res`, res.data);
+        if (res.data.data.status == 404) {
+          showToast("404,资源不存在");
+          reject("404,资源不存在");
+        }
         if(res.data.code!=200){
           showToast(res.data.error);
           reject(res.data);

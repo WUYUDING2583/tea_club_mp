@@ -11,4 +11,5 @@ export const url={
   fetchReadingActivity:()=>`${HOME}/reading/activity`,
   addIngot:(userId,ingot)=>`${HOME}/balance/ingot/add/${userId}/${ingot}`,
   addCredit: (userId, credit) => `${HOME}/balance/credit/add/${userId}/${credit}`,
+  fetchProducts:()=>`${HOME}/product`,
 }

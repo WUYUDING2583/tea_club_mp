@@ -97,7 +97,7 @@ Page({
     });
     this.storeBindings = createStoreBindings(this, {
       store: appActions,
-      fields: ['retrieveRequestQuantity', 'updateRequestQuantity', 'swiperList'],
+      fields: ['retrieveRequestQuantity', 'updateRequestQuantity'],
     });
 
     //获取文章列表

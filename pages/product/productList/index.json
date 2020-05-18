@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "cu-loading": "../../components/cu-loading/index"
+  }
+}

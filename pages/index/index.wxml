@@ -31,9 +31,11 @@
           </navigator>
         </view>
         <view class="flex-sub text-center">
-          <view class="cu-avatar round lg margin-left bg-olive light">
-            <text class="avatar-text">产品</text>
-          </view>
+          <navigator hover-class="none" url="../product/productList/index" open-type="navigate">
+            <view class="cu-avatar round lg margin-left bg-olive light">
+              <text class="avatar-text">产品</text>
+            </view>
+          </navigator>
         </view>
         <view class="flex-sub text-center">
           <view class="cu-avatar round lg margin-left bg-cyan light">
