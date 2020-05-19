@@ -5,12 +5,14 @@ import {
 } from 'mobx-miniprogram'
 import { get,post } from "../utils/request.js";
 import { url } from "../utils/url.js";
-import {app} from "./app.js";
+import {app as appActions} from "./app.js";
 
 // 不允许在动作外部修改状态
 configure({
   enforceActions: 'observed'
 });
+
+const app=getApp();
 
 export const user = observable({
 
@@ -46,28 +48,28 @@ export const user = observable({
   }),
   //获取短信验证码
   getVerifyCode:action(function(phone){
-    app.startUpdateRequest();
+    appActions.startUpdateRequest();
     return new Promise((resolve,reject)=>{
       get(url.getVerifyCode(phone),false)
         .then((res)=>{
-          app.finishUpdateRequest();
+          appActions.finishUpdateRequest();
           return resolve();
         })
     })
   }),
-  //用户登录//15868859587
+  //用户登录
   login:action(function(phone,verifyCode){
-    app.startRetrieveRequest();
+    appActions.startRetrieveRequest();
     post(url.login(phone,verifyCode),{},false)
       .then((res)=>{
-        app.finishRetrieveRequest();//TODO 登录成功
+        appActions.finishRetrieveRequest();//TODO 登录成功
         wx.navigateBack({
           
         });
         resolve();
       })
       .catch((err)=>{
-        app.finishRetrieveRequest();
+        appActions.finishRetrieveRequest();
         console.log(err);
         if(err.code==500204){
           //未注册用户,跳转到注册页面
@@ -77,5 +79,22 @@ export const user = observable({
         }
       })
   }),
+  //用户注册
+  register:action(function(verifyCode,params){
+    appActions.startRetrieveRequest();
+    post(url.register(params.contact,verifyCode),params,false)
+      .then(()=>{
+        appActions.finishRetrieveRequest();
+        //注册成功，将phone存入storage
+        wx.setStorageSync('phone', params.contact);
+        app.globalData.Phone = params.contact;
+        wx.navigateBack({
+          delta: 1,
+        })
+      })
+      .catch(err => {
+        appActions.finishRetrieveRequest();
+      })
+  })
 
 })

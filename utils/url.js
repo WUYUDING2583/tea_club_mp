@@ -14,5 +14,6 @@ export const url={
   fetchProducts:()=>`${HOME}/product`,
   fetchProduct:(uid)=>`${HOME}/product/${uid}`,
   getVerifyCode: (contact) => `${HOME}/sms/${contact}`,
-  login: (contact, otp) => `${HOME}/login?contact=${contact}&otp=${otp}`
+  login: (contact, otp) => `${HOME}/login?contact=${contact}&otp=${otp}`,
+  register: (contact, otp) => `${HOME}/register?contact=${contact}&otp=${otp}`,
 }

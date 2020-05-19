@@ -2,12 +2,11 @@
 <!--pages/login/index.wxml-->
 <cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
   <view slot="backText">返回</view>
-  <view slot="content">登录</view>
+  <view slot="content">注册</view>
 </cu-custom>
 <view id="avatar" class="flex padding justify-center">
   <view class="cu-avatar round xl" style="background-image:url({{userInfo.avatarUrl}});" bindtap="showDrawer"></view>
 </view>
-<view class="flex solid-bottom padding-bottom justify-center text-grey">您还没有登录</view>
 <form>
   <view class="cu-form-group">
     <view class="title">手机号码</view>
@@ -19,7 +18,15 @@
     <view class="title">验证码</view>
     <input placeholder="6位验证码" bindinput="verifyCodeInput" maxlength="6" type="number"></input>
   </view>
+  <view class="cu-form-group">
+		<view class="title">姓名</view>
+		<input placeholder="请输入姓名" bindinput="nameInput"></input>
+	</view>
+  <view class="cu-form-group">
+		<view class="title">身份证号</view>
+		<input placeholder="请输入第二代身份证号" bindinput="idInput"></input>
+	</view>
 </form>
 <view class="flex padding justify-center">
-  <button class="cu-btn bg-grey lg" style="width:80vw" bindtap="_login"><text class="cuIcon-loading2 iconfont-spin" wx:if="{{retrieveRequestQuantity>0}}"></text>登录</button>
+  <button class="cu-btn bg-grey lg" style="width:80vw" bindtap="_register"><text class="cuIcon-loading2 iconfont-spin" wx:if="{{retrieveRequestQuantity>0}}"></text>注册</button>
 </view>

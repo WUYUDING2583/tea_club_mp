@@ -70,7 +70,7 @@ export const post = (url, params,needLoading = true) => {
 }
 
 // 添加请求toast提示
-const showToast = title => {
+export const showToast = title => {
   wx.showToast({
     title: title,
     icon: 'none',
