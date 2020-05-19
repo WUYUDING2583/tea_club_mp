@@ -13,4 +13,6 @@ export const url={
   addCredit: (userId, credit) => `${HOME}/balance/credit/add/${userId}/${credit}`,
   fetchProducts:()=>`${HOME}/product`,
   fetchProduct:(uid)=>`${HOME}/product/${uid}`,
+  getVerifyCode: (contact) => `${HOME}/sms/${contact}`,
+  login: (contact, otp) => `${HOME}/login?contact=${contact}&otp=${otp}`
 }

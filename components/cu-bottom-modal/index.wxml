@@ -2,11 +2,11 @@
 <view class="cu-modal bottom-modal {{show?'show':''}}">
   <view class="cu-dialog">
     <view class="cu-bar bg-white">
-      <view class="action text-green">确定</view>
-      <view class="action text-blue" bindtap="hideModal">取消</view>
+      <view class="action"></view>
+      <view class="action text-blue" bindtap="hideModal"><text class="cuIcon-close text-grey"></text></view>
     </view>
     <view class="padding-xl">
-      Modal 内容。
+      <slot></slot>
     </view>
   </view>
 </view>

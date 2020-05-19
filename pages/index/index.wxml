@@ -99,7 +99,6 @@
       </view>
     </view>
   </view>
-  <cu-loading load-modal="{{retrieveRequestQuantity>0}}"></cu-loading>
 </scroll-view>
 
 
@@ -115,8 +114,10 @@
           <view class="content flex-sub">
             <view>{{userInfo.name?userInfo.name:userInfo.nickName}}</view>
             <view class="text-gray text-sm flex justify-between">
-              {{userInfo.vip?userInfo.vip:"未注册用户"}}
-              <text wx:if="{{!userInfo.vip}}" class="text-blue" style="text-decoration:under-line">注册</text>
+              {{userInfo.vip?userInfo.vip:"未登录"}}
+              <navigator hover-class="none" url="../login/index">
+                <text wx:if="{{!userInfo.vip}}" class="text-blue" style="text-decoration:under-line">登录</text>
+              </navigator>
             </view>
           </view>
         </view>

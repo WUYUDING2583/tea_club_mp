@@ -46,27 +46,41 @@
     </view>
   </view>
   <view class="cu-list menu">
-    <view class="cu-item arrow" wx:for="{{byProducts[productId].activityRules}}" wx:key="unique" bindtap="showModal" data-target="activityCustomer">
+    <view class="cu-item arrow" wx:for="{{byProducts[productId].activityRules}}" wx:key="unique" bindtap="showModal" data-target="activityCustomer" data-id="{{index}}">
       <view class="content">
-        <view wx:if="{{item.activityRuleType.uid==3}}"><text class="cuIcon-recharge text-red margin-right"></text>{{item.activityRule1}}%折扣</view>
-        <view wx:if="{{item.activityRuleType.uid==2}}"><text class="cuIcon-redpacket text-red margin-right"></text>消费满{{item.activityRule1}}元宝{{item.activityRule2.operation=="plus"?"赠":"减"}}{{item.activityRule2.number}}{{item.activityRule2.currency=="ingot"?"元宝":"积分"}}</view>
+        <view wx:if="{{item.activityRuleType.uid==3}}">
+          <text class="cuIcon-recharge text-red margin-right"></text>{{item.activityRule1}}%折扣</view>
+        <view wx:if="{{item.activityRuleType.uid==2}}">
+          <text class="cuIcon-redpacket text-red margin-right"></text>消费满{{item.activityRule1}}元宝{{item.activityRule2.operation=="plus"?"赠":"减"}}{{item.activityRule2.number}}{{item.activityRule2.currency=="ingot"?"元宝":"积分"}}</view>
       </view>
       <view class="action">
         <text class="text-grey text-sm">适用客户</text>
       </view>
     </view>
   </view>
+  <view id="product-detail" class="cu-bar bg-white solid-bottom margin-top">
+    <view class='action'>
+      <text class='cuIcon-titles text-orange '></text> 产品详情
+    </view>
+  </view>
+  <view class="cu-list menu margin-bottom-xl">
+    <image wx:for="{{byProducts[productId].productDetails}}" wx:key="unique" src="{{byProductPhotos[item]}}" />
+  </view>
 </scroll-view>
-<view class="cu-bar bg-white tabbar border shop" style="position:absolute;bottom:0;width:100vw;">
+<view class="cu-bar bg-white tabbar border shop" style="position:fixed;bottom:0;width:100vw;">
   <view class="action">
     <view class="cuIcon-cart">
-      <view class="cu-tag badge">99</view>
+      <view class="cu-tag badge" wx:if="{{cartTotal>0}}">{{cartTotal}}</view>
     </view>
     购物车
   </view>
   <view class="btn-group" style="width:calc(100vw-140rpx)">
-    <button class="cu-btn bg-orange round shadow-blur" style="width:40%">加入购物车</button>
-    <button class="cu-btn bg-red round shadow-blur" style="width:40%">立即订购</button>
+    <button class="cu-btn bg-orange round shadow-blur" style="width:40%" bindtap="addCart">加入购物车</button>
+    <button class="cu-btn bg-red round shadow-blur" style="width:40%" bindtap="purchase">立即订购</button>
   </view>
 </view>
-<cu-bottom-modal show="{{modalName=='activityCustomer'}}" bindhideModal="hideModal"></cu-bottom-modal>
+<cu-bottom-modal show="{{showModal}}" bindhideModal="hideModal">
+  <view wx:if="{{modalName=='activityCustomer'}}">
+    <text wx:for="{{byProducts[productId].activityRules[ruleIndex].activityApplyForCustomerTypes}}" wx:key="unique">{{item.name}}</text>
+  </view>
+</cu-bottom-modal>

@@ -1,6 +1,7 @@
 // pages/product/productDetail/index.js
 import { createStoreBindings } from 'mobx-miniprogram-bindings';
 import { product } from "../../../mobx/product.js";
+import { cart } from "../../../mobx/cart.js";
 
 const app=getApp();
 Page({
@@ -12,7 +13,9 @@ Page({
     StatusBar: app.globalData.StatusBar,
     CustomBar: app.globalData.CustomBar,
     Custom: app.globalData.Custom,
-    ColorList: app.globalData.ColorList
+    ColorList: app.globalData.ColorList,
+    Phone:app.globalData.Phone,
+    showModal:false
   },
 
   /**
@@ -27,21 +30,52 @@ Page({
       fields: ['byProductPhotos', 'byProducts'],
       actions: ['fetchProduct'],
     });
+    this.storeBindings = createStoreBindings(this, {
+      store: cart,
+      fields: ['cartTotal'],
+    });
 
     this.fetchProduct(options.uid);
 
   },
 
   showModal:function(e){
+    console.log(e);
     this.setData({
-      modalName: e.currentTarget.dataset.target
+      showModal:true,
+      modalName: e.currentTarget.dataset.target,
+      ruleIndex:e.currentTarget.dataset.id,
     })
   },
 
   hideModal: function (e) {
     this.setData({
       modalName:"",
+      ruleIndex:"",
+      showModal:false
     })
+  },
+
+  addCart:function(){
+    if(this.data.Phone.length==0){
+      //未登录
+      wx.navigateTo({
+        url: '../../login/index',
+      })
+    }else{
+
+    }
+  },
+
+  purchase:function(){
+    if (this.data.Phone.length == 0) {
+      //未登录
+      wx.navigateTo({
+        url: '../../login/index',
+      })
+    } else {
+
+    }
   },
 
   /**

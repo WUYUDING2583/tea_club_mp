@@ -1,6 +1,6 @@
 import {configure,observable,action} from 'mobx-miniprogram';
-import {url} from "../utils/url.js";
 import { get } from "../utils/request.js";
+import { url } from "../utils/url.js";
 
 // 不允许在动作外部修改状态
 configure({
@@ -28,14 +28,21 @@ export const product = observable({
   convertProductToPlainStructure:action(function(data){
     let byProductPhotos=new Object();
     let photos=new Array();
+    let productDetails=new Array();
     data.photos.forEach(item=>{
       photos.push(item.uid);
       if(!byProductPhotos[item.uid]){
         byProductPhotos[item.uid] = `data:image/jpeg;base64,${item.photo}`
       }
     });
+    data.productDetails.forEach(item=>{
+      productDetails.push(item.uid);
+      if (!byProductPhotos[item.uid]) {
+        byProductPhotos[item.uid] = `data:image/jpeg;base64,${item.photo}`
+      }
+    })
     let byProducts=this.byProducts;
-    this.byProducts = { ...byProducts, [data.uid]: {...byProducts[data.uid],...data,photos} };
+    this.byProducts = { ...byProducts, [data.uid]: {...byProducts[data.uid],...data,photos,productDetails} };
     this.byProductPhotos=byProductPhotos;
   }),
   fetchProducts:action(function(){

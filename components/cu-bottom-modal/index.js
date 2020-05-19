@@ -8,10 +8,6 @@ Component({
       type:Boolean,
       value:false
     },
-    hideModal:{
-      type:Function,
-      value:()=>{}
-    }
   },
 
   /**

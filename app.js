@@ -18,8 +18,8 @@ App({
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
 
-    var token=wx.getStorageSync("token")||"";
-    this.globalData.token=token;
+    var Phone=wx.getStorageSync("phone")||"";
+    this.globalData.Phone = Phone;
 
     // 登录
     wx.login({
@@ -29,8 +29,7 @@ App({
     })
   },
   globalData: {
-    userInfo: null,
-    token:null,
+    Phone:"",
     ColorList: [{
         title: '嫣红',
         name: 'red',
