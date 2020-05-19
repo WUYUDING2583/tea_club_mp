@@ -18,14 +18,14 @@ export const user = observable({
 
   // 数据字段
   userInfo: new Object(),
-  phoneNumber:"",
+  phone:"",
 
   // actions
   setUserInfo: action(function(userInfo) {
-   this.userInfo=userInfo;
+   this.userInfo={...this.userInfo,...userInfo};
   }),
   setPhoneNumber: action(function (phoneNumber){
-    this.phoneNumber = phoneNumber;
+    this.phone = phoneNumber;
   }),
   getUserInfo:action(function(){
     // 获取用户信息
@@ -62,11 +62,14 @@ export const user = observable({
     appActions.startRetrieveRequest();
     post(url.login(phone,verifyCode),{},false)
       .then((res)=>{
-        appActions.finishRetrieveRequest();//TODO 登录成功
+        appActions.finishRetrieveRequest();
+        //注册成功，将phone存入storage
+        wx.setStorageSync('phone', phone);
+        this.setPhoneNumber(phone);
+        this.setUserInfo(res);
         wx.navigateBack({
-          
-        });
-        resolve();
+          delta: 1,
+        })
       })
       .catch((err)=>{
         appActions.finishRetrieveRequest();
@@ -82,18 +85,33 @@ export const user = observable({
   //用户注册
   register:action(function(verifyCode,params){
     appActions.startRetrieveRequest();
+    const thiz=this;
     post(url.register(params.contact,verifyCode),params,false)
-      .then(()=>{
+      .then((res)=>{
+        console.log("register",res);
         appActions.finishRetrieveRequest();
         //注册成功，将phone存入storage
         wx.setStorageSync('phone', params.contact);
-        app.globalData.Phone = params.contact;
+        thiz.setPhoneNumber(params.contact);
+        thiz.setUserInfo(res);
         wx.navigateBack({
           delta: 1,
         })
       })
       .catch(err => {
         appActions.finishRetrieveRequest();
+      })
+  }),
+  //根据手机号获取用户信息
+  getUserInfoByPhone:action(function(phone){
+    // const thiz=
+    get(url.getUserInfoByPhone(phone))
+      .then((res)=>{
+        this.setUserInfo(res);
+        this.setPhoneNumber(phone);
+      })
+      .catch(err=>{
+        console.log(err);
       })
   })
 

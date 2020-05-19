@@ -23,7 +23,7 @@
   <button class="cu-btn bg-grey lg" style="width:80vw" bindtap="_login"><text class="cuIcon-loading2 iconfont-spin" wx:if="{{retrieveRequestQuantity>0}}"></text>登录</button>
 </view>
 <view style="position:fixed;bottom:0;width:100vw;" class="margin-bottom flex justify-center">
-  <navigator hover-class="none" url="../register/index">
+  <navigator hover-class="none" url="../register/index" open-type="redirect">
     <text class="text-grey">未注册？</text>
     <text class="text-blue">去注册</text>
   </navigator>

@@ -20,6 +20,7 @@ Page({
     CustomBar: app.globalData.CustomBar,
     Custom: app.globalData.Custom,
     TabCur: 1,
+    Phone:app.globalData.Phone,
     drawerVisible: false,
     bottomModalVisible: false,
     scrollLeft: 0
@@ -27,8 +28,8 @@ Page({
   onLoad: function() {
     this.storeBindings = createStoreBindings(this, {
       store: user,
-      fields: ['userInfo'],
-      actions: ['setUserInfo', 'setPhoneNumber'],
+      fields: ['userInfo','phone'],
+      actions: ['setUserInfo', 'setPhoneNumber','getUserInfoByPhone'],
     }); 
     this.storeBindings = createStoreBindings(this, {
       store: appActions,
@@ -68,6 +69,11 @@ Page({
         }
       }
     });
+
+    if(this.data.Phone.length>0){
+      //获取用户信息
+      this.getUserInfoByPhone(this.data.Phone)
+    }
 
     // //获取走马灯展示
     this.fetchSwiperList();
