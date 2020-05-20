@@ -1,0 +1,55 @@
+<!--pages/order/orderPreview/index.wxml-->
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">确认订单</view>
+</cu-custom>
+<view class="cu-card case">
+  <view class="cu-item shadow">
+    <view class="cu-list menu-avatar">
+      <view class="cu-item">
+        <view class="cu-avatar round lg">
+          <text class="cuIcon-locationfill text-blue"></text>
+        </view>
+        <view class="content flex-sub">
+          <view class="text-grey">
+            <text>{{userInfo.name}}</text>
+            <text class="sm">{{userInfo.contact}}</text>
+          </view>
+          <view class="text-gray text-sm flex justify-between">
+            {{userInfo.address}}
+          </view>
+        </view>
+        <view class="text-gray text-sm justify-right">
+          <text class="cuIcon-right margin-lr-xs lg"></text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+<view class="cu-card case">
+  <view class="cu-item shadow">
+    <view class="cu-list menu-avatar solid-bottom">
+      <view class="cu-item padding">
+        <view class="cu-avatar lg" style="background-image:url({{byProducts[productId].photo}});"></view>
+        <view class="content flex-sub">
+          <view class="text-grey">{{byProducts[productId].name}}</view>
+          <view class="text-gray text-sm flex justify-between">
+            <text class="text-red text-xl" wx:if="{{byProducts[productId].price.ingot>0}}">{{byProducts[productId].price.ingot}}元宝 </text>
+            <text class="text-red text-xl" wx:if="{{byProducts[productId].price.credit>0}}">{{byProducts[productId].price.credit}}积分</text>
+            <view class="text-gray text-sm">
+              <text>x {{number}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="cu-list menu {{menuBorder?'sm-border':''}} {{menuCard?'card-menu margin-top':''}}">
+      <view class="cu-item {{menuArrow?'arrow':''}}">
+        <view class="content">
+          <text class="cuIcon-circlefill text-grey"></text>
+          <text class="text-grey">图标 + 标题</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

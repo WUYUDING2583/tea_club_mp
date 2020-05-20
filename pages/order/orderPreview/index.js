@@ -1,26 +1,40 @@
-// pages/test/index.js
+// pages/order/orderPreview/index.js
+import { createStoreBindings } from 'mobx-miniprogram-bindings';
+import { product } from "../../../mobx/product.js";
+import { user } from "../../../mobx/user.js";
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    picker: ['喵喵喵', '汪汪汪', '哼唧哼唧'],
-    index: null,
+    
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
-  },
-
-  PickerChange(e) {
-    console.log(e);
     this.setData({
-      index: e.detail.value
-    })
+      productId: options.productId,
+      number:options.number,
+      deliveryMode:options.deliveryMode,
+      shopId:options.shopId
+    }); 
+    // this.setData({
+    //   productId: 1,
+    //   number: 1
+    // });
+    this.storeBindings = createStoreBindings(this, {
+      store: product,
+      fields: ['byProductPhotos'],
+      actions: ['fetchProduct'],
+    });
+    this.storeBindings = createStoreBindings(this, {
+      store: user,
+      fields: ['userInfo'],
+    });
   },
 
   /**
@@ -48,6 +62,7 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
+    this.storeBindings.destroyStoreBindings();
 
   },
 
