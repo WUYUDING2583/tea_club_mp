@@ -5,7 +5,7 @@
       <view class="action"></view>
       <view class="action text-blue" bindtap="hideModal"><text class="cuIcon-close text-grey"></text></view>
     </view>
-    <view class="padding-xl">
+    <view>
       <slot></slot>
     </view>
   </view>

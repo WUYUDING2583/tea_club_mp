@@ -1,5 +1,6 @@
 {
   "usingComponents": {
-    "cu-bottom-modal":"../../components/cu-bottom-modal/index"
+    "cu-bottom-modal":"../../components/cu-bottom-modal/index",
+    "cu-stepper": "../../components/cu-stepper/index"
   }
 }

@@ -1,13 +1,15 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/test/index",
     "pages/login/index",
     "pages/register/index",
     "pages/logs/logs",
     "pages/article/articleList/index",
     "pages/article/articleDetail/index",
     "pages/product/productDetail/index",
-    "pages/product/productList/index"
+    "pages/product/productList/index",
+    "pages/cart/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

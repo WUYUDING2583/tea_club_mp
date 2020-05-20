@@ -1,0 +1,8 @@
+<!--pages/test/index.wxml-->
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">注册</view>
+</cu-custom>
+<view style="height:100vh;width:100vw" class="bg-white">
+  <cu-stepper step="2" max="4" min="0"></cu-stepper>
+</view>

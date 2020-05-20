@@ -2,6 +2,8 @@
 import { createStoreBindings } from 'mobx-miniprogram-bindings';
 import { product } from "../../../mobx/product.js";
 import { cart } from "../../../mobx/cart.js";
+import { user } from "../../../mobx/user.js";
+import { app as appActions} from "../../../mobx/app.js";
 
 const app=getApp();
 Page({
@@ -14,8 +16,8 @@ Page({
     CustomBar: app.globalData.CustomBar,
     Custom: app.globalData.Custom,
     ColorList: app.globalData.ColorList,
-    Phone:app.globalData.Phone,
-    showModal:false
+    showModal:false,
+    number:0
   },
 
   /**
@@ -33,10 +35,28 @@ Page({
     this.storeBindings = createStoreBindings(this, {
       store: cart,
       fields: ['cartTotal'],
+      actions: ['addToCart'],
+    });
+    this.storeBindings = createStoreBindings(this, {
+      store: user,
+      fields: ['phone','userInfo'],
+    });
+    this.storeBindings = createStoreBindings(this, {
+      store: appActions,
+      fields: ['updateRequestQuantity'],
     });
 
     this.fetchProduct(options.uid);
 
+  },
+
+  //步进器change时间
+  changeNumber:function(e){
+    const {detail}=e;
+    const {number}=detail;
+    this.setData({
+      number
+    })
   },
 
   showModal:function(e){
@@ -55,28 +75,40 @@ Page({
       showModal:false
     })
   },
+  //点击确定
+  confirm:function(){
+    const { modalType, number, userInfo, productId}=this.data;
+    const thiz=this;
+    if (modalType =="addToCart"){
+      //加入购物车
+      const params = { customer: { uid: userInfo.uid }, product: { uid: productId},number};
+      this.addToCart(params)
+        .then(()=>{
+          thiz.setData({
+            modalName: "",
+            showModal: false
+          })
+        })
+    }
+  },
 
-  addCart:function(){
-    if(this.data.Phone.length==0){
+  showSelectModal:function(e){
+    console.log(e);
+    if(this.data.phone.length==0){
       //未登录
       wx.navigateTo({
         url: '../../login/index',
       })
     }else{
-
-    }
-  },
-
-  purchase:function(){
-    if (this.data.Phone.length == 0) {
-      //未登录
-      wx.navigateTo({
-        url: '../../login/index',
+      //已登录
+      this.setData({
+        modalName:"select",
+        showModal:true,
+        modalType:e.currentTarget.dataset.target,
       })
-    } else {
-
     }
   },
+
 
   /**
    * 生命周期函数--监听页面初次渲染完成

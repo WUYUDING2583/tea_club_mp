@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "cu-stepper":"../../components/cu-stepper/index"
+  }
+}

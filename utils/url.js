@@ -17,4 +17,5 @@ export const url={
   login: (contact, otp) => `${HOME}/login?contact=${contact}&otp=${otp}`,
   register: (contact, otp) => `${HOME}/register?contact=${contact}&otp=${otp}`,
   getUserInfoByPhone:(phone)=>`${HOME}/customer/${phone}`,
+  addToCart:()=>`${HOME}/cart`,
 }

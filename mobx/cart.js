@@ -1,4 +1,7 @@
-import { configure, observable, action } from 'mobx-miniprogram'
+import { configure, observable, action } from 'mobx-miniprogram';
+import { get,post } from "../utils/request.js";
+import { url } from "../utils/url.js";
+import { app as appActions} from "./app.js";
 
 // 不允许在动作外部修改状态
 configure({ enforceActions: 'observed' });
@@ -18,10 +21,25 @@ export const cart = observable({
   },
 
   // actions
-  update: action(function () {
-    const sum = this.sum
-    this.numA = this.numB
-    this.numB = sum
+  setCartProducts:action(function(data){
+    this.cartProducts=data;
+  }),
+  addToCart: action(function (params) {
+    appActions.startUpdateRequest();
+    const thiz=this;
+    return new Promise((resolve,reject)=>{
+      post(url.addToCart(),params,false)
+        .then(res=>{
+          appActions.finishUpdateRequest();
+          thiz.setCartProducts(res);
+          resolve();
+        })
+        .catch(err=>{
+          console.log(err);
+          appActions.finishUpdateRequest();
+          reject(err);
+        })
+    })
   })
 
 })

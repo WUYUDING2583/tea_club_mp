@@ -1,0 +1,18 @@
+<!--components/cu-stepper/index.wxml-->
+<view class="bg-white flex align-center" style="width:20vw;">
+  <view class="flex-sub">
+    <button class="cu-btn" style="width:100%" bindtap="minus">
+      <text class="cuIcon-move"></text>
+    </button>
+  </view>
+  <view class="flex-sub text-center">
+    <button class="cu-btn bg-white" style="width:100%">
+      {{number}}
+    </button>
+  </view>
+  <view class="flex-sub">
+    <button class="cu-btn" style="width:100%" bindtap="add">
+      <text class="cuIcon-add"></text>
+    </button>
+  </view>
+</view>
