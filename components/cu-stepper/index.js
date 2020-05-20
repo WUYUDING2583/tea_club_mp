@@ -1,9 +1,15 @@
 // components/cu-stepper/index.js
+import {showToast} from "../../utils/request.js";
+
 Component({
   /**
    * 组件的属性列表
    */
   properties: {
+    number:{
+      type:Number,
+      value:0
+    },
     max:{
       type:Number,
       value:Infinity
@@ -22,7 +28,7 @@ Component({
    * 组件的初始数据
    */
   data: {
-    number:0
+    
   },
 
   /**
@@ -39,6 +45,8 @@ Component({
         var changeDetail = { number: number + step } // detail对象，提供给事件监听函数
         var changeOption = {} // 触发事件的选项
         this.triggerEvent('change', changeDetail, changeOption)
+      }else{
+        showToast("不能再多咯");
       }
       
     },
@@ -51,6 +59,8 @@ Component({
         var changeDetail = { number: number - step } // detail对象，提供给事件监听函数
         var changeOption = {} // 触发事件的选项
         this.triggerEvent('change', changeDetail, changeOption)
+      } else {
+        showToast("不能再少咯");
       }
     }
   }

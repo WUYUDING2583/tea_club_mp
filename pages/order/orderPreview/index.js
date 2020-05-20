@@ -2,6 +2,7 @@
 import { createStoreBindings } from 'mobx-miniprogram-bindings';
 import { product } from "../../../mobx/product.js";
 import { user } from "../../../mobx/user.js";
+import { shop } from "../../../mobx/shop.js";
 
 Page({
 
@@ -9,32 +10,52 @@ Page({
    * 页面的初始数据
    */
   data: {
-    
+    ps:"",
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.setData({
-      productId: options.productId,
-      number:options.number,
-      deliveryMode:options.deliveryMode,
-      shopId:options.shopId
-    }); 
     // this.setData({
-    //   productId: 1,
-    //   number: 1
-    // });
+    //   productId: options.productId,
+    //   number:options.number,
+    //   deliveryMode:options.deliveryMode,
+    //   shopId:options.shopId
+    // }); 
+    this.setData({
+      productId: 1,
+      number: 1,
+      deliveryMode: 'selfPcik',
+      shopId: 26
+    });
     this.storeBindings = createStoreBindings(this, {
       store: product,
-      fields: ['byProductPhotos'],
+      fields: ['byProductPhotos','byProducts'],
       actions: ['fetchProduct'],
     });
     this.storeBindings = createStoreBindings(this, {
       store: user,
       fields: ['userInfo'],
     });
+    this.storeBindings = createStoreBindings(this, {
+      store: shop,
+      fields: ['byShops'],
+    });
+  },
+  psInput:function(e){
+    this.setData({
+      ps: e.detail.value
+    })
+  },
+
+  //数量改变事件
+  numberChange:function(e){
+    const { detail } = e;
+    const { number } = detail;
+    this.setData({
+      number
+    })
   },
 
   /**

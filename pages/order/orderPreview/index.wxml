@@ -16,10 +16,10 @@
             <text class="sm">{{userInfo.contact}}</text>
           </view>
           <view class="text-gray text-sm flex justify-between">
-            {{userInfo.address}}
+            {{deliveryMode=='selfPick'?'门店自提 '+byShops[shopId].name:userInfo.address}}
           </view>
         </view>
-        <view class="text-gray text-sm justify-right">
+        <view class="text-gray text-sm justify-right" wx:if="{{deliveryMode=='delivery'}}">
           <text class="cuIcon-right margin-lr-xs lg"></text>
         </view>
       </view>
@@ -34,8 +34,8 @@
         <view class="content flex-sub">
           <view class="text-grey">{{byProducts[productId].name}}</view>
           <view class="text-gray text-sm flex justify-between">
-            <text class="text-red text-xl" wx:if="{{byProducts[productId].price.ingot>0}}">{{byProducts[productId].price.ingot}}元宝 </text>
-            <text class="text-red text-xl" wx:if="{{byProducts[productId].price.credit>0}}">{{byProducts[productId].price.credit}}积分</text>
+            <text class="text-grey" wx:if="{{byProducts[productId].price.ingot>0}}">{{byProducts[productId].price.ingot}}元宝 </text>
+            <text class="text-grey" wx:if="{{byProducts[productId].price.credit>0}}">{{byProducts[productId].price.credit}}积分</text>
             <view class="text-gray text-sm">
               <text>x {{number}}</text>
             </view>
@@ -43,13 +43,48 @@
         </view>
       </view>
     </view>
-    <view class="cu-list menu {{menuBorder?'sm-border':''}} {{menuCard?'card-menu margin-top':''}}">
-      <view class="cu-item {{menuArrow?'arrow':''}}">
+    <view class="cu-list menu sm-border">
+      <view class="cu-item">
         <view class="content">
-          <text class="cuIcon-circlefill text-grey"></text>
-          <text class="text-grey">图标 + 标题</text>
+          <text class="text-grey">购买数量</text>
+        </view>
+        <view class="action" style="width:30vw;">
+          <cu-stepper min="1" max="{{byProducts[productId].storage}}" number="{{number}}" bindchange="numberChange"></cu-stepper>
+        </view>
+      </view>
+      <view class="cu-item">
+        <view class="content">
+          <text class="text-grey">订单备注</text>
+        </view>
+        <view class="action" style="width:50vw;">
+          <input placeholder="可选，请与商家协商" bindinput="psInput"></input>
+        </view>
+      </view>
+      <view class="cu-item">
+        <view class="content"></view>
+        <view class="action">
+          共{{number}}件 小计：
+          <text class="text-red" wx:if="{{byProducts[productId].price.ingot>0}}">{{byProducts[productId].price.ingot*number}}元宝 </text>
+          <text class="text-red" wx:if="{{byProducts[productId].price.credit>0}}">{{byProducts[productId].price.credit*number}}积分</text>
         </view>
       </view>
     </view>
+  </view>
+</view>
+<view class="cu-list menu sm-border card-menu margin-top">
+  <view class="cu-item ">
+    <view class="content">
+      <text class="cuIcon-circlefill text-grey"></text>
+      <text class="text-grey">图标 + 标题</text>
+    </view>
+  </view>
+</view>
+<view class="cu-bar bg-white tabbar border shop padding" style="position:fixed;bottom:0px;width:100vw;">
+  <view class="action"></view>
+  <view class="action" style="width:70vw;">
+    <!-- <view> -->
+      共{{number}}件,合计:<text class="text-red text-lg margin-right">150</text>
+    <!-- </view> -->
+    <button class="cu-btn bg-blue round shadow-blur" style="width:40%;">提交订单</button>
   </view>
 </view>

@@ -132,7 +132,7 @@
             <text class="cuIcon-title text-orange "></text> 购买数量
           </view>
           <view class="action margin-right" style="width:50vw">
-            <cu-stepper min="0" max="{{byProducts[productId].storage}}" bindchange="changeNumber"></cu-stepper>
+            <cu-stepper min="0" max="{{byProducts[productId].storage}}" bindchange="changeNumber" number="{{number}}"></cu-stepper>
           </view>
         </view>
       </view>
