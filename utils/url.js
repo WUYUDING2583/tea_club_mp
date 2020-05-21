@@ -19,4 +19,5 @@ export const url={
   getUserInfoByPhone:(phone)=>`${HOME}/customer/${phone}`,
   addToCart:()=>`${HOME}/cart`,
   getShopNameList:()=>`${HOME}/shopName`,
+  saveAddress:()=>`${HOME}/address`,
 }

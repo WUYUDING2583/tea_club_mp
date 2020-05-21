@@ -113,6 +113,26 @@ export const user = observable({
       .catch(err=>{
         console.log(err);
       })
+  }),
+  //保存用户收货地址
+  saveAddress: action(function (params) {
+    appActions.startRetrieveRequest();
+    post(url.saveAddress(),params,false)
+      .then(res => {
+        appActions.finishRetrieveRequest();
+        this.addAddress(res);
+        wx.navigateBack({
+          delta: 1,
+        })
+      })
+      .catch(err=>{
+        console.log(err);
+        appActions.finishRetrieveRequest();
+      })
+  }),
+  addAddress:action(function(addresses){
+    var userInfo=this.userInfo;
+    this.userInfo={...userInfo,addresses};
   })
 
 })
