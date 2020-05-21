@@ -46,12 +46,13 @@
     </view>
   </view>
   <view class="cu-list menu">
-    <view class="cu-item arrow" wx:for="{{byProducts[productId].activityRules}}" wx:key="unique" bindtap="showModal" data-target="activityCustomer" data-id="{{index}}">
+    <view class="cu-item arrow" wx:for="{{byProducts[productId].activityRules}}" wx:key="unique" bindtap="showModal" data-target="activityCustomer" data-id="{{byProducts[productId].activityRules[index]}}">
       <view class="content">
-        <view wx:if="{{item.activityRuleType.uid==3}}">
-          <text class="cuIcon-recharge text-red margin-right"></text>{{item.activityRule1}}%折扣</view>
-        <view wx:if="{{item.activityRuleType.uid==2}}">
-          <text class="cuIcon-redpacket text-red margin-right"></text>消费满{{item.activityRule1}}元宝{{item.activityRule2.operation=="plus"?"赠":"减"}}{{item.activityRule2.number}}{{item.activityRule2.currency=="ingot"?"元宝":"积分"}}</view>
+        <!-- <text>{{byActivityRules[item].activityRuleType.name}}</text> -->
+        <view wx:if="{{byActivityRules[item].activityRuleType.uid==3}}">
+          <text class="cuIcon-recharge text-red margin-right"></text>{{byActivityRules[item].activityRule1}}%折扣</view>
+        <view wx:if="{{byActivityRules[item].activityRuleType.uid==2}}">
+          <text class="cuIcon-redpacket text-red margin-right"></text>消费满{{byActivityRules[item].activityRule1}}元宝{{byActivityRules[item].activityRule2.operation=="plus"?"赠":"减"}}{{byActivityRules[item].activityRule2.number}}{{byActivityRules[item].activityRule2.currency=="ingot"?"元宝":"积分"}}</view>
       </view>
       <view class="action">
         <text class="text-grey text-sm">适用客户</text>
@@ -83,7 +84,7 @@
 </view>
 <cu-bottom-modal show="{{showModal}}" bindhideModal="hideModal">
   <view wx:if="{{modalName=='activityCustomer'}}" class="margin-xl">
-    <text wx:for="{{byProducts[productId].activityRules[ruleIndex].activityApplyForCustomerTypes}}" wx:key="unique">{{item.name}}</text>
+    <text wx:for="{{byActivityRules[ruleIndex].activityApplyForCustomerTypes}}" wx:key="unique">{{item.name}}</text>
   </view>
   <view wx:if="{{modalName=='select'}}">
     <view class="cu-card dynamic no-card">

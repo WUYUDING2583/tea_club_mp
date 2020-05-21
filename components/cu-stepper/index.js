@@ -21,6 +21,10 @@ Component({
     step:{
       type:Number,
       value:1
+    },
+    option:{
+      type:[Number,String],
+      value:0
     }
   },
 
@@ -36,13 +40,13 @@ Component({
    */
   methods: {
     add:function(){
-      const {number,max,step}=this.data;
+      const {number,max,step,option}=this.data;
       console.log("max",max)
       if(number<max){
         this.setData({
           number: number + step
         })
-        var changeDetail = { number: number + step } // detail对象，提供给事件监听函数
+        var changeDetail = { number: number + step,option } // detail对象，提供给事件监听函数
         var changeOption = {} // 触发事件的选项
         this.triggerEvent('change', changeDetail, changeOption)
       }else{
@@ -51,12 +55,12 @@ Component({
       
     },
     minus:function(){
-      const { number,min,step } = this.data;
+      const { number,min,step,option } = this.data;
       if(number>min){
         this.setData({
           number: number - step
         })
-        var changeDetail = { number: number - step } // detail对象，提供给事件监听函数
+        var changeDetail = { number: number - step,option } // detail对象，提供给事件监听函数
         var changeOption = {} // 触发事件的选项
         this.triggerEvent('change', changeDetail, changeOption)
       } else {

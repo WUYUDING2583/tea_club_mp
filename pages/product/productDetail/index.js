@@ -33,7 +33,7 @@ Page({
     });
     this.storeBindings = createStoreBindings(this, {
       store: product,
-      fields: ['byProductPhotos', 'byProducts'],
+      fields: ['byProductPhotos', 'byProducts','byActivityRules'],
       actions: ['fetchProduct'],
     });
     this.storeBindings = createStoreBindings(this, {
@@ -79,7 +79,6 @@ Page({
   },
 
   showModal:function(e){
-    console.log(e);
     this.setData({
       showModal:true,
       modalName: e.currentTarget.dataset.target,
@@ -136,8 +135,10 @@ Page({
         }
       }
       const shopId=this.data.shops[shopIndex]||"";
+      let productIdArray=[productId];
+      let numberArray=[number];
       wx.navigateTo({
-        url: `../../order/orderPreview/index?productId=${productId}&number=${number}&deliveryMode=${deliveryMode}&shopId=${shopId}`,
+        url: `../../order/orderPreview/index?productId=${productIdArray}&number=${numberArray}&deliveryMode=${deliveryMode}&shopId=${shopId}`,
         success: function (res) { 
           thiz.setData({
             showModal: false,
