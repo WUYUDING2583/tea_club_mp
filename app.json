@@ -1,5 +1,7 @@
 {
   "pages": [
+    "pages/address/editAddress/index",
+    "pages/address/addressList/index",
     "pages/index/index",
     "pages/order/orderPreview/index",
     "pages/test/index",

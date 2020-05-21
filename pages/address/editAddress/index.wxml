@@ -1,0 +1,34 @@
+<!--pages/address/editAddress/index.wxml-->
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">添加收货地址</view>
+</cu-custom>
+<form>
+  <view class="cu-form-group">
+    <view class="title">收货人</view>
+    <input></input>
+  </view>
+	<view class="cu-form-group">
+		<view class="title">手机号码</view>
+		<input></input>
+	</view>
+  <view class="cu-form-group">
+    <view class="title">所在地区</view>
+    <picker mode="region" bindchange="RegionChange" value="{{region}}" custom-item="{{customItem}}">
+      <view class="picker">
+        {{region[0]}}，{{region[1]}}，{{region[2]}}
+      </view>
+    </picker>
+  </view>
+  <view class="cu-form-group align-start">
+		<view class="title">详细地址</view>
+		<textarea maxlength="-1" disabled="{{modalName!=null}}" bindinput="textareaBInput" placeholder="如道路、门牌号、小区、楼栋号、单元室等"></textarea>
+	</view>
+	<view class="cu-form-group">
+		<view class="title">设为默认地址</view>
+		<switch class="blue radius sm"></switch>
+	</view>
+</form>
+<view class="flex padding justify-center">
+  <button class="cu-btn bg-green lg" style="width:80vw"><text class="cuIcon-loading2 iconfont-spin" wx:if="{{retrieveRequestQuantity>0}}"></text>保存</button>
+</view>
