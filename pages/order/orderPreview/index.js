@@ -42,7 +42,7 @@ Page({
     });
     this.storeBindings = createStoreBindings(this, {
       store: user,
-      fields: ['userInfo'],
+      fields: ['userInfo','byAddresses'],
     });
     this.storeBindings = createStoreBindings(this, {
       store: shop,
@@ -56,7 +56,16 @@ Page({
       ps: e.detail.value
     })
   },
-
+  //选择地址
+  selectAddress:function(){
+    const {deliveryMode}=this.data;
+    if(deliveryMode=='selfPick'){
+      return;
+    }
+    wx.navigateTo({
+      url: '../../address/addressList/index?select=true',
+    })
+  },
   //数量改变事件
   numberChange:function(e){
     const { detail } = e;
@@ -180,6 +189,10 @@ Page({
    */
   onReady: function () {
     this.calculateAmount();
+    const {userInfo}=this.data;
+    this.setData({
+      addressId: userInfo.address
+    })
   },
 
   /**

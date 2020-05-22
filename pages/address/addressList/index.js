@@ -8,20 +8,38 @@ Page({
    * 页面的初始数据
    */
   data: {
-    
+    select:false
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    const select=options.select=="true"?true:false;
+    this.setData({
+      select
+    })
     this.storeBindings = createStoreBindings(this, {
       store: user,
-      fields: ['userInfo', 'phone'],
+      fields: ['userInfo', 'phone','byAddresses'],
       actions: ['setUserInfo', 'setPhoneNumber', 'getUserInfoByPhone'],
     }); 
   },
-  
+  //选择地址
+  selectAddress:function(e){
+    const {select}=this.data;
+    console.log(typeof select)
+    if(select){
+      let pages=getCurrentPages();
+      let prePage=pages[pages.length-2];
+      prePage.setData({
+        addressId: e.currentTarget.dataset.target
+      })
+      wx.navigateBack({
+        delta: 1,
+      })
+    }
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

@@ -8,17 +8,17 @@
     <view class="text-center padding text-grey">添加收货地址</view>
   </navigator>
   <view class="cu-list menu sm-border">
-    <view class="cu-item padding" wx:for="{{userInfo.addresses}}">
+    <view class="cu-item padding" wx:for="{{userInfo.addresses}}" bindtap="selectAddress" data-target="{{item}}">
       <view class="content">
-        <view class="text-lg">{{item.name}}
-          <text class="text-grey margin-left text-sm">{{item.phone}}</text>
+        <view class="text-lg">{{byAddresses[item].name}}
+          <text class="text-grey margin-left text-sm">{{byAddresses[item].phone}}</text>
         </view>
         <view style="word-wrap:break-word; word-break:break-all;">
-          <view class="cu-tag line-orange radius margin-right" wx:if="{{item.isDefaultAddress}}">默认</view>
-          <text class="margin-right text-gray">{{item.province}}</text>
-          <text class="margin-right text-gray">{{item.city}}</text>
-          <text class="margin-right text-gray">{{item.district}}</text>
-          <text class="margin-right text-gray">{{item.detail}}</text>
+          <view class="cu-tag line-orange radius margin-right" wx:if="{{byAddresses[item].isDefaultAddress}}">默认</view>
+          <text class="margin-right text-gray">{{byAddresses[item].province}}</text>
+          <text class="margin-right text-gray">{{byAddresses[item].city}}</text>
+          <text class="margin-right text-gray">{{byAddresses[item].district}}</text>
+          <text class="margin-right text-gray">{{byAddresses[item].detail}}</text>
         </view>
       </view>
       <view class="action padding text-center" style="width:15vw;">

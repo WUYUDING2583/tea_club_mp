@@ -7,21 +7,21 @@
 <view class="cu-card case">
   <view class="cu-item shadow">
     <view class="cu-list menu-avatar">
-      <view class="cu-item">
+      <view class="cu-item" bindtap="selectAddress">
         <view class="cu-avatar round lg">
           <text class="cuIcon-locationfill text-blue"></text>
         </view>
         <view class="content flex-sub">
           <view class="text-grey">
-            <text>{{userInfo.name}}</text>
-            <text class="sm">{{userInfo.contact}}</text>
+            <text>{{byAddresses[addressId].name}}</text>
+            <text class="sm">{{byAddresses[addressId].phone}}</text>
           </view>
-          <view class="text-gray text-sm flex justify-between">
-            {{deliveryMode=='selfPick'?'门店自提 '+byShops[shopId].name:userInfo.address}}
+          <view class="text-gray text-sm flex justify-between"  style="word-wrap:break-word; word-break:break-all;">
+            {{deliveryMode=='selfPick'?'门店自提 '+byShops[shopId].name:byAddresses[addressId].province+byAddresses[addressId].city+byAddresses[addressId].district+byAddresses[addressId].detail}}
             <text class="cuIcon-info margin-lr-xs" wx:if="{{deliveryMode=='selfPick'}}">店家将在准备好货物后联系您</text>
           </view>
         </view>
-        <view class="text-gray text-sm justify-right">
+        <view class="text-gray text-sm justify-right" wx:if="{{deliveryMode!='selfPick'}}">
           <text class="cuIcon-right margin-lr-xs lg"></text>
         </view>
       </view>

@@ -140,7 +140,7 @@
       </button>
     </view>
     <view class="cu-item arrow">
-      <navigator hover-class="none" url="../address/addressList/index">
+      <navigator hover-class="none" url="../address/addressList/index?select=false" >
         <button class="cu-btn content">
           <text class="cuIcon-addressbook text-orange"></text>
           <text class="text-grey">我的地址</text>

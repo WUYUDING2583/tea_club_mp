@@ -19,10 +19,27 @@ export const user = observable({
   // 数据字段
   userInfo: new Object(),
   phone:"",
+  byAddresses:new Object(),
 
   // actions
   setUserInfo: action(function(userInfo) {
-   this.userInfo={...this.userInfo,...userInfo};
+    let byAddresses=new Object();
+    if(userInfo.addresses){
+      let addresses=new Array();
+      let defaultAddress;
+      userInfo.addresses.forEach(item=>{
+        addresses.push(item.uid);
+        if(!byAddresses[item.uid]){
+          byAddresses[item.uid]=item;
+        }
+        if (item.isDefaultAddress){
+          defaultAddress = item.uid;
+        }
+      })
+      userInfo={...userInfo,address:defaultAddress,addresses};
+    }
+    this.userInfo={...this.userInfo,...userInfo};
+    this.byAddresses = { ...this.byAddresses,...byAddresses};
   }),
   setPhoneNumber: action(function (phoneNumber){
     this.phone = phoneNumber;
