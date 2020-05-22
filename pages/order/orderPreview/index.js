@@ -3,6 +3,7 @@ import { createStoreBindings } from 'mobx-miniprogram-bindings';
 import { product } from "../../../mobx/product.js";
 import { user } from "../../../mobx/user.js";
 import { shop } from "../../../mobx/shop.js";
+import { order } from "../../../mobx/order.js";
 
 Page({
 
@@ -14,7 +15,8 @@ Page({
     showModal: false,
     ruleId:null,
     ingot:0,
-    credit:0
+    credit:0,
+    addressId:null
   },
 
   /**
@@ -47,6 +49,10 @@ Page({
     this.storeBindings = createStoreBindings(this, {
       store: shop,
       fields: ['byShops'],
+    });
+    this.storeBindings = createStoreBindings(this, {
+      store: order,
+      actions: ['placeOrder'],
     });
 
     
@@ -177,11 +183,40 @@ Page({
         }
       }
     }
-    console.log("ingot",ingot,'credit',credit);
     this.setData( {
       ingot,
-      credit
+      credit,
+      activityBitmap
     })
+  },
+
+  _placeOrder:function(){
+    const { productId, number, userInfo, byProducts,addressId, byActivityRules, activityBitmap,ps } = this.data;
+    let products = new Array();
+    productId.forEach((uid,index)=> {
+      let activityRuleId = null;
+      byProducts[uid].activityRules.forEach(ruleId => {
+        const activityId = byActivityRules[ruleId].activity.uid;
+        if (activityBitmap[activityId] && activityBitmap[activityId][ruleId]) {
+          if (activityBitmap[activityId][ruleId].indexOf(uid) != -1) {
+            activityRuleId = ruleId;
+          }
+        }
+      })
+      let orderProduct = { product: { uid }, number: number[index]};
+      if (activityRuleId != null) {
+        orderProduct = { ...orderProduct, activityRule: { uid: activityRuleId } };
+      }
+      products.push(orderProduct);
+    })
+    const order = {
+      customer: { uid: userInfo.uid },
+      products,
+      address: { uid: addressId},
+      buyerPs:ps
+    }
+    console.log("order", order);
+    this.placeOrder(order);
   },
 
   /**

@@ -137,7 +137,7 @@ export const user = observable({
     post(url.saveAddress(),params,false)
       .then(res => {
         appActions.finishRetrieveRequest();
-        this.addAddress(res);
+        this.setAddress(res);
         wx.navigateBack({
           delta: 1,
         })
@@ -147,9 +147,22 @@ export const user = observable({
         appActions.finishRetrieveRequest();
       })
   }),
-  addAddress:action(function(addresses){
+  setAddress:action(function(addresses){
     var userInfo=this.userInfo;
-    this.userInfo={...userInfo,addresses};
+    let addressesArray = new Array();
+    let byAddresses=new Object();
+    let defaultAddress;
+    addresses.forEach(item => {
+      addressesArray.push(item.uid);
+      if (!byAddresses[item.uid]) {
+        byAddresses[item.uid] = item;
+      }
+      if (item.isDefaultAddress) {
+        defaultAddress = item.uid;
+      }
+    })
+    this.userInfo = { ...userInfo, addresses:addressesArray ,address:defaultAddress};
+    this.byAddresses=byAddresses;
   })
 
 })

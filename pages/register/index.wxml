@@ -24,7 +24,15 @@
 	</view>
   <view class="cu-form-group">
 		<view class="title">身份证号</view>
-		<input placeholder="请输入第二代身份证号" bindinput="idInput"></input>
+		<input placeholder="请输入第二代身份证号" bindinput="idInput" type="idcard"></input>
+	</view>
+  <view class="cu-form-group">
+		<view class="title">支付密码</view>
+		<input placeholder="请输入支付密码" bindinput="passwordInput" type="password"></input>
+	</view>
+  <view class="cu-form-group">
+		<view class="title">再次输入支付密码</view>
+		<input placeholder="请输入再次输入支付密码" bindinput="passwordAgainInput" type="password"></input>
 	</view>
 </form>
 <view class="flex padding justify-center">

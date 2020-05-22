@@ -17,7 +17,7 @@
             <text class="sm">{{byAddresses[addressId].phone}}</text>
           </view>
           <view class="text-gray text-sm flex justify-between"  style="word-wrap:break-word; word-break:break-all;">
-            {{deliveryMode=='selfPick'?'门店自提 '+byShops[shopId].name:byAddresses[addressId].province+byAddresses[addressId].city+byAddresses[addressId].district+byAddresses[addressId].detail}}
+            {{deliveryMode=='selfPick'?'门店自提 '+byShops[shopId].name:addressId==null?'您暂无收货地址，去添加':byAddresses[addressId].province+byAddresses[addressId].city+byAddresses[addressId].district+byAddresses[addressId].detail}}
             <text class="cuIcon-info margin-lr-xs" wx:if="{{deliveryMode=='selfPick'}}">店家将在准备好货物后联系您</text>
           </view>
         </view>
@@ -91,7 +91,7 @@
     <text class="text-red text-lg margin-right " wx:if="{{ingot>0}}">{{ingot}}元宝</text>
     <text class="text-red text-lg margin-right " wx:if="{{credit>0}}">{{credit}}积分</text>
     <text class="text-red text-lg margin-right " wx:if="{{credit==0&&ingot==0}}">0</text>
-    <button class="cu-btn bg-blue round shadow-blur " style="width:35%; ">提交订单</button>
+    <button class="cu-btn bg-blue round shadow-blur " style="width:35%; " bindtap="_placeOrder">提交订单</button>
   </view>
 </view>
 <view class="cu-modal bottom-modal {{showModal?'show':''}}">

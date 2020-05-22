@@ -14,6 +14,8 @@ Page({
     verifyCode:"",
     name:"",
     id:"",
+    password:"",
+    passwordAgain:"",
     countDown:false,
     time:5
   },
@@ -35,8 +37,8 @@ Page({
   },
   //注册
   _register:function(){
-    const {phone,verifyCode,name,id}=this.data;
-    if(phone.length==0||verifyCode.length==0||name.length==0||id.length==0){
+    const {phone,verifyCode,name,id,password,passwordAgain}=this.data;
+    if(phone.length==0||verifyCode.length==0||name.length==0||id.length==0||password.length==0||passwordAgain.length==0){
       showToast("信息不能为空！");
       return;
     }
@@ -50,8 +52,12 @@ Page({
       showToast("身份证格式错误");
       return;
     }
+    if(password!=passwordAgain){
+      showToast("两次密码输入不一致，请重新输入");
+      return;
+    }
     const gender=this.data.userInfo.gender;
-    const params = { contact: phone, name, identityId:id,gender};
+    const params = { contact: phone, name, identityId:id,gender,password};
     this.register(verifyCode,params);
   },
 
@@ -90,7 +96,16 @@ Page({
     }
 
   },
-
+  passwordInput:function(e){
+    this.setData({
+      password: e.detail.value
+    })
+  },
+  passwordAgainInput: function (e) {
+    this.setData({
+      passwordAgain: e.detail.value
+    })
+  },
   phoneInput:function(e){
     this.setData({
       phone: e.detail.value

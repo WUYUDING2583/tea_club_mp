@@ -20,4 +20,5 @@ export const url={
   addToCart:()=>`${HOME}/cart`,
   getShopNameList:()=>`${HOME}/shopName`,
   saveAddress:()=>`${HOME}/address`,
+  placeOrder:()=>`${HOME}/order`,
 }
