@@ -28,7 +28,7 @@ Page({
     this.storeBindings = createStoreBindings(this, {
       store: order,
       fields: ['orders', 'byOrders'],
-      actions: ['fetchOrder','fetchLatestUnpayOrder']
+      actions: ['fetchOrder', 'fetchLatestUnpayOrder','cancelOrder']
     });
     this.storeBindings = createStoreBindings(this, {
       store: user,
@@ -42,7 +42,7 @@ Page({
       this.setData({
         orderId: options.orderId
       })
-      this.fetchOrder(198)
+      this.fetchOrder(options.orderId)
         .then(res=>{
           if(res.status.status=="unpay"){
             const { orderTime } = res;
@@ -64,6 +64,19 @@ Page({
           }
         })
     }
+  },
+  _cancelOrder:function(){
+    const {orderId}=this.data;
+    this.cancelOrder(orderId)
+      .then((res)=>{
+        showToast("订单取消成功");
+        setTimeout(function(){
+          let pages=getCurrentPages();
+          wx.navigateBack({
+            delta: pages.length,
+          })
+        },1500)
+      })
   },
   hideModal:function(){
     this.setData({
@@ -102,6 +115,12 @@ Page({
         }
       })
   },
+  showCancelModal:function(){
+    console.log("asf")
+    this.setData({
+      modalName: "cancelOrder"
+    })
+  },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -116,7 +135,7 @@ Page({
   onShow: function () {
     // this.fetchLatestUnpayOrder(this.data.userInfo.uid);
     const thiz=this;
-    this.fetchLatestUnpayOrder(17)
+    this.fetchLatestUnpayOrder(this.data.userInfo.uid)
       .then(res=>{
         this.setData({
           orderId:res.uid

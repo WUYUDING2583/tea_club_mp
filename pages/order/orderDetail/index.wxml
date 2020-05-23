@@ -58,7 +58,7 @@
             <view class="text-grey"> 订单备注</view>
           </view>
           <view class="action">
-              {{byOrders[orderId].buyerPs.length==0?'无':byOrders[orderId].buyerPs.buyerPs}}
+            {{byOrders[orderId].buyerPs.length==0?'无':byOrders[orderId].buyerPs.buyerPs}}
           </view>
         </view>
       </view>
@@ -66,7 +66,9 @@
   </view>
 </scroll-view>
 <view class="cu-bar bg-white tabbar border shop padding " style="position:fixed;bottom:0px;width:100vw; ">
-  <view class="action "></view>
+  <view class="action " style="width:20vw;" bindtap="showCancelModal">
+    <button class="cu-btn round line-green" style="width:20vw;margin-left:5px;">取消</button>
+  </view>
   <view class="action " style="width:80vw; ">
     合计:
     <text class="text-red text-lg margin-right " wx:if="{{byOrders[orderId].amount.ingot>0}}">{{byOrders[orderId].amount.ingot}}元宝</text>
@@ -92,7 +94,27 @@
       <view class="action ">
         <button class="cu-btn line-green text-green" style="width:30vw;" bindtap="hideModal">取消</button>
         <view style="width:10vw;"></view>
-        <button class="cu-btn bg-green " style="width:30vw;" bindtap="_charge" >确定</button>
+        <button class="cu-btn bg-green " style="width:30vw;" bindtap="_charge">确定</button>
+      </view>
+    </view>
+  </view>
+</view>
+<view class="cu-modal {{modalName=='cancelOrder'?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white justify-end">
+      <view class="content">取消订单</view>
+      <view class="action" bindtap="hideModal">
+        <text class="cuIcon-close text-red"></text>
+      </view>
+    </view>
+    <view class="padding-xl">
+      <view>确定要取消订单？</view>
+    </view>
+    <view class="cu-bar bg-white flex justify-around ">
+      <view class="action ">
+        <button class="cu-btn line-green text-green" style="width:30vw;" bindtap="hideModal">取消</button>
+        <view style="width:10vw;"></view>
+        <button class="cu-btn bg-green " style="width:30vw;" bindtap="_cancelOrder">确定</button>
       </view>
     </view>
   </view>

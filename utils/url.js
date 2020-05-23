@@ -25,4 +25,5 @@ export const url={
   charge: (value, userId) => `${HOME}/simulateCharge/${userId}/${value}`,
   pay:(userId,orderId)=>`${HOME}/pay/${userId}/${orderId}`,
   fetchLatestUnpayOrder:(userId)=>`${HOME}/latestUnpayOrder/${userId}`,
+  cancelOrder:(orderId)=>`${HOME}/order/cancel/${orderId}`,
 }

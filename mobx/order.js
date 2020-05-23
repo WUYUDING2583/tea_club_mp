@@ -17,6 +17,17 @@ export const order = observable({
   },
 
   // actions
+  cancelOrder:action(function(orderId){
+    return new Promise((resolve,reject)=>{
+      post(url.cancelOrder(orderId),{})
+        .then(res=>{
+          resolve(res)
+        })
+        .catch(err=>{
+          reject(err)
+        })
+    })
+  }),
   fetchLatestUnpayOrder:action(function(userId){
     return new Promise((resolve,reject)=>{
       get(url.fetchLatestUnpayOrder(userId))
