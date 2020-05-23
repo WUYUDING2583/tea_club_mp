@@ -22,6 +22,29 @@ export const user = observable({
   byAddresses:new Object(),
 
   // actions
+  pay:action(function(userId,orderId){
+    return new Promise((resolve,reject)=>{
+      post(url.pay(userId,orderId),{})
+        .then(res=>{
+
+        })
+        .catch(err=>{
+          console.log(err);
+        })
+    })
+  }),
+  charge:action(function(value,userId){
+    return new Promise((resolve,reject)=>{
+      post(url.charge(value,userId),{})
+        .then(res=>{
+          resolve(res);
+        })
+        .catch(err=>{
+          console.log(err);
+          reject(err);
+        })
+    })
+  }),
   setUserInfo: action(function(userInfo) {
     let byAddresses=new Object();
     if(userInfo.addresses){

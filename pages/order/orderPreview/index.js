@@ -4,6 +4,7 @@ import { product } from "../../../mobx/product.js";
 import { user } from "../../../mobx/user.js";
 import { shop } from "../../../mobx/shop.js";
 import { order } from "../../../mobx/order.js";
+import { showToast } from "../../../utils/request.js";
 
 Page({
 
@@ -20,6 +21,7 @@ Page({
     errMsg:"",
     modalName:"",
     errModal:false,
+    charge:0,
     checkbox: [{
       value: 50,
       name: '50元',
@@ -56,12 +58,6 @@ Page({
       deliveryMode:options.deliveryMode,
       shopId:options.shopId
     }); 
-    // this.setData({
-    //   productId: 1,
-    //   number: 1,
-    //   deliveryMode: 'selfPick',
-    //   shopId: 26
-    // });
     this.storeBindings = createStoreBindings(this, {
       store: product,
       fields: ['byProductPhotos','byProducts','byActivityRules'],
@@ -69,7 +65,8 @@ Page({
     });
     this.storeBindings = createStoreBindings(this, {
       store: user,
-      fields: ['userInfo','byAddresses'],
+      fields: ['userInfo', 'byAddresses'],
+      actions: ['charge','pay']
     });
     this.storeBindings = createStoreBindings(this, {
       store: shop,
@@ -81,6 +78,23 @@ Page({
     });
 
     
+  },
+  _charge:function(){
+    const {charge,userInfo}=this.data;
+    const thiz=this;
+    this.charge(charge,userInfo.uid)
+      .then(res=>{
+        showToast("充值成功");
+        //跳转到订单详情
+        setTimeout(function(){
+          wx.redirectTo({
+            url: `../orderDetail/index?orderId=${res.uid}`,
+          })
+        },2000)
+      })
+      .catch(err=>{
+
+      })
   },
   chargeInput: function (e) {
     let items = this.data.checkbox;
@@ -245,7 +259,7 @@ Page({
   },
 
   _placeOrder:function(){
-    const { productId, number, userInfo, byProducts,addressId, byActivityRules, activityBitmap,ps } = this.data;
+    const { productId, number, userInfo, byProducts, addressId, byActivityRules, activityBitmap, ps, deliveryMode ,shopId} = this.data;
     let products = new Array();
     productId.forEach((uid,index)=> {
       let activityRuleId = null;
@@ -263,11 +277,15 @@ Page({
       }
       products.push(orderProduct);
     })
-    const order = {
+    let order = {
       customer: { uid: userInfo.uid },
       products,
-      address: { uid: addressId},
-      buyerPs:ps
+      buyerPs:ps,
+    }
+    if (deliveryMode=="selfPick"){
+      order = { ...order, deliverMode: deliveryMode, placeOrderWay: { uid: shopId }}
+    }else{
+      order = { ...order, deliverMode: deliveryMode, address: { uid: addressId }};
     }
     console.log("order", order);
     this.placeOrder(order)
@@ -288,21 +306,6 @@ Page({
   showModal:function(e){
     this.setData({
      modalName:e.currentTarget.dataset.target
-    })
-  },
-  charge:function(){
-    wx.requestPayment({
-      timeStamp: '',
-      nonceStr: '',
-      package: '',
-      signType: 'MD5',
-      paySign: '',
-      success(res) { 
-        console.log(res)
-      },
-      fail(res) {
-        console.log(res)
-       }
     })
   },
 

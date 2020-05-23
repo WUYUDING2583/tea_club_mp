@@ -144,7 +144,7 @@
   <view class="cu-dialog" catchtap>
     <view class="cu-bar bg-white">
       <view class="action text-blue" bindtap="hideModal">取消</view>
-      <view class="action text-green" bindtap="hideModal">确定</view>
+      <view class="action text-green" bindtap="_charge">确定</view>
     </view>
     <view class="grid col-3 padding-sm">
       <view wx:for="{{checkbox}}" class="padding-xs" wx:key="{{index}}">

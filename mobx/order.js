@@ -24,17 +24,19 @@ export const order = observable({
         .then(res=>{
           showToast("下单成功");
           thiz.setOrder(res);
-          if(res.status.status=="unpay"){
+          if (res.status.status == "unpay") {
             //跳转到订单详情
             wx.redirectTo({
               url: `../orderDetail/index?orderId=${res.uid}`,
             })
-          }else{
+          } else {
             //返回首页
-            let pages=getCurrentPages();
-            wx.navigateBack({
-              delta: pages.length,
-            })
+            let pages = getCurrentPages();
+            setTimeout(function () {
+              wx.navigateBack({
+                delta: pages.length,
+              })
+            }, 2500)
           }
         })
         .catch(err=>{
