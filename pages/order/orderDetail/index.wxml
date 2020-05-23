@@ -3,3 +3,47 @@
   <view slot="backText">返回</view>
   <view slot="content">订单详情</view>
 </cu-custom>
+<view class="cu-bar bg-white solid-bottom" wx:if="{{true}}">
+  <view class='action'>
+    <text class='cuIcon-titles text-orange '></text> 等待买家付款
+  </view>
+  <view class='action'>
+    <text class="text-blue">15:12后自动关闭</text>
+  </view>
+</view>
+<view class="cu-card case" wx:for="{{byOrders[orderId].products}}" wx:for="unique">
+  <view class="cu-item shadow">
+    <view class="cu-list menu-avatar solid-bottom">
+      <view class="cu-item padding">
+        <view class="cu-avatar lg" style="background-image:url({{byProducts[item].photo}});"></view>
+        <view class="content flex-sub">
+          <view class="text-grey">{{item.product.name}}</view>
+          <view class="text-gray text-sm flex justify-between">
+            <text class="text-grey" wx:if="{{item.product.price.ingot>0}}">{{item.product.price.ingot}}元宝 </text>
+            <text class="text-grey" wx:if="{{item.product.price.credit>0}}">{{item.product.price.credit}}积分</text>
+            <view class="text-gray text-sm">
+              <text>x {{item.number}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="cu-list menu sm-border">
+      <view class="cu-item">
+        <view class="content">
+          <text class="text-grey">订单备注</text>
+        </view>
+        <view class="action" style="width:50vw;">
+          <text class="text-grey">{{item.ps}}</text>
+        </view>
+      </view>
+      <view class="cu-item">
+        <view class="content"></view>
+        <view class="action">
+          <text class="text-red" wx:if="{{item.amount.ingot>0}}">{{item.amount.ingot}}元宝 </text>
+          <text class="text-red" wx:if="{{item.amount.credit>0}}">{{item.amount.credit}}积分</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

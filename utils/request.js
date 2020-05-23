@@ -53,7 +53,9 @@ export const post = (url, params,needLoading = true) => {
         }
         console.log(`request ${url} res`, res.data);
         if (res.data.data == null && res.data.code != 200){
-          showToast(res.data.error);
+          if (res.data.code != 500700){
+            showToast(res.data.error);
+          }
           reject(res.data);
           return;
         }

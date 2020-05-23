@@ -16,7 +16,32 @@ Page({
     ruleId:null,
     ingot:0,
     credit:0,
-    addressId:null
+    addressId:null,
+    errMsg:"",
+    modalName:"",
+    errModal:false,
+    checkbox: [{
+      value: 50,
+      name: '50元',
+      checked: false,
+    }, {
+      value: 100,
+      name: '100元',
+      checked: false,
+    }, {
+      value: 200,
+      name: '200元',
+      checked: false,
+    }, {
+      value: 500,
+      name: '500元',
+      checked: false,
+    }, {
+      name: "自定义",
+      checked: false,
+      value: -1,
+
+    }],
   },
 
   /**
@@ -56,6 +81,35 @@ Page({
     });
 
     
+  },
+  chargeInput: function (e) {
+    let items = this.data.checkbox;
+    for (let i = 0, lenI = items.length; i < lenI; ++i) {
+      if (items[i].name == "自定义") {
+        items[i].value = e.detail.value;
+      }
+    }
+    this.setData({
+      charge: e.detail.value,
+      checkbox: items
+    })
+  },
+  ChooseCheckbox(e) {
+    let items = this.data.checkbox;
+    let values = e.currentTarget.dataset.value;
+    this.setData({
+      charge: values
+    })
+    for (let i = 0, lenI = items.length; i < lenI; ++i) {
+      if (items[i].value == values) {
+        items[i].checked = true;
+      } else {
+        items[i].checked = false;
+      }
+    }
+    this.setData({
+      checkbox: items
+    })
   },
   psInput:function(e){
     this.setData({
@@ -216,7 +270,40 @@ Page({
       buyerPs:ps
     }
     console.log("order", order);
-    this.placeOrder(order);
+    this.placeOrder(order)
+      .catch(err=>{
+        if(err.code==500700){
+          this.setData({
+            modalName:"errModal",
+            errMsg:err.error
+          })
+        }
+      })
+  },
+  hideModal:function(){
+    this.setData({
+      modalName:""
+    })
+  },
+  showModal:function(e){
+    this.setData({
+     modalName:e.currentTarget.dataset.target
+    })
+  },
+  charge:function(){
+    wx.requestPayment({
+      timeStamp: '',
+      nonceStr: '',
+      package: '',
+      signType: 'MD5',
+      paySign: '',
+      success(res) { 
+        console.log(res)
+      },
+      fail(res) {
+        console.log(res)
+       }
+    })
   },
 
   /**

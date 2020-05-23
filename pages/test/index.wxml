@@ -3,11 +3,20 @@
   <view slot="backText">返回</view>
   <view slot="content">注册</view>
 </cu-custom>
-<view class="cu-form-group margin-top">
-		<view class="title">普通选择</view>
-		<picker bindchange="PickerChange" value="{{index}}" range="{{picker}}">
-			<view class="picker">
-				{{index?picker[index]:'禁止换行，超出容器部分会以 ... 方式截断'}}
-			</view>
-		</picker>
-	</view>
+
+<view class="cu-modal bottom-modal show" bindtap="hideModal">
+  <view class="cu-dialog" catchtap>
+    <view class="cu-bar bg-white">
+      <view class="action text-blue" bindtap="hideModal">取消</view>
+      <view class="action text-green" bindtap="hideModal">确定</view>
+    </view>
+    <view class="grid col-3 padding-sm">
+      <view wx:for="{{checkbox}}" class="padding-xs" wx:key="{{index}}">
+        <button class="cu-btn blue lg block {{item.checked?'bg-blue':'line-blue'}}" bindtap="ChooseCheckbox" data-value="{{item.value}}" style="width:30vw;"> 
+        <input wx:if="{{item.name=='自定义'}}" placeholder="{{item.name}}" id="selfInputCharge" bindinput="chargeInput" type="number"></input>
+        <text wx:else>{{item.name}}</text>
+        </button>
+      </view>
+    </view>
+  </view>
+</view>

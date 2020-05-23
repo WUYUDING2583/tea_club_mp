@@ -21,4 +21,5 @@ export const url={
   getShopNameList:()=>`${HOME}/shopName`,
   saveAddress:()=>`${HOME}/address`,
   placeOrder:()=>`${HOME}/order`,
+  fetchOrder:(orderId)=>`${HOME}/order/${orderId}`,
 }

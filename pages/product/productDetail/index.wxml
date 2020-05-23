@@ -21,8 +21,8 @@
     </view>
     <view id="activity" class="margin-bottom">
       <view class="cu-tag bg-red light sm round margin-right" wx:for="{{byProducts[productId].activityRules}}" wx:key="unique">
-        <text wx:if="{{item.activityRuleType.uid==3}}">{{item.activityRule1}}%折扣</text>
-        <text wx:if="{{item.activityRuleType.uid==2}}">消费满{{item.activityRule1}}元宝{{item.activityRule2.operation=="plus"?"赠":"减"}}{{item.activityRule2.number}}{{item.activityRule2.currency=="ingot"?"元宝":"积分"}}</text>
+        <text wx:if="{{byActivityRules[item].activityRuleType.uid==3}}">{{byActivityRules[item].activityRule1}}%折扣</text>
+        <text wx:if="{{byActivityRules[item].activityRuleType.uid==2}}">消费满{{byActivityRules[item].activityRule1}}元宝{{byActivityRules[item].activityRule2.operation=="plus"?"赠":"减"}}{{byActivityRules[item].activityRule2.number}}{{byActivityRules[item].activityRule2.currency=="ingot"?"元宝":"积分"}}</text>
       </view>
     </view>
     <view id="description" style="width:100vw" class="flex margin-bottom ">
@@ -37,7 +37,7 @@
       <view class="flex-sub text-grey text-center">
         <text class="cuIcon-shop"></text>库存{{byProducts[productId].storage}}</view>
       <view class="flex-sub text-grey text-center">
-        <text class="cuIcon-cascades"></text>月销{{byProducts[productId].sales}}</view>
+        <text class="cuIcon-cascades"></text>月销{{byProducts[productId].sales==null?0:byProducts[productId].sales}}</view>
     </view>
   </view>
   <view id="activity-detail" class="cu-bar bg-white solid-bottom margin-top" wx:if="{{byProducts[productId].activityRules.length>0}}">

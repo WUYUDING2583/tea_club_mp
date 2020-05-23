@@ -18,30 +18,46 @@ export const order = observable({
 
   // actions
   placeOrder: action(function (order) {
-    post(url.placeOrder(),order)
-      .then(res=>{
-        showToast("下单成功");
-        this.setOrder(res);
-        if(res.status.status=="unpay"){
-          //跳转到订单详情
-          wx.redirectTo({
-            url: '../orderDetail/index',
-          })
-        }else{
-          //返回首页
-          let pages=getCurrentPages();
-          wx.navigateBack({
-            delta: pages.length,
-          })
-        }
-      })
-      .catch(err=>{
-        console.log(err);
-      })
+    const thiz=this;
+    return new Promise((resolve,reject)=>{
+      post(url.placeOrder(),order)
+        .then(res=>{
+          showToast("下单成功");
+          thiz.setOrder(res);
+          if(res.status.status=="unpay"){
+            //跳转到订单详情
+            wx.redirectTo({
+              url: `../orderDetail/index?orderId=${res.uid}`,
+            })
+          }else{
+            //返回首页
+            let pages=getCurrentPages();
+            wx.navigateBack({
+              delta: pages.length,
+            })
+          }
+        })
+        .catch(err=>{
+          console.log(err);
+          if(err.code==500700){
+            //余额不足
+            reject(err);
+          }
+        })
+    })
   }),
   setOrder:action(function(order){
     this.orders=this.orders.concat(order.uid);
     this.byOrders={...this.byOrders,[order.uid]:order};
+  }),
+  fetchOrder:action(function(orderId){
+    get(url.fetchOrder(orderId))
+      .then(res=>{
+        this.setOrder(res);
+      })
+      .catch(err=>{
+        console.log(err);
+      })
   })
 
 })

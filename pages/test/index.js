@@ -5,8 +5,28 @@ Page({
    * 页面的初始数据
    */
   data: {
-    picker: ['喵喵喵', '汪汪汪', '哼唧哼唧'],
-    index: null,
+    checkbox: [{
+      value: 50,
+      name: '50元',
+      checked:false,
+    }, {
+      value: 100,
+      name: '100元',
+      checked: false,
+    }, {
+      value: 200,
+      name: '200元',
+      checked: false,
+    }, {
+      value: 500,
+      name: '500元',
+      checked: false,
+    }, {
+      name: "自定义",
+      checked: false,
+      value: -1,
+
+    }],
   },
 
   /**
@@ -15,11 +35,33 @@ Page({
   onLoad: function (options) {
 
   },
-
-  PickerChange(e) {
-    console.log(e);
+  chargeInput: function (e) {
+    let items = this.data.checkbox;
+    for (let i = 0, lenI = items.length; i < lenI; ++i) {
+      if (items[i].name == "自定义") {
+        items[i].value = e.detail.value;
+      } 
+    }
     this.setData({
-      index: e.detail.value
+      charge:e.detail.value,
+      checkbox:items
+    })
+  },
+  ChooseCheckbox(e) {
+    let items = this.data.checkbox;
+    let values = e.currentTarget.dataset.value;
+    this.setData({
+      charge: values
+    })
+    for (let i = 0, lenI = items.length; i < lenI; ++i) {
+      if (items[i].value == values) {
+        items[i].checked = true;
+      }else{
+        items[i].checked = false;
+      }
+    }
+    this.setData({
+      checkbox: items
     })
   },
 
