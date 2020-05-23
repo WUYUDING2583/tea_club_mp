@@ -1,0 +1,16 @@
+<!--pages/charge/index.wxml-->
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">充值</view>
+</cu-custom>
+<view class="grid col-3 padding-sm">
+  <view wx:for="{{checkbox}}" class="padding-xs" wx:key="{{index}}">
+    <button class="cu-btn blue lg block {{item.checked?'bg-blue':'line-blue'}}" bindtap="ChooseCheckbox" data-value="{{item.value}}" style="width:30vw;">
+      <input wx:if="{{item.name=='自定义'}}" placeholder="{{item.name}}" id="selfInputCharge" bindinput="chargeInput" type="number"></input>
+      <text wx:else>{{item.name}}</text>
+    </button>
+  </view>
+</view>
+<view class="flex padding justify-center">
+  <button class="cu-btn bg-green lg" style="width:80vw" bindtap="_charge">充值</button>
+</view>

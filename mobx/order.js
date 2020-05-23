@@ -17,6 +17,18 @@ export const order = observable({
   },
 
   // actions
+  fetchLatestUnpayOrder:action(function(userId){
+    return new Promise((resolve,reject)=>{
+      get(url.fetchLatestUnpayOrder(userId))
+      .then(res=>{
+          this.setOrder(res);
+          resolve(res);
+        })
+        .catch(err=>{
+          console.log(err)
+        })
+    })
+  }),
   placeOrder: action(function (order) {
     const thiz=this;
     return new Promise((resolve,reject)=>{
@@ -50,16 +62,23 @@ export const order = observable({
   }),
   setOrder:action(function(order){
     this.orders=this.orders.concat(order.uid);
+    order.products.forEach((item)=>{
+      item.product.photo =`data:image/jpeg;base64,${item.product.photos[0].photo}`;
+    })
     this.byOrders={...this.byOrders,[order.uid]:order};
   }),
   fetchOrder:action(function(orderId){
-    get(url.fetchOrder(orderId))
-      .then(res=>{
-        this.setOrder(res);
-      })
-      .catch(err=>{
-        console.log(err);
-      })
+    return new Promise((resolve,reject)=>{
+      get(url.fetchOrder(orderId))
+        .then(res=>{
+          this.setOrder(res);
+          resolve(res);
+        })
+        .catch(err=>{
+          console.log(err);
+          reject(err);
+        })
+    })
   })
 
 })

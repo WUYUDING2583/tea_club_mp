@@ -26,10 +26,10 @@ export const user = observable({
     return new Promise((resolve,reject)=>{
       post(url.pay(userId,orderId),{})
         .then(res=>{
-
+          resolve(res);
         })
         .catch(err=>{
-          console.log(err);
+          reject(err)
         })
     })
   }),

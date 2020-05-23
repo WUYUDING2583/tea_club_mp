@@ -151,12 +151,6 @@ Page({
     });
     this.calculateAmount();
   },
-  hideModal: function (e) {
-    this.setData({
-      showModal: false,
-      ruleId:null
-    })
-  },
   showActivity:function(e){
     this.setData({
       ruleId: e.currentTarget.dataset.target,
@@ -301,6 +295,9 @@ Page({
   hideModal:function(){
     this.setData({
       modalName:""
+    })  
+    wx.redirectTo({
+      url: '../orderDetail/index'
     })
   },
   showModal:function(e){
