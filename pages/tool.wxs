@@ -57,102 +57,86 @@ var applicableForActivity = function(activityApplyForCustomerTypes, customerType
   return false;
 }
 
-//计算优惠后价格
-// var calculateAmount = function(productIds, userInfo, byProducts, byActivityRules,number) {
-//   var activityBitmap = new Object(); //用于记录已参与的活动
-//   var customerType = userInfo.customerType;
-//   var ingot = 0;
-//   var credit = 0;
-//   productIds.forEach(function(key,index) {
-//     //遍历该产品所参与的活动，产品所参与的活动已按照优先级降序排序
-//     //即产品优先参与优先级高的活动，每个产品一次只能参与一个活动
-//     //积分不参与折扣
-//     const rule = byProducts[key].activityRules;
-//     var isOneOfRuleApplicable = false;
-//     for (var i = 0; i < rule.length; i++) {
-//       const activityId = byActivityRules[rule[i]].activity.uid;
-//       const activityApplyForCustomerTypes= byActivityRules[rule[i]].activityApplyForCustomerTypes;
-//       //判断用户的vip等级能否参与此活动
-//       var isApplicable = false;
-//       activityApplyForCustomerTypes.forEach(function(type)  {
-//         if (type.uid == customerType.uid) {
-//           isApplicable = true;
-//         }
-//       });
-//       //vip等级不够则继续判断该产品下一个参与的活动
-//       if (!isApplicable) {
-//         continue;
-//       }
-//       //判断是否与已有活动互斥
-//       var isMutex = false;
-//       for (var activityKey in activityBitmap) {
-//         if (byActivityRules[rule[i]].activity.mutexActivities.filter(function(item){return item.uid == activityKey}).length > 0) {
-//           isMutex = true;
-//         }
-//       }
-//       //互斥则继续判断该产品下一个参与的活动
-//       if (isMutex) {
-//         continue;
-//       }
-//       //否则将其记录在bitmap中并结束遍历
-//       isOneOfRuleApplicable = true;
-//       if (!activityBitmap[activityId] || !activityBitmap[activityId][rule[i]]) {
-//         activityBitmap[activityId] = new Object();
-//         activityBitmap[activityId][rule[i]] = new Array();
+var numberToDayofWeek=function(arry){
+  var result = arry.map(function(item) {
+    var day = "错误";
+    switch (item) {
+      case "1":
+        day = "周一";
+        break;
+      case "2":
+        day = "周二";
+        break;
+      case "3":
+        day = "周三";
+        break;
+      case "4":
+        day = "周四";
+        break;
+      case "5":
+        day = "周五";
+        break;
+      case "6":
+        day = "周六";
+        break;
+      case "0":
+        day = "周日";
+        break;
+    }
+    return day;
+  });
+  if (result.indexOf("错误") !== -1) {
+    result = ["错误,请修改营业时间"];
+  } else if (result.indexOf("周一") !== -1 && result.indexOf("周二") !== -1 && result.indexOf("周三") !== -1 &&
+    result.indexOf("周四") !== -1 && result.indexOf("周五") !== -1 &&
+    result.indexOf("周六") !== -1 && result.indexOf("周日") !== -1) {
+    result = ["每天"];
+  } else if (result.length === 5 && result.indexOf("周一") !== -1 && result.indexOf("周二") !== -1 && result.indexOf("周三") !== -1 &&
+    result.indexOf("周四") !== -1 && result.indexOf("周五") !== -1) {
+    result = ["工作日"];
+  } else if (result.length === 2 && result.indexOf("周六") !== -1 && result.indexOf("周日") !== -1) {
+    result = ["周末"];
+  }
+  return result;
+}
 
-//       }
-//       for (var j = 0; j < number[index]; j++) {
-//         activityBitmap[activityId][rule[i]].push(key);
-//       }
-//       break;
-//     }
-//     //若这个产品的所有优惠规则不适用
-//     //即不参加活动
-//     if (!isOneOfRuleApplicable) {
-//       ingot += byProducts[key].price.ingot * number[index];
-//       credit += byProducts[key].price.credit * number[index];
-//     }
-//   })
-//   //计算总价
-//   console.log("activityBitmap", activityBitmap);
-//   for (var activityId in activityBitmap) {
-//     for (var ruleId in activityBitmap[activityId]) {
-//       const activityRule1 = byActivityRules[ruleId].activityRule1;
-//       const activityRule2 = byActivityRules[ruleId].activityRule2;
-//       let ruleIngot = 0;
-//       let ruleCredit = 0;
-//       activityBitmap[activityId][ruleId].forEach(function(productId) {
-//         ruleIngot += byProducts[productId].price.ingot;
-//         ruleCredit += byProducts[productId].price.credit;
-//       });
-//       if (activityRule2 == null) {
-//         //折扣
-//         ingot += ruleIngot * (100 - activityRule1) / 100;
-//         credit += ruleCredit;
-//       } else {
-//         //购物满xx赠/减xx积分/元宝
-//         if (ruleIngot > activityRule1) {//满足条件
-//           if (activityRule2.operation == "minus") {//满减元宝,满赠在后台处理
-//             // if (activityRule2.currency == "ingot") {
-//             ruleIngot -= activityRule2.number;
-//             // } else {
-//             //     ruleCredit -= activityRule2.number;
-//             // }
-//           }
-//         }
-//         ingot += ruleIngot;
-//         credit += ruleCredit;
-//       }
-//     }
-//   }
-//   return {
-//     ingot,
-//     credit
-//   }
-// }
+var getCurrentReservationStatus = function(shop,box) {
+  var  duration = box.duration;
+  var  reservations  = box.reservations;
+  var startTime  = shop.todayOpenHour.startTime;
+  var currentTime = getDate().getTime();
+  var currentReservationTime = startTime + Math.floor((currentTime - startTime) / (duration * 1000 * 60)) * (duration * 1000 * 60);
+  if (reservations.indexOf(currentReservationTime) != -1) {
+    return "使用中";
+  }
+  return "空闲";
+}
+
+var getNDayTimeString=function(n){
+  var date = getDate(getDate().getTime() + n * 1000 * 60 * 60 * 24);
+  var Y = date.getFullYear() + '-';
+  var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+  var D = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + ' ';
+  return Y + M + D;
+}
+
+/**
+ * 将时间戳转化为hh:mm格式返回
+ * @param {*} timestamp 
+ */
+var convertTimestampToHHMM = function(timestamp) {
+  var date = getDate(timestamp);
+  var h = (date.getHours() < 10 ? "0" + date.getHours() : date.getHours()) + ':';
+  var m = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes());
+  return h + m;
+}
 
 module.exports = {
   arrayLengthRandom: getArrayLengthRandom,
   dateFormat: dateFormat,
   applicableForActivity: applicableForActivity,
+  numberToDayofWeek: numberToDayofWeek,
+  getCurrentReservationStatus: getCurrentReservationStatus,
+  getNDayTimeString: getNDayTimeString,
+  convertTimestampToHHMM: convertTimestampToHHMM,
 }

@@ -1,8 +1,8 @@
+<cu-custom bgColor="bg-gradual-blue" isBack="{{false}}">
+  <view slot="backText">返回</view>
+  <view slot="content">研茶</view>
+</cu-custom>
 <scroll-view id="main" scroll-y class="DrawerPage {{drawerVisible?'show':''}}">
-  <cu-custom bgColor="bg-gradual-blue" isBack="{{false}}">
-    <view slot="backText">返回</view>
-    <view slot="content">研茶</view>
-  </cu-custom>
   <view class="box">
     <view class="cu-bar search bg-white fixed" style="top:{{CustomBar}}px">
       <view class="cu-avatar round" style="background-image:url({{userInfo.avatarUrl}});" bindtap="showDrawer"></view>
@@ -40,9 +40,11 @@
           </navigator>
         </view>
         <view class="flex-sub text-center">
-          <view class="cu-avatar round lg margin-left bg-cyan light">
-            <text class="avatar-text">预约</text>
-          </view>
+          <navigator hover-class="none" url="../box/boxList/index" open-type="navigate">
+            <view class="cu-avatar round lg margin-left bg-cyan light">
+              <text class="avatar-text">预约</text>
+            </view>
+          </navigator>
         </view>
       </view>
     </view>
@@ -140,7 +142,7 @@
       </button>
     </view>
     <view class="cu-item arrow">
-      <navigator hover-class="none" url="../address/addressList/index?select=false" >
+      <navigator hover-class="none" url="../address/addressList/index?select=false">
         <button class="cu-btn content">
           <text class="cuIcon-addressbook text-orange"></text>
           <text class="text-grey">我的地址</text>

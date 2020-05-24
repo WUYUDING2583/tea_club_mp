@@ -52,7 +52,7 @@ Page({
     this.storeBindings = createStoreBindings(this, {
       store: shop,
       fields: ['shops', 'byShops','shopNameList'],
-      actions: ['getShopList']
+      actions: ['getShopNameList']
     });
 
     this.fetchProduct(options.uid);
@@ -66,7 +66,7 @@ Page({
     })
     if (e.currentTarget.dataset.target =='selfPick'){
       //获取门店列表
-      this.getShopList();
+      this.getShopNameList();
     }
   },
   //步进器change事件

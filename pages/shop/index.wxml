@@ -1,0 +1,33 @@
+<!--pages/shop/index.wxml-->
+<wxs src="../tool.wxs" module="tool" />
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">研茶</view>
+</cu-custom>
+<scroll-view>
+  <view class="cu-bar bg-white solid-bottom">
+    <view class='action'>
+      <text class='cuIcon-titles text-orange '></text> 选择门店
+    </view>
+  </view>
+  <view class="cu-card article" wx:for="{{shops}}" wx:key="unique" bindtap="selectShop" data-target="{{item}}">
+    <view class="cu-item shadow">
+      <view class="title">
+        <view class="text-cut">{{byShops[item].name}}</view>
+      </view>
+      <view class="content">
+        <image src="{{byShops[item].photo}}" mode="aspectFill"></image>
+        <view class="desc">
+          <view class="text-content">{{byShops[item].description}}</view>
+          <view>地址：{{byShops[item].address}}</view>
+          <view>
+            <view wx:for="{{byShops[item].openHours}}" wx:key="unique">
+              <text>{{item.startTime}}~{{item.endTime}} </text>
+              <text wx:for="{{tool.numberToDayofWeek(item.date)}}">{{item}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</scroll-view>

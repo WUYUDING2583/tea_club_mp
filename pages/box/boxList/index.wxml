@@ -1,0 +1,24 @@
+<!--pages/box/boxList/index.wxml-->
+<wxs src="../../tool.wxs" module="tool" />
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">{{byShops[shopId].name}}</view>
+</cu-custom>
+<scroll-view>
+  <view class="cu-card article" wx:for="{{boxes}}" wx:key="unique" bindtap="selectBox" data-target="{{item}}">
+    <view class="cu-item shadow">
+      <view class="title">
+        <view class="text-cut">{{byBoxes[item].name}}</view>
+      </view>
+      <view class="content">
+        <image src="{{byBoxes[item].photo}}" mode="aspectFill"></image>
+        <view class="desc">
+          <view class="text-content">{{byBoxes[item].description}}</view>
+          <view>
+            <text>当前状态：{{byShops[shopId].todayOpenHour.startTime != undefined?tool.getCurrentReservationStatus(byShops[shopId],byBoxes[item]):'今日不营业'}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</scroll-view>

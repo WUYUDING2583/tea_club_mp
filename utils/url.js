@@ -26,4 +26,7 @@ export const url={
   pay:(userId,orderId)=>`${HOME}/pay/${userId}/${orderId}`,
   fetchLatestUnpayOrder:(userId)=>`${HOME}/latestUnpayOrder/${userId}`,
   cancelOrder:(orderId)=>`${HOME}/order/cancel/${orderId}`,
-}
+  getShopList:()=>`${HOME}/shop`,
+  fetchShopBoxes:(shopId)=>`${HOME}/shop/box/${shopId}`,
+  fetchReservations: (boxId, startTime, endTime) => `${HOME}/reservations/${boxId}/${startTime}/${endTime}`,
+} 

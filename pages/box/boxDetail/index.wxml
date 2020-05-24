@@ -1,0 +1,32 @@
+<!--pages/box/boxDetail/index.wxml-->
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">{{byBoxes[boxId].name}}</view>
+</cu-custom>
+<view>
+  <view id="content" class="padding bg-white">
+    <view id="duration" class="margin-bottom-sm">
+      <text class="text-lg">每泡茶时间：{{byBoxes[boxId].duration}}分钟</text>
+    </view>
+    <view id="description" class="margin-bottom-sm">
+      <text class="text-lg">{{byBoxes[boxId].description}}</text>
+    </view>
+  </view>
+  <view class="cu-bar bg-white solid-bottom margin-top">
+    <view class='action'>
+      <text class='cuIcon-titles text-orange '></text> 包厢详情
+    </view>
+  </view>
+  <view class="cu-list menu margin-top" style="margin-bottom:50px;">
+    <image wx:for="{{byBoxes[boxId].photos}}" wx:key="unique" src="{{item}}" />
+  </view>
+  <view class="cu-bar bg-white tabbar border shop" style="position:fixed;bottom:0;width:100vw;">
+    <view class="action"></view>
+    <view class="action " style="width:80vw; ">
+      <text class="text-lg">价格：每泡茶</text>
+      <text class="text-lg text-red" wx:if="{{byBoxes[boxId].price.ingot>0}}">{{byBoxes[boxId].price.ingot}}元宝 </text>
+      <text class="text-lg text-red" wx:if="{{byBoxes[boxId].price.credit>0}}">{{byBoxes[boxId].price.credit}}积分</text>
+      <button class="cu-btn bg-blue round shadow-blur " style="width:35%; " bindtap="navigateToReserve">预约</button>
+    </view>
+  </view>
+</view>
