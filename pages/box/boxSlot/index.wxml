@@ -8,18 +8,18 @@
 <view class="flex margin-bottom">
   <view style="flex:1">
     <view class="flex align-center" style="width:100%;height:100%;">
-      <view class="cu-avatar round bg-blue margin-left-xs">
+      <view class="cu-avatar round bg-blue margin-left-xs" bindtap="forwardDay">
         <text class="cuIcon-roundleftfill-copy"></text>
       </view>
     </view>
   </view>
   <view style="flex:10">
     <view class="cu-list menu card-menu margin-top">
-      <view class="cu-item" wx:for="{{slot}}" wx:key="unique">
-        <view class="content flex justify-between">
-          <text class="text-grey">{{tool.convertTimestampToHHMM(item.startTime)}}~{{tool.convertTimestampToHHMM(item.endTime)}}</text>
-          <text wx:if="{{item.isClickReserve}}">当前预约</text>
-          <text wx:if="{{item.isReserved}}">已预约</text>
+      <view wx:for="{{slot}}" class="cu-item" wx:key="unique" style="background-color:{{item.isClickReserve?'#39b54a':item.isReserved?'#0081ff':'white'}}">
+        <view class="content flex justify-between" bindtap="_selectSlot" data-startTime="{{item.startTime}}" data-endTime="{{item.endTime}}" style="width:100%;height:100%;" data-target="{{item.isReserved}}">
+          <text class="text-grey {{item.isClickReserve||item.isReserved?'text-white':''}}">{{tool.convertTimestampToHHMM(item.startTime)}}~{{tool.convertTimestampToHHMM(item.endTime)}}</text>
+          <text class="text-white" wx:if="{{item.isClickReserve}}">当前预约</text>
+          <text class="text-white" wx:elif="{{item.isReserved}}">已预约</text>
           <text wx:else>空闲</text>
         </view>
       </view>
@@ -27,8 +27,40 @@
   </view>
   <view style="flex:1">
     <view class="flex align-center" style="width:100%;height:100%;">
-      <view class="cu-avatar round bg-blue margin-right-xs">
+      <view class="cu-avatar round bg-blue margin-right-xs" bindtap="backawrdDay">
         <text class="cuIcon-roundrightfill"></text>
+      </view>
+    </view>
+  </view>
+</view>
+<view class="cu-bar bg-white tabbar border shop" style="position:fixed;bottom:0;width:100vw;">
+  <view class="action" style="width:50vw"></view>
+  <view class="action " style="width:40vw;">
+    <button class="cu-btn bg-blue round shadow-blur" style="width:60%;" bindtap="confirm">确定</button>
+  </view>
+</view>
+<view class="cu-modal {{showModal?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white justify-end">
+      <view class="content">预约内容</view>
+      <view class="action" bindtap="hideModal">
+        <text class="cuIcon-close text-red"></text>
+      </view>
+    </view>
+    <view class="padding-xl">
+      <view>预约以下时间段</view>
+      <view wx:for="{{reservations}}" wx:key="unique">
+      {{tool.convertTimestampToyyyMMdd(item.endTime)}} {{tool.convertTimestampToHHMM(item.startTime)}}~{{tool.convertTimestampToHHMM(item.endTime)}}
+      </view>
+      <view>总价：{{totalAmount}}</view>
+      <view>确认预约？</view>
+    </view>
+    <view class="cu-bar bg-white justify-end">
+      <view class="action" style="width:50%;">
+        <button class="cu-btn line-green text-green" bindtap="hideModal" style="width:70%;">取消</button>
+      </view>
+      <view class="action" style="width:50%;">
+        <button class="cu-btn bg-green margin-left" bindtap="confirmReserve" style="width:70%;">确定</button>
       </view>
     </view>
   </view>

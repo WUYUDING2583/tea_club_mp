@@ -131,6 +131,14 @@ var convertTimestampToHHMM = function(timestamp) {
   return h + m;
 }
 
+var convertTimestampToyyyMMdd=function(timestamp){
+  var date = getDate(timestamp);
+  var Y = date.getFullYear() + '-';
+  var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+  var D = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + ' ';
+  return Y+M+D;
+}
+
 module.exports = {
   arrayLengthRandom: getArrayLengthRandom,
   dateFormat: dateFormat,
@@ -139,4 +147,5 @@ module.exports = {
   getCurrentReservationStatus: getCurrentReservationStatus,
   getNDayTimeString: getNDayTimeString,
   convertTimestampToHHMM: convertTimestampToHHMM,
+  convertTimestampToyyyMMdd: convertTimestampToyyyMMdd,
 }

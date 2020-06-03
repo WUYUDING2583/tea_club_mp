@@ -15,13 +15,19 @@ export const box = observable({
 
   // actions
   fetchReservations:action(function(boxId,startTime,endTime){
-    get(url.fetchReservations(boxId,startTime,endTime))
-      .then(res=>{
-        this.convertReservationsToPlainStructure(res,boxId);
-      })
-      .catch(err=>{
-        console.log(err)
-      })
+    const thiz=this;
+    return new Promise((resolve,reject)=>{
+      get(url.fetchReservations(boxId, startTime, endTime))
+        .then(res => {
+          thiz.convertReservationsToPlainStructure(res, boxId);
+          resolve()
+        })
+        .catch(err => {
+          console.log(err);
+          reject()
+        })
+    })
+   
   }),
   convertReservationsToPlainStructure:action(function(data,boxId){
     let byReservations = new Object();

@@ -42,10 +42,25 @@ const getNDayTimeString = (n = 0) => {
 const getNDaysTimeStamp = (n) => {
   return new Date(new Date().setHours(0, 0, 0, 0)).getTime() + n * 1000 * 60 * 60 * 24;
 }
+/**
+ * 返回时间yyyy-MM-dd hh:mm
+ * @param {*} timeStamp 时间戳
+ */
+const timeStampConvertToFormatTime = (timeStamp) => {
+  let date = new Date(timeStamp);
+  let Y = date.getFullYear() + '-';
+  let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+  let D = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + ' ';
+  let h = (date.getHours() < 10 ? "0" + date.getHours() : date.getHours()) + ':';
+  let m = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes());
+  let s = date.getSeconds();
+  return Y + M + D + h + m;
+}
 
 module.exports = {
   formatTime: formatTime,
   timeStringConvertToTimeStamp: timeStringConvertToTimeStamp,
   getNDayTimeString: getNDayTimeString,
   getNDaysTimeStamp: getNDaysTimeStamp,
+  timeStampConvertToFormatTime: timeStampConvertToFormatTime
 }

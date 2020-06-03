@@ -23,7 +23,7 @@ Page({
     this.storeBindings = createStoreBindings(this, {
       store: shop,
       fields: [ 'byShops'],
-      actions: [],
+      actions: ['getShop'],
     });
     this.storeBindings = createStoreBindings(this, {
       store: box,
@@ -31,7 +31,8 @@ Page({
       actions: ['fetchShopBoxes'],
     });
 
-    this.fetchShopBoxes(options.shopId)
+    this.fetchShopBoxes(options.shopId);
+    this.getShop(options.shopId);
   },
   selectBox:function(e){
     wx.navigateTo({

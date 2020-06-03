@@ -51,7 +51,6 @@ Page({
    */
   onLoad: function (options) {
     const { productId, number } = options;
-    console.log("options", productId.split(","))
     this.setData({
       productId: options.productId.split(","),
       number: options.number.split(","),

@@ -40,7 +40,7 @@
           </navigator>
         </view>
         <view class="flex-sub text-center">
-          <navigator hover-class="none" url="../box/boxList/index" open-type="navigate">
+          <navigator hover-class="none" url="../shop/index" open-type="navigate">
             <view class="cu-avatar round lg margin-left bg-cyan light">
               <text class="avatar-text">预约</text>
             </view>

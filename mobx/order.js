@@ -17,6 +17,18 @@ export const order = observable({
   },
 
   // actions
+  reserve:action(function(order){
+    return new Promise((resolve,reject)=>{
+      post(url.reserve(),order)
+        .then((res)=>{
+          resolve();
+        })
+        .catch(err=>{
+          console.log(err);
+          reject()
+        })
+    })
+  }),
   cancelOrder:action(function(orderId){
     return new Promise((resolve,reject)=>{
       post(url.cancelOrder(orderId),{})
