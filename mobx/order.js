@@ -21,11 +21,11 @@ export const order = observable({
     return new Promise((resolve,reject)=>{
       post(url.reserve(),order)
         .then((res)=>{
-          resolve();
+          resolve(res);
         })
         .catch(err=>{
           console.log(err);
-          reject()
+          reject(err)
         })
     })
   }),

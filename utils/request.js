@@ -53,7 +53,8 @@ export const post = (url, params,needLoading = true) => {
         }
         console.log(`request ${url} res`, res.data);
         if (res.data.data == null && res.data.code != 200){
-          if (res.data.code != 500700){
+          if (res.data.code != 500700 && res.data.code != 500600){
+            console.log("show toast err in post");
             showToast(res.data.error);
           }
           reject(res.data);

@@ -13,7 +13,7 @@ Component({
   properties: {
     bgColor: {
       type: String,
-      default: ''
+      default: 'bg-gradual-blue'
     }, 
     isCustom: {
       type: [Boolean, String],

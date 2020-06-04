@@ -14,6 +14,30 @@ export const box = observable({
   byReservations: new Object(),
 
   // actions
+  fetchBox:action(function(boxId){
+    return new Promise((resolve,reject)=>{
+      get(url.fetchBox(boxId))
+        .then(res=>{
+          this.convertBoxToPlainStructure(res);
+        })
+        .catch(err=>{
+          console.log(err);
+        })
+    })
+  }), 
+  convertBoxToPlainStructure: action(function (data) {
+    const photos = data.photos.map((photo) => `data:image/jpeg;base64,${photo.photo}`)
+    if(this.boxes.indexOf(data.uid)==-1){
+      this.boxes=this.boxes.concat([data.uid]);
+    }
+    if(!data.reservations){
+      data.reservations=new Array();
+    }
+    this.byBoxes = {
+      ...this.byBoxes, [data.uid]: {
+        ...data, photo: `data:image/jpeg;base64,${data.photos[0].photo}`, photos
+      }};
+  }),
   fetchReservations:action(function(boxId,startTime,endTime){
     const thiz=this;
     return new Promise((resolve,reject)=>{
@@ -59,18 +83,25 @@ export const box = observable({
   }),
   convertBoxesToPlainStructure:action(function(data){
     let boxes = new Array();
-    let byBoxes=new Object()
+    let byBoxes=new Object();
+    let byReservations=new Object();
     data.forEach(item => {
       boxes.push(item.uid)
       const photos = item.photos.map((photo) =>`data:image/jpeg;base64,${photo.photo}`)
+      let reservations=new Array();
+      item.reservations.forEach((reservation)=>{
+        reservations.push(reservation.reservationTime);
+        byReservations[reservation.reservationTime]=reservation;
+      })
       if(!byBoxes[item.uid]){
         byBoxes[item.uid] = {
-          ...item,  photo: `data:image/jpeg;base64,${item.photos[0].photo}`,photos
+          ...item, photo: `data:image/jpeg;base64,${item.photos[0].photo}`, photos, reservations
         }
       }
     });
     this.boxes = boxes;
     this.byBoxes=byBoxes;
+    this.byReservations=byReservations;
   }),
   convertHotBoxesToPlainStructure: action(function (data) {
     let hotBoxes = new Array();

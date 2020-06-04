@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/order/reservePreview/index",
     "pages/box/boxList/index",
     "pages/shop/index",
     "pages/order/orderDetail/index",

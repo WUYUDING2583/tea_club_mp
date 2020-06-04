@@ -19,7 +19,7 @@ Page({
     day: 0,
     slot: new Array(),
     selectedSlot:new Array(),
-    showModal:false,
+    modalName:"",
     reservations:new Array(),
   },
 
@@ -54,10 +54,14 @@ Page({
     this.fetchReservations(options.boxId, common.getNDaysTimeStamp(this.data.day), common.getNDaysTimeStamp(this.data.day + 1));
 
   },
-  confirmReserve:function(){
-    const { selectedSlot, byBoxes, boxId ,userInfo} = this.data;
+  confirm: function () {
+    const { selectedSlot, byBoxes, boxId, userInfo } = this.data;
     const { price, duration } = byBoxes[boxId];
-    const reservations = selectedSlot.map(reservationTime => ({ reservationTime,boxId }));
+    if(selectedSlot.length==0){
+      showToast("请选择预约时间段");
+      return;
+    }
+    const reservations = selectedSlot.map(reservationTime => ({ reservationTime, boxId }));
     let ingot = 0;
     let credit = 0;
     reservations.forEach(reservation => {
@@ -68,34 +72,37 @@ Page({
       customer: { uid: userInfo.uid },
       reservations,
     }
-    this.reserve(order);
-  },
-  confirm:function(){
-    const {selectedSlot,byBoxes,boxId}=this.data;
-    const { price, duration}=byBoxes[boxId];
-    const reservations = selectedSlot.map(startTime => ({ startTime, endTime: startTime + duration * 1000 * 60, boxId }));
-    let ingot = 0;
-    let credit = 0;
-    let amountDisplay = "";
-    reservations.forEach(reservation => {
-      ingot += price.ingot;
-      credit += price.credit;
-    })
-    if (ingot != 0) {
-      amountDisplay += `${ingot}元宝 `;
-    }
-    if (credit != 0) {
-      amountDisplay += `${credit}积分`;
-    }
+    const thiz = this;
+    this.reserve(order)
+      .then(res => {
+        console.log("in then")
+        wx.navigateTo({
+          url: `../../order/reservePreview/index?orderId=${res.uid}`,
+        })
+      })
+      .catch(err => {
+        console.log("in catch")
+        if (err.code == 500600) {
+          this.setData({
+            modalName: "err",
+            errorMsg: err.error,
+            selectedSlot: new Array()
+          });
+          this.fetchReservations(boxId, common.getNDaysTimeStamp(this.data.day), common.getNDaysTimeStamp(this.data.day + 1))
+            .then(res=>{
+              this.getSlotDisplay();
+            })
+        } else {
+          showToast(err.error);
+        }
+      });
     this.setData({
-      showModal:true,
-      totalAmount: amountDisplay,
-      reservations: reservations
+      modalName: ""
     })
   },
   hideModal:function(){
     this.setData({
-      showModal:false
+      modalName:""
     })
   },
   backawrdDay:function(){
@@ -142,30 +149,35 @@ Page({
     this.getSlotDisplay();
     
   },
-  getSlotDisplay:function(){
+  getSlotDisplay: function () {
+    this.storeBindings.updateStoreBindings();
     let slot = new Array();
     const { day, byShops, shopId, byBoxes, boxId, selectedSlot } = this.data
     const { todayOpenHour } = byShops[shopId];
-    const startTime = todayOpenHour.startTime + day * 1000 * 60 * 60 * 24;
-    const endTime = todayOpenHour.endTime + day * 1000 * 60 * 60 * 24;
-    const duration = byBoxes[boxId].duration * 1000 * 60;
-    const slotNum = Math.floor((endTime - startTime) / duration);
-    for (let i = 0; i < slotNum; i++) {
-      const filterResult = byBoxes[boxId].reservations.filter(reservationTime => {
-        if (reservationTime == (startTime + i * duration)) {
-          return true;
+    try{
+      const startTime = todayOpenHour.startTime + day * 1000 * 60 * 60 * 24;
+      const endTime = todayOpenHour.endTime + day * 1000 * 60 * 60 * 24;
+      const duration = byBoxes[boxId].duration * 1000 * 60;
+      const slotNum = Math.floor((endTime - startTime) / duration);
+      for (let i = 0; i < slotNum; i++) {
+        const filterResult = byBoxes[boxId].reservations.filter(reservationTime => {
+          if (reservationTime == (startTime + i * duration)) {
+            return true;
+          }
+          return false;
+        });
+        let isReserved = false;
+        if (filterResult.length != 0) {
+          isReserved = true;
         }
-        return false;
-      });
-      let isReserved = false;
-      if (filterResult.length != 0) {
-        isReserved = true;
+        let isClickReserve = false;
+        if (selectedSlot.indexOf(startTime + i * duration) != -1) {
+          isClickReserve = true;
+        }
+        slot.push({ isReserved, startTime: startTime + i * duration, endTime: startTime + (i + 1) * duration, isClickReserve })
       }
-      let isClickReserve = false;
-      if (selectedSlot.indexOf(startTime + i * duration) != -1) {
-        isClickReserve = true;
-      }
-      slot.push({ isReserved, startTime: startTime + i * duration, endTime: startTime + (i + 1) * duration, isClickReserve })
+    }catch(err){
+      console.log(err);
     }
     this.setData({
       slot

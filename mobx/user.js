@@ -29,6 +29,7 @@ export const user = observable({
           resolve(res);
         })
         .catch(err=>{
+          console.log(err);
           reject(err)
         })
     })
