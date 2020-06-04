@@ -10,17 +10,44 @@ export const cart = observable({
 
   // 数据字段
   cartProducts: new Array(),
+  byCartProducts:new Object(),
 
   // 计算属性
   get cartTotal() {
     let total=0;
-    this.cartProducts.forEach(product=>{
-      total+=product.number;
+    this.cartProducts.forEach(uid=>{
+      total+=this.byCartProducts[uid].number;
     })
     return total;
   },
 
   // actions
+  fetchCart:action(function(userId){
+    return new Promise((resolve,reject)=>{
+      get(url.fetchCart(userId))
+      .then(res=>{
+        this.convertCartToPlainStructure(res);
+        resolve(res);
+      })
+      .catch(err=>{
+        console.log(err);
+        reject(err);
+      })
+    })
+    
+  }),
+  convertCartToPlainStructure:action(function(data){
+    let cartProducts=new Array();
+    let byCartProducts=new Object();
+    data.forEach(item=>{
+      cartProducts.push(item.uid);
+      if(!byCartProducts[item.uid]){
+        byCartProducts[item.uid]=item;
+      }
+    });
+    this.cartProducts=cartProducts;
+    this.byCartProducts=byCartProducts;
+  }),
   setCartProducts:action(function(data){
     this.cartProducts=data;
   }),
@@ -31,7 +58,7 @@ export const cart = observable({
       post(url.addToCart(),params,false)
         .then(res=>{
           appActions.finishUpdateRequest();
-          thiz.setCartProducts(res);
+          // thiz.setCartProducts(res);
           resolve();
         })
         .catch(err=>{

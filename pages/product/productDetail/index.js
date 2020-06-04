@@ -114,6 +114,7 @@ Page({
       const params = { customer: { uid: userInfo.uid }, product: { uid: productId},number};
       this.addToCart(params)
         .then(()=>{
+          showToast("添加购物车成功");
           thiz.setData({
             showModal: false,
             number: 0,

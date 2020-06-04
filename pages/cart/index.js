@@ -1,6 +1,7 @@
 // pages/cart/index.js
 import { createStoreBindings } from 'mobx-miniprogram-bindings';
-import {user} from "../../mobx/user.js";
+import { user } from "../../mobx/user.js";
+import { cart } from "../../mobx/cart.js";
 
 Page({
 
@@ -17,21 +18,28 @@ Page({
   onLoad: function (options) {
     this.storeBindings = createStoreBindings(this, {
       store: user,
-      fields: ['phone'],
+      fields: ['phone','userInfo'],
     });
-
+    this.storeBindings = createStoreBindings(this, {
+      store: cart,
+      fields: ['cartProducts', 'byCartProducts','cartTotal'],
+      actions: ['fetchCart']
+    });
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    if(this.data.phone.length==0){
-      //未登录，跳转至登录页面
-      wx.redirectTo({
-        url: '../login/index',
-      })
-    }
+    this.fetchCart(17);
+    // if(this.data.phone.length==0){
+    //   //未登录，跳转至登录页面
+    //   wx.redirectTo({
+    //     url: '../login/index',
+    //   })
+    // } else {
+    //   this.fetchCart(this.data.userInfo.uid);
+    // }
   },
 
   /**

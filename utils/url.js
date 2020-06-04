@@ -31,5 +31,6 @@ export const url={
   fetchReservations: (boxId, startTime, endTime) => `${HOME}/reservations/${boxId}/${startTime}/${endTime}`,
   getShop:(shopId)=>`${HOME}/shop/${shopId}`,
   reserve:()=>`${HOME}/reserve`,
-  fetchBox:(boxId)=>`${HOME}/box/${boxId}`
+  fetchBox:(boxId)=>`${HOME}/box/${boxId}`,
+  fetchCart:(userId)=>`${HOME}/cart/${userId}`,
 } 

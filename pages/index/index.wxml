@@ -10,13 +10,6 @@
         <text class="cuIcon-search"></text>
         <input type="text" placeholder="搜索产品、包厢、文章" confirm-type="search"></input>
       </view>
-      <view class="action text-gray">
-        <navigator hover-class="none" url="../cart/index">
-          <view class="cuIcon-cart">
-            <view class="cu-tag badge" wx:if="{{cartTotal>0}}">{{cartTotal}}</view>
-          </view>
-        </navigator>
-      </view>
     </view>
   </view>
   <view id="article" style="margin-top:50px">
@@ -158,7 +151,7 @@
       </navigator>
     </view>
     <view class="cu-item arrow">
-      <navigator hover-class="none" url="../logs/logs" open-type="redirect">
+      <navigator hover-class="none" url="../cart/index">
         <button class="cu-btn content">
           <text class="cuIcon-cartfill text-red"></text>
           <text class="text-grey">购物车</text>

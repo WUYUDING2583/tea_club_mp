@@ -1,5 +1,7 @@
 {
   "pages": [
+    "pages/cart/index",
+    "pages/box/boxSlot/index",
     "pages/index/index",
     "pages/order/reservePreview/index",
     "pages/box/boxList/index",
@@ -17,9 +19,7 @@
     "pages/article/articleDetail/index",
     "pages/product/productDetail/index",
     "pages/product/productList/index",
-    "pages/cart/index",
-    "pages/box/boxDetail/index",
-    "pages/box/boxSlot/index"
+    "pages/box/boxDetail/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
