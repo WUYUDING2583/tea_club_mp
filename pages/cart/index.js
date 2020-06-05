@@ -10,7 +10,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    isManagement:false
   },
 
   /**
@@ -23,9 +23,34 @@ Page({
     });
     this.storeBindings = createStoreBindings(this, {
       store: cart,
-      fields: ['cartProducts', 'byCartProducts','cartTotal'],
-      actions: ['fetchCart','changeCartProductNumber']
+      fields: ['cartProducts', 'byCartProducts', 'cartTotal','isSelectAll'],
+      actions: ['fetchCart', 'changeCartProductNumber', 'check',"selectAll",'deleteCartItem']
     });
+  },
+  //删除购物车内容
+  _delete:function(){
+    this.deleteCartItem()
+      .then(()=>{
+        showToast("删除成功")
+      })
+      .catch(err=>{
+        showToast(err.error);
+      })
+  },
+  _check:function(e){
+    this.check(e.currentTarget.dataset.target);
+  },
+  //管理
+  manage:function(){
+    const {isManagement}=this.data
+    this.setData({
+      isManagement: !isManagement
+    })
+  },
+  //全选
+  _selectAll:function(){
+    const { isSelectAll}=this.data
+    this.selectAll(!isSelectAll)
   },
   //数量改变事件
   numberChange: function (e) {

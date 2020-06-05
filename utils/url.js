@@ -34,4 +34,5 @@ export const url={
   fetchBox:(boxId)=>`${HOME}/box/${boxId}`,
   fetchCart:(userId)=>`${HOME}/cart/${userId}`,
   changeCartProductNumber:()=>`${HOME}/cart/changeNumber`,
+  deleteCartItem:()=>`${HOME}/cart`,
 } 
