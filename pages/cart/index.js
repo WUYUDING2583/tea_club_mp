@@ -2,6 +2,7 @@
 import { createStoreBindings } from 'mobx-miniprogram-bindings';
 import { user } from "../../mobx/user.js";
 import { cart } from "../../mobx/cart.js";
+import { showToast } from "../../utils/request.js";
 
 Page({
 
@@ -23,8 +24,19 @@ Page({
     this.storeBindings = createStoreBindings(this, {
       store: cart,
       fields: ['cartProducts', 'byCartProducts','cartTotal'],
-      actions: ['fetchCart']
+      actions: ['fetchCart','changeCartProductNumber']
     });
+  },
+  //数量改变事件
+  numberChange: function (e) {
+    const { detail } = e;
+    const { number, option } = detail;
+    const {userInfo,byCartProducts}=this.data;
+    console.log("detail",detail)
+    this.changeCartProductNumber({uid:option,number,customer:{uid:17},product:{uid:byCartProducts[option].product.uid}})
+      .catch(err=>{
+        showToast(err.error);
+      })
   },
 
   /**

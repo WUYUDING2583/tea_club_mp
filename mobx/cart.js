@@ -22,6 +22,22 @@ export const cart = observable({
   },
 
   // actions
+  changeCartProductNumber:action(function(cartProduct){
+    return new Promise((resolve,reject)=>{
+      post(url.changeCartProductNumber(),cartProduct)
+        .then(res=>{
+          this.updateCartItemNumber(cartProduct);
+          resolve(res);
+        })
+        .catch(err=>{
+          console.log(err);
+          reject(err);
+        })
+    })
+  }),
+  updateCartItemNumber: action(function (cartProduct){
+    this.byCartProducts = { ...this.byCartProducts, [cartProduct.uid]: { ...this.byCartProducts[cartProduct.uid],number:cartProduct.number}}
+  }),
   fetchCart:action(function(userId){
     return new Promise((resolve,reject)=>{
       get(url.fetchCart(userId))
@@ -42,7 +58,7 @@ export const cart = observable({
     data.forEach(item=>{
       cartProducts.push(item.uid);
       if(!byCartProducts[item.uid]){
-        byCartProducts[item.uid]=item;
+        byCartProducts[item.uid] = { ...item, photo:`data:image/jpeg;base64,${item.product.photos[0].photo}`};
       }
     });
     this.cartProducts=cartProducts;

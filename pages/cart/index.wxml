@@ -14,5 +14,26 @@
     </view>
   </view>
 
-  
+  <view class="cu-card article" wx:for="{{cartProducts}}" wx:key="unique">
+    <view class="cu-item shadow">
+      <view class="title">
+        <view class="text-cut">{{byCartProducts[item].product.name}}</view>
+      </view>
+      <view class="content">
+        <image src="{{byCartProducts[item].photo}}" mode="aspectFill"></image>
+        <view class="desc">
+          <view class="text-content">
+            <view class="text-red margin-bottom">
+              <text wx:if="{{byCartProducts[item].product.price.ingot>0}}">{{byCartProducts[item].product.price.ingot*byCartProducts[item].number}}元宝</text>
+              <text wx:if="{{byCartProducts[item].product.price.credit>0}}">{{byCartProducts[item].product.price.credit*byCartProducts[item].number}}积分</text>
+            </view>
+            <cu-stepper min="1" bindchange="numberChange" option="{{item}}" number="{{byCartProducts[item].number}}"></cu-stepper>
+          </view>
+          <view class="flex justify-end">
+            <view class="margin-right" style="width:20px;height:20px;border-radius:20px;border:1px solid #8799a3;display:inline-block;"></view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
 </scroll-view>
