@@ -139,6 +139,14 @@ var convertTimestampToyyyMMdd=function(timestamp){
   return Y+M+D;
 }
 
+var orderTotalProductNumber=function(products){
+  var total=0;
+  for(var i=0;i<products.length;i++){
+    total+=products[i].number;
+  }
+  return total;
+}
+
 module.exports = {
   arrayLengthRandom: getArrayLengthRandom,
   dateFormat: dateFormat,
@@ -148,4 +156,5 @@ module.exports = {
   getNDayTimeString: getNDayTimeString,
   convertTimestampToHHMM: convertTimestampToHHMM,
   convertTimestampToyyyMMdd: convertTimestampToyyyMMdd,
+  orderTotalProductNumber: orderTotalProductNumber,
 }

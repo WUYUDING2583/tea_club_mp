@@ -22,6 +22,18 @@ export const user = observable({
   byAddresses:new Object(),
 
   // actions
+  payCart:action(function(order){
+    return new Promise((resolve,reject)=>{
+      post(url.payCart(),order)
+        .then(res=>{
+          resolve(res);
+        })
+        .catch(err=>{
+          console.log(err);
+          reject(err);
+        })
+    })
+  }),
   pay:action(function(userId,orderId){
     return new Promise((resolve,reject)=>{
       post(url.pay(userId,orderId),{})
