@@ -1,6 +1,7 @@
 // pages/address/addressList/index.js
 import {createStoreBindings} from 'mobx-miniprogram-bindings'
-import {user} from '../../../mobx/user';
+import { user } from '../../../mobx/user';
+import { shop } from '../../../mobx/shop';
 
 Page({
 
@@ -8,7 +9,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    select:false
+    select:false,
+    pageTitle:"我的收货地址"
   },
 
   /**
@@ -17,13 +19,33 @@ Page({
   onLoad: function (options) {
     const select=options.select=="true"?true:false;
     this.setData({
-      select
+      select,
+      pageTitle:"选择收货地址"
     })
     this.storeBindings = createStoreBindings(this, {
       store: user,
       fields: ['userInfo', 'phone','byAddresses'],
       actions: ['setUserInfo', 'setPhoneNumber', 'getUserInfoByPhone'],
-    }); 
+    });
+    this.storeBindings = createStoreBindings(this, {
+      store: shop,
+      fields: ['shops', 'byShops', 'shopNameList'],
+      actions: ['getShopNameList']
+    });
+
+    this.getShopNameList();
+  },
+  shopPickerChange(e) {
+    let pages = getCurrentPages();
+    let prePage = pages[pages.length - 2];
+    prePage.setData({
+      deliveryMode: "selfPick",
+      shopId: this.data.shops[e.detail.value],
+      addressId:null
+    })
+    wx.navigateBack({
+      delta: 1,
+    })
   },
   //选择地址
   selectAddress:function(e){
@@ -33,7 +55,9 @@ Page({
       let pages=getCurrentPages();
       let prePage=pages[pages.length-2];
       prePage.setData({
-        addressId: e.currentTarget.dataset.target
+        deliveryMode: "delivery",
+        addressId: e.currentTarget.dataset.target,
+        shopId:null
       })
       wx.navigateBack({
         delta: 1,

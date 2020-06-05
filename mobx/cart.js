@@ -11,6 +11,7 @@ export const cart = observable({
   // 数据字段
   cartProducts: new Array(),
   byCartProducts:new Object(),
+  byActivityRules:new Object(),
 
   // 计算属性
   get cartTotal() {
@@ -108,14 +109,27 @@ export const cart = observable({
   convertCartToPlainStructure:action(function(data){
     let cartProducts=new Array();
     let byCartProducts=new Object();
+    let byActivityRules=new Object();
     data.forEach(item=>{
       cartProducts.push(item.uid);
+      let activityRules=new Array();
+      item.product.activityRules.sort((a, b) => {//优先级数字越小等级越高
+        return a.activity.priority - b.activity.priority;
+      })
+      item.product.activityRules.forEach(item=>{
+        activityRules.push(item.uid);
+        if(!byActivityRules[item.uid]){
+          byActivityRules[item.uid]=item;
+        }
+      })
+      item.product.activityRules=activityRules;
       if(!byCartProducts[item.uid]){
         byCartProducts[item.uid] = { ...item, photo: `data:image/jpeg;base64,${item.product.photos[0].photo}`, checked:false};
       }
     });
     this.cartProducts=cartProducts;
     this.byCartProducts=byCartProducts;
+    this.byActivityRules=byActivityRules;
   }),
   setCartProducts:action(function(data){
     this.cartProducts=data;

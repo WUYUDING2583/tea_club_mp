@@ -1,15 +1,29 @@
 <!--pages/address/addressList/index.wxml-->
 <cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
   <view slot="backText">返回</view>
-  <view slot="content">我的收货地址</view>
+  <view slot="content">{{pageTitle}}</view>
 </cu-custom>
 <scroll-view style="height:100vh;">
   <navigator hover-class="none" url="../editAddress/index">
     <view class="text-center padding text-grey">添加收货地址</view>
   </navigator>
-  <view class="cu-list menu sm-border">
-    <view class="cu-item padding" wx:for="{{userInfo.addresses}}" bindtap="selectAddress" data-target="{{item}}">
-      <view class="content">
+
+  <view class="cu-bar bg-white solid-bottom margin-top">
+    <view class="action">
+      <text class="cuIcon-title text-orange "></text> 设为门店自提
+    </view>
+    <view class="action margin-right cu-form-group">
+      <picker bindchange="shopPickerChange" value="{{shopIndex}}" range="{{shopNameList}}">
+        <view class="picker">
+          {{shopIndex?shopNameList[shopIndex]:'选择门店'}}
+        </view>
+      </picker>
+    </view>
+  </view>
+
+  <view class="cu-list menu sm-border margin-top">
+    <view class="cu-item padding" wx:for="{{userInfo.addresses}}">
+      <view class="content" bindtap="selectAddress" data-target="{{item}}">
         <view class="text-lg">{{byAddresses[item].name}}
           <text class="text-grey margin-left text-sm">{{byAddresses[item].phone}}</text>
         </view>

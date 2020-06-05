@@ -16,12 +16,12 @@
             <text>{{byAddresses[addressId].name}}</text>
             <text class="sm">{{byAddresses[addressId].phone}}</text>
           </view>
-          <view class="text-gray text-sm flex justify-between" style="word-wrap:break-word; word-break:break-all;">
-            {{deliveryMode=='selfPick'?'门店自提 '+byShops[shopId].name:addressId==null?'您暂无收货地址，去添加':byAddresses[addressId].province+byAddresses[addressId].city+byAddresses[addressId].district+byAddresses[addressId].detail}}
-            <text class="cuIcon-info margin-lr-xs" wx:if="{{deliveryMode=='selfPick'}}">店家将在准备好货物后联系您</text>
+          <view class="text-gray {{deliveryMode=='selfPick'?'':'text-sm'}} flex justify-between" style="word-wrap:break-word; word-break:break-all;">
+            {{deliveryMode=='selfPick'?'门店自提 '+byShops[shopId].name:!addressId?'您暂无默认收货地址，去添加':byAddresses[addressId].province+byAddresses[addressId].city+byAddresses[addressId].district+byAddresses[addressId].detail}}
           </view>
+          <view class="cuIcon-info margin-lr-xs text-gray text-sm" wx:if="{{deliveryMode=='selfPick'}}">店家将在准备好货物后联系您</view>
         </view>
-        <view class="text-gray text-sm justify-right" wx:if="{{deliveryMode!='selfPick'}}">
+        <view class="text-gray text-sm justify-right">
           <text class="cuIcon-right margin-lr-xs lg"></text>
         </view>
       </view>
@@ -148,9 +148,9 @@
     </view>
     <view class="grid col-3 padding-sm">
       <view wx:for="{{checkbox}}" class="padding-xs" wx:key="{{index}}">
-        <button class="cu-btn blue lg block {{item.checked?'bg-blue':'line-blue'}}" bindtap="ChooseCheckbox" data-value="{{item.value}}" style="width:30vw;"> 
-        <input wx:if="{{item.name=='自定义'}}" placeholder="{{item.name}}" id="selfInputCharge" bindinput="chargeInput" type="number"></input>
-        <text wx:else>{{item.name}}</text>
+        <button class="cu-btn blue lg block {{item.checked?'bg-blue':'line-blue'}}" bindtap="ChooseCheckbox" data-value="{{item.value}}" style="width:30vw;">
+          <input wx:if="{{item.name=='自定义'}}" placeholder="{{item.name}}" id="selfInputCharge" bindinput="chargeInput" type="number"></input>
+          <text wx:else>{{item.name}}</text>
         </button>
       </view>
     </view>

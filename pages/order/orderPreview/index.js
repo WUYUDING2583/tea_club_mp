@@ -22,6 +22,7 @@ Page({
     modalName:"",
     errModal:false,
     charge:0,
+    deliveryMode:"delivery",
     checkbox: [{
       value: 50,
       name: '50元',
@@ -50,22 +51,14 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    const { productId, number } = options;
+    options.orderId=252;
     this.setData({
-      productId: options.productId.split(","),
-      number: options.number.split(","),
-      deliveryMode:options.deliveryMode,
-      shopId:options.shopId
+      orderId:options.orderId
     }); 
-    this.storeBindings = createStoreBindings(this, {
-      store: product,
-      fields: ['byProductPhotos','byProducts','byActivityRules'],
-      actions: ['fetchProduct'],
-    });
     this.storeBindings = createStoreBindings(this, {
       store: user,
       fields: ['userInfo', 'byAddresses'],
-      actions: ['charge','pay']
+      actions: ['charge', 'pay','getUserInfoByPhone']
     });
     this.storeBindings = createStoreBindings(this, {
       store: shop,
@@ -73,9 +66,12 @@ Page({
     });
     this.storeBindings = createStoreBindings(this, {
       store: order,
-      actions: ['placeOrder'],
+      fields: ['byOrders'],
+      actions: ['fetchOrder'],
     });
 
+    this.fetchOrder(options.orderId);
+    this.getUserInfoByPhone("15868859587");
     
   },
   _charge:function(){
@@ -131,10 +127,6 @@ Page({
   },
   //选择地址
   selectAddress:function(){
-    const {deliveryMode}=this.data;
-    if(deliveryMode=='selfPick'){
-      return;
-    }
     wx.navigateTo({
       url: '../../address/addressList/index?select=true',
     })
@@ -309,7 +301,6 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    this.calculateAmount();
     const {userInfo}=this.data;
     this.setData({
       addressId: userInfo.address

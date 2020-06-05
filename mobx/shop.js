@@ -11,11 +11,12 @@ export const shop = observable({
   // 数据字段
   shops: new Array(),
   byShops: new Object(),
+  shopNameList:new Array(),
 
   // 计算属性
-  get shopNameList() {
-    var shopNameList=new Array();
-    this.shops.forEach(uid=>{
+  get shopNameList(){
+    var shopNameList = new Array();
+    this.shops.forEach(uid => {
       shopNameList.push(this.byShops[uid].name);
     })
     return shopNameList;
@@ -85,7 +86,7 @@ export const shop = observable({
         shop.todayOpenHour = todayOpenHour;
       }
       if(!byShops[shop.uid]){
-        byShops[shop.uid] = { ...shop, photo: shop.photos.length>0?`data:image/jpeg;base64,${shop.photos[0].photo}`:null};
+        byShops[shop.uid] = { ...shop, photo: shop.photos!=null&&shop.photos.length>0?`data:image/jpeg;base64,${shop.photos[0].photo}`:null};
       }
     });
     this.shops=shops;

@@ -57,22 +57,7 @@ export const order = observable({
     return new Promise((resolve,reject)=>{
       post(url.placeOrder(),order)
         .then(res=>{
-          showToast("下单成功");
-          thiz.setOrder(res);
-          if (res.status.status == "unpay") {
-            //跳转到订单详情
-            wx.redirectTo({
-              url: `../orderDetail/index?orderId=${res.uid}`,
-            })
-          } else {
-            //返回首页
-            let pages = getCurrentPages();
-            setTimeout(function () {
-              wx.navigateBack({
-                delta: pages.length,
-              })
-            }, 2500)
-          }
+          resolve(res);
         })
         .catch(err=>{
           console.log(err);
