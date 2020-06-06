@@ -3,6 +3,9 @@
   <view slot="backText">返回</view>
   <view slot="content">订单结果</view>
 </cu-custom>
-<view class="bg-gradual-blue" style="width:100vw;height:100vh;">
-
+<view class="bg-gradual-blue text-center" style="width:100vw;height:100vh;">
+  <view style="height:30vh;width:100vw;" class="flex justify-center align-end">
+    <view class="text-xl margin">下单成功</view>
+  </view>
+  <button class="cu-btn round line-white" bindtap="showOrderDetail">查看订单详情</button>
 </view>
