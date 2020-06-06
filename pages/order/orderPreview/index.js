@@ -51,14 +51,14 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    options.orderId=253;
+    // options.orderId=253;
     this.setData({
       orderId:options.orderId
     }); 
     this.storeBindings = createStoreBindings(this, {
       store: user,
       fields: ['userInfo', 'byAddresses'],
-      actions: ['charge', 'payCart','getUserInfoByPhone']
+      actions: ['charge', 'payCart','getUserInfoByPhone','payCart']
     });
     this.storeBindings = createStoreBindings(this, {
       store: shop,
@@ -80,12 +80,9 @@ Page({
     this.charge(charge,userInfo.uid)
       .then(res=>{
         showToast("充值成功");
-        //跳转到订单详情
-        setTimeout(function(){
-          wx.redirectTo({
-            url: `../orderDetail/index?orderId=${res.uid}`,
-          })
-        },2000)
+        this.setData({
+          modalName:""
+        })
       })
       .catch(err=>{
 
@@ -146,6 +143,11 @@ Page({
     }
     console.log("order", order);
     this.payCart(order)
+      .then(res=>{
+        wx.redirectTo({
+          url: `../orderResult/index?orderId=${this.data.orderId}`,
+        })
+      })
       .catch(err=>{
         if(err.code==500700){
           this.setData({

@@ -35,4 +35,5 @@ export const url={
   fetchCart:(userId)=>`${HOME}/cart/${userId}`,
   changeCartProductNumber:()=>`${HOME}/cart/changeNumber`,
   deleteCartItem:()=>`${HOME}/cart`,
+  payCart:()=>`${HOME}/payCart`,
 } 

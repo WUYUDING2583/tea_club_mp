@@ -1,7 +1,8 @@
 {
   "pages": [
-    "pages/order/orderPreview/index",
+    "pages/order/orderResult/index",
     "pages/index/index",
+    "pages/order/orderPreview/index",
     "pages/cart/index",
     "pages/box/boxSlot/index",
     "pages/order/reservePreview/index",
