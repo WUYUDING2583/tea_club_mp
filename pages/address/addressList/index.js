@@ -32,8 +32,9 @@ Page({
       fields: ['shops', 'byShops', 'shopNameList'],
       actions: ['getShopNameList']
     });
-
-    this.getShopNameList();
+    if (select) {
+      this.getShopNameList();
+    }
   },
   shopPickerChange(e) {
     let pages = getCurrentPages();
@@ -47,10 +48,15 @@ Page({
       delta: 1,
     })
   },
+  //编辑地址
+  editAddress:function(e){
+    wx.navigateTo({
+      url: `../editAddress/index?addressId=${e.currentTarget.dataset.target}`,
+    })
+  },
   //选择地址
   selectAddress:function(e){
     const {select}=this.data;
-    console.log(typeof select)
     if(select){
       let pages=getCurrentPages();
       let prePage=pages[pages.length-2];

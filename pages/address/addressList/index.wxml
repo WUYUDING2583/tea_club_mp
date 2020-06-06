@@ -8,7 +8,7 @@
     <view class="text-center padding text-grey">添加收货地址</view>
   </navigator>
 
-  <view class="cu-bar bg-white solid-bottom margin-top">
+  <view class="cu-bar bg-white solid-bottom margin-top margin-bottom" wx:if="{{select}}">
     <view class="action">
       <text class="cuIcon-title text-orange "></text> 设为门店自提
     </view>
@@ -21,7 +21,7 @@
     </view>
   </view>
 
-  <view class="cu-list menu sm-border margin-top">
+  <view class="cu-list menu sm-border">
     <view class="cu-item padding" wx:for="{{userInfo.addresses}}">
       <view class="content" bindtap="selectAddress" data-target="{{item}}">
         <view class="text-lg">{{byAddresses[item].name}}
@@ -35,7 +35,7 @@
           <text class="margin-right text-gray">{{byAddresses[item].detail}}</text>
         </view>
       </view>
-      <view class="action padding text-center" style="width:15vw;">
+      <view class="action padding text-center" style="width:15vw;" bindtap="editAddress" data-target="{{item}}">
         <text class="text-blue">编辑</text>
       </view>
     </view>

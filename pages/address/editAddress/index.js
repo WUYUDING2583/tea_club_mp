@@ -2,6 +2,7 @@
 import { createStoreBindings } from 'mobx-miniprogram-bindings'
 import { user } from '../../../mobx/user';
 import { app as appActions } from "../../../mobx/app.js";
+import { showToast } from '../../../utils/request';
 
 Page({
 
@@ -13,22 +14,29 @@ Page({
     phone:"",
     region: ['浙江省', '杭州市', '西湖区'],
     detail:"",
-    isDefaultAddress:false
+    isDefaultAddress:false,
+    addressId:null
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    if (options.addressId){
+      this.setData({
+        addressId: options.addressId
+      })
+    }
     this.storeBindings = createStoreBindings(this, {
       store: user,
-      fields: ['userInfo', 'phone'],
-      actions: ['saveAddress'],
+      fields: ['userInfo','byAddresses'],
+      actions: ['saveAddress','fetchAddress'],
     });
     this.storeBindings = createStoreBindings(this, {
       store: appActions,
       fields: ['retrieveRequestQuantity'],
     }); 
+
 
   },
   RegionChange: function (e) {
@@ -57,15 +65,31 @@ Page({
     })
   },
   save:function(){
-    const { userInfo, name, phone, region, detail, isDefaultAddress}=this.data;
-    const params = { name, phone, detail, isDefaultAddress,province:region[0],city:region[1],district:region[2],customer:{uid:userInfo.uid}};
+    const { userInfo, name, phone, region, detail, isDefaultAddress,addressId}=this.data;
+    const params = { uid:addressId,name, phone, detail, isDefaultAddress,province:region[0],city:region[1],district:region[2],customer:{uid:userInfo.uid}};
     this.saveAddress(params);
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
+    const {addressId,byAddresses}=this.data;
+    if(addressId){
+      this.fetchAddress(addressId)
+        .then(() => {
+          this.setData({
+            name:byAddresses[addressId].name,
+            phone: byAddresses[addressId].phone,
+            region: [byAddresses[addressId].province, byAddresses[addressId].city, byAddresses[addressId].district],
+            detail: byAddresses[addressId].detail,
+            isDefaultAddress: byAddresses[addressId].isDefaultAddress,
+          })
+        })
+        .catch(err => {
+          showToast(err.error);
+        })
+    }
+    
   },
 
   /**

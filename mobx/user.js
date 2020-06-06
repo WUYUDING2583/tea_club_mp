@@ -22,6 +22,23 @@ export const user = observable({
   byAddresses:new Object(),
 
   // actions
+  fetchAddress:action(function(addressId){
+    const thiz=this;
+    return new Promise((resolve,reject)=>{
+      get(url.fetchAddress(addressId))
+        .then(res=>{
+          thiz.convertAddressToPlainStructure(res);
+          resolve();
+        })
+        .catch(err=>{
+          console.log(err);
+          reject(err);
+        })
+    })
+  }),
+  convertAddressToPlainStructure:action(function(data){
+    this.byAddresses={...this.byAddresses,[data.uid]:data};
+  }),
   payCart:action(function(order){
     return new Promise((resolve,reject)=>{
       post(url.payCart(),order)

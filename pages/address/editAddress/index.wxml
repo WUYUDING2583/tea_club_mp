@@ -6,11 +6,11 @@
 <form>
   <view class="cu-form-group">
     <view class="title">收货人</view>
-    <input bindinput="nameInput"></input>
+    <input bindinput="nameInput" value="{{name}}"></input>
   </view>
 	<view class="cu-form-group">
 		<view class="title">手机号码</view>
-		<input bindinput="phoneInput"></input>
+		<input bindinput="phoneInput" value="{{phone}}"></input>
 	</view>
   <view class="cu-form-group">
     <view class="title">所在地区</view>
@@ -22,11 +22,11 @@
   </view>
   <view class="cu-form-group align-start">
 		<view class="title">详细地址</view>
-		<textarea maxlength="-1" disabled="{{modalName!=null}}" bindinput="detailInput" placeholder="如道路、门牌号、小区、楼栋号、单元室等"></textarea>
+		<textarea maxlength="-1" disabled="{{modalName!=null}}" bindinput="detailInput" placeholder="如道路、门牌号、小区、楼栋号、单元室等" value="{{detail}}"></textarea>
 	</view>
 	<view class="cu-form-group">
 		<view class="title">设为默认地址</view>
-		<switch class="blue radius sm" bindchange="isDefaultChange"></switch>
+		<switch class="blue radius sm" bindchange="isDefaultChange" checked="{{isDefaultAddress}}"></switch>
 	</view>
 </form>
 <view class="flex padding justify-center">

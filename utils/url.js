@@ -37,4 +37,5 @@ export const url={
   deleteCartItem:()=>`${HOME}/cart`,
   payCart:()=>`${HOME}/payCart`,
   placeProductOrder:()=>`${HOME}/order/product`,
+  fetchAddress:(addressId)=>`${HOME}/address/${addressId}`
 } 
