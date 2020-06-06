@@ -104,6 +104,10 @@ Page({
       }
       products.push(orderProduct);
     })
+    if(products.length==0){
+      showToast("请选择商品");
+      return;
+    }
     let order = {
       customer: { uid: userInfo.uid },
       products,
@@ -112,7 +116,7 @@ Page({
     this.placeOrder(order)
       .then(res=>{
         wx.navigateTo({
-          url: `../order/cartOrderPreview/index?orderId=${res.uid}`,
+          url: `../order/orderPreview/index?orderId=${res.uid}`,
         })
       })
       .catch(err => {
@@ -125,6 +129,7 @@ Page({
    */
   onReady: function () {
     // this.fetchCart(17);
+    console.log("cart on ready");
     if(this.data.phone.length==0){
       //未登录，跳转至登录页面
       wx.redirectTo({
@@ -234,7 +239,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    
   },
 
   /**
@@ -256,7 +261,7 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    this.fetchCart(this.data.userInfo.uid);
   },
 
   /**

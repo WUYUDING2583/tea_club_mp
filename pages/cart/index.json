@@ -1,5 +1,6 @@
 {
   "usingComponents": {
     "cu-stepper": "../../components/cu-stepper/index"
-    }
+    },
+    "enablePullDownRefresh": true
 }

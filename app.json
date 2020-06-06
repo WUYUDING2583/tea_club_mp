@@ -2,7 +2,6 @@
   "pages": [
     "pages/index/index",
     "pages/order/orderResult/index",
-    "pages/order/cartOrderPreview/index",
     "pages/cart/index",
     "pages/box/boxSlot/index",
     "pages/order/reservePreview/index",
