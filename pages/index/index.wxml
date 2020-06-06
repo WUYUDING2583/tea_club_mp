@@ -123,10 +123,12 @@
   </view>
   <view class="cu-list menu sm-border card-menu margin-top">
     <view class="cu-item arrow">
+      <navigator hover-class="none" url="../order/orderList/index">
       <button class="cu-btn content">
         <text class="cuIcon-deliver text-grey"></text>
         <text class="text-grey">我的订单</text>
       </button>
+      </navigator>
     </view>
     <view class="cu-item arrow">
       <button class="cu-btn content">

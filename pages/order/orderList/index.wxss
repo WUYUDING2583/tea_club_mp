@@ -1,0 +1,19 @@
+/* pages/order/orderList/index.wxss */
+.swiper-tab{  
+    width: 100vw;  
+    border-bottom: 2rpx solid #eee;  
+    text-align: center;  
+    line-height: 80rpx;
+    background: #fff;
+    font-size: 14px;
+} 
+.swiper-tab-list{  
+  font-size: 29rpx;  
+    display: inline-block;  
+    width: 24vw;  
+    color: #333; 
+} 
+.on{ 
+  color: #0081ff;  
+  border-bottom: 5rpx solid #0081ff;
+}  

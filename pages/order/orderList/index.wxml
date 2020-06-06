@@ -1,0 +1,80 @@
+<!--pages/order/orderList/index.wxml-->
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">我的订单</view>
+</cu-custom>
+
+<view>
+  <view class="swiper-tab">
+    <view class="swiper-tab-list {{tab==0 ? 'on' : ''}}" data-current="0" bindtap="tab_click">全部</view>
+    <view class="bre swiper-tab-list {{tab==1 ? 'on' : ''}}" data-current="1" bindtap="tab_click">待付款</view>
+    <view class="swiper-tab-list {{tab==2 ? 'on' : ''}}" data-current="2" bindtap="tab_click">待发货</view>
+    <view class="swiper-tab-list {{tab==3 ? 'on' : ''}}" data-current="3" bindtap="tab_click">待收货</view>
+  </view>
+  <swiper current="{{tab}}" class="swiper-box" duration="300" style="height:100vh" bindchange="tab_slide">
+    <swiper-item >
+      <scroll-view scroll-y style="height:100%;">
+        <view wx:for="{{ordersAll}}" wx:key="unique">
+          <view class="cu-card case" wx:for="{{byOrdersAll[item].products}}" wx:key="unique">
+            <view class="cu-item shadow">
+              <view class="cu-list menu-avatar solid-bottom">
+                <view class="cu-item padding">
+                  <view class="cu-avatar lg" style="background-image:url({{item.product.photo}});"></view>
+                  <view class="content flex-sub">
+                    <view class="text-grey">{{item.product.name}}</view>
+                    <view class="text-gray text-sm flex justify-between">
+                      <text class="text-grey" wx:if="{{item.product.price.ingot>0}}">{{item.product.price.ingot}}元宝 </text>
+                      <text class="text-grey" wx:if="{{item.product.price.credit>0}}">{{item.product.price.credit}}积分</text>
+                      <view class="text-gray text-sm">
+                        <text>x {{item.number}}</text>
+                      </view>
+                    </view>
+                  </view>
+                </view>
+              </view>
+              <view class="cu-list menu sm-border">
+                <view class="cu-item">
+                  <view class="content">
+                    <text class="text-grey">订单备注</text>
+                  </view>
+                  <view class="action" style="width:50vw;">
+                    <input placeholder="可选，请与商家协商" bindinput="psInput"></input>
+                  </view>
+                </view>
+                <view class="cu-item">
+                  <view class="content">
+                    <text class="text-grey">活动</text>
+                  </view>
+                  <view class="action" style="width:50vw;">
+                    <text wx:if="{{item.activityRule.activityRuleType.uid==3}}">{{item.activityRule.activityRule1}}%折扣</text>
+                    <text wx:if="{{item.activityRule.activityRuleType.uid==2}}">满{{item.activityRule.activityRule1}}减{{item.activityRule.activityRule2}}元宝</text>
+                  </view>
+                </view>
+                <view class="cu-item">
+                  <view class="content"></view>
+                  <view class="action">
+                    共{{item.number}}件 小计：
+                    <text class="text-red" wx:if="{{item.product.price.ingot>0}}">{{item.product.price.ingot*item.number}}元宝 </text>
+                    <text class="text-red" wx:if="{{item.product.price.credit>0}}">{{item.product.price.credit*number[index]}}积分</text>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+    </swiper-item>
+
+    <swiper-item>
+      待付款
+    </swiper-item>
+
+    <swiper-item>
+      待发货
+    </swiper-item>
+
+    <swiper-item>
+      待收货
+    </swiper-item>
+  </swiper>
+</view>

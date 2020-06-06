@@ -10,6 +10,15 @@ export const order = observable({
   // 数据字段
   orders: new Array(),
   byOrders: new Object(),
+  ordersAll:new Array(),
+  byOrdersAll: new Object(),
+  orders_unpay: new Array(),
+  byOrders_unpay: new Object(),
+  orders_pyaed: new Array(),
+  byOrders_payed: new Object(),
+  orders_shipped: new Array(),
+  byOrders_shipped: new Object(),
+  
 
   // 计算属性
   get sum() {
@@ -17,6 +26,36 @@ export const order = observable({
   },
 
   // actions
+  fetchAll:action(function(page,userId){
+    return new Promise((resolve,reject)=>{
+      get(url.fetchAll(page,userId))
+        .then(res=>{
+          this.convertAllOrdersToPlainStructure(res);
+          resolve(res);
+        })
+        .catch(err=>{
+          console.log(err);
+          reject(err);
+        })
+    })
+  }),
+  convertAllOrdersToPlainStructure:action(function(data){
+    let ordersAll=new Array();
+    let byOrdersAll=new Object();
+    data.forEach(order=>{
+      if (this.ordersAll.indexOf(order.uid)==-1){
+        ordersAll.push(order.uid);
+      }
+      order.products.forEach((item) => {
+        item.product.photo = `data:image/jpeg;base64,${item.product.photos[0].photo}`;
+      })
+      if (!byOrdersAll[order.uid]){
+        byOrdersAll[order.uid]=order;
+      }
+    });
+    this.ordersAll=this.ordersAll.concat(ordersAll);
+    this.byOrdersAll={...this.byOrdersAll,...byOrdersAll};
+  }),
   reserve:action(function(order){
     return new Promise((resolve,reject)=>{
       post(url.reserve(),order)
