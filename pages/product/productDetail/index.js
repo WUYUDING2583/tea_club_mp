@@ -20,8 +20,6 @@ Page({
     ColorList: app.globalData.ColorList,
     showModal:false,
     number:0,
-    deliveryMode:null,
-    shopIndex:null
   },
 
   /**
@@ -59,16 +57,6 @@ Page({
 
   },
 
-  //选择配送方式
-  selectDelivery:function(e){
-    this.setData({
-      deliveryMode:e.currentTarget.dataset.target
-    })
-    if (e.currentTarget.dataset.target =='selfPick'){
-      //获取门店列表
-      this.getShopNameList();
-    }
-  },
   //步进器change事件
   changeNumber:function(e){
     const {detail}=e;
@@ -86,13 +74,6 @@ Page({
     })
   },
 
-//门店选择器change事件
-  shopPickerChange(e) {
-    console.log(e);
-    this.setData({
-      shopIndex: e.detail.value
-    })
-  },
 
   hideModal: function (e) {
     this.setData({
@@ -124,28 +105,14 @@ Page({
         })
     }else{
       //购买
-      const { deliveryMode,shopIndex}=this.data;
-      if (deliveryMode==null){
-        showToast('请选择配送方式');
-        return;
-      }
-      if (deliveryMode=='selfPick'){
-        if(shopIndex==null){
-          showToast('请选择门店');
-          return;
-        }
-      }
-      const shopId=this.data.shops[shopIndex]||"";
       let productIdArray=[productId];
       let numberArray=[number];
       wx.navigateTo({
-        url: `../../order/orderPreview/index?productId=${productIdArray}&number=${numberArray}&deliveryMode=${deliveryMode}&shopId=${shopId}`,
+        url: `../productOrderPreview/index?productId=${productIdArray}&number=${numberArray}`,
         success: function (res) { 
           thiz.setData({
             showModal: false,
             number: 0,
-            deliveryMode: null,
-            shopIndex: null
           })
         },
       })

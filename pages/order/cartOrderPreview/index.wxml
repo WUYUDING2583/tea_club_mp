@@ -16,44 +16,37 @@
             <text>{{byAddresses[addressId].name}}</text>
             <text class="sm">{{byAddresses[addressId].phone}}</text>
           </view>
-          <view class="text-gray text-sm flex justify-between" style="word-wrap:break-word; word-break:break-all;">
-            {{deliveryMode=='selfPick'?'门店自提 '+byShops[shopId].name:addressId==null?'您暂无收货地址，去添加':byAddresses[addressId].province+byAddresses[addressId].city+byAddresses[addressId].district+byAddresses[addressId].detail}}
-            <text class="cuIcon-info margin-lr-xs" wx:if="{{deliveryMode=='selfPick'}}">店家将在准备好货物后联系您</text>
+          <view class="text-gray {{deliveryMode=='selfPick'?'':'text-sm'}} flex justify-between" style="word-wrap:break-word; word-break:break-all;">
+            {{deliveryMode=='selfPick'?'门店自提 '+byShops[shopId].name:!addressId?'您暂无默认收货地址，去添加':byAddresses[addressId].province+byAddresses[addressId].city+byAddresses[addressId].district+byAddresses[addressId].detail}}
           </view>
+          <view class="cuIcon-info margin-lr-xs text-gray text-sm" wx:if="{{deliveryMode=='selfPick'}}">店家将在准备好货物后联系您</view>
         </view>
-        <view class="text-gray text-sm justify-right" wx:if="{{deliveryMode!='selfPick'}}">
+        <view class="text-gray text-sm justify-right">
           <text class="cuIcon-right margin-lr-xs lg"></text>
         </view>
       </view>
     </view>
   </view>
 </view>
-<view class="cu-card case" wx:for="{{productId}}">
+
+<view class="cu-card case" wx:for="{{byOrders[orderId].products}}">
   <view class="cu-item shadow">
     <view class="cu-list menu-avatar solid-bottom">
       <view class="cu-item padding">
-        <view class="cu-avatar lg" style="background-image:url({{byProducts[item].photo}});"></view>
+        <view class="cu-avatar lg" style="background-image:url({{item.product.photo}});"></view>
         <view class="content flex-sub">
-          <view class="text-grey">{{byProducts[item].name}}</view>
+          <view class="text-grey">{{item.product.name}}</view>
           <view class="text-gray text-sm flex justify-between">
-            <text class="text-grey" wx:if="{{byProducts[item].price.ingot>0}}">{{byProducts[item].price.ingot}}元宝 </text>
-            <text class="text-grey" wx:if="{{byProducts[item].price.credit>0}}">{{byProducts[item].price.credit}}积分</text>
+            <text class="text-grey" wx:if="{{item.product.price.ingot>0}}">{{item.product.price.ingot}}元宝 </text>
+            <text class="text-grey" wx:if="{{item.product.price.credit>0}}">{{item.product.price.credit}}积分</text>
             <view class="text-gray text-sm">
-              <text>x {{number[index]}}</text>
+              <text>x {{item.number}}</text>
             </view>
           </view>
         </view>
       </view>
     </view>
     <view class="cu-list menu sm-border">
-      <view class="cu-item">
-        <view class="content">
-          <text class="text-grey">购买数量</text>
-        </view>
-        <view class="action" style="width:30vw;">
-          <cu-stepper min="1" max="{{byProducts[item].storage}}" option="{{index}}" number="{{number[index]}}" bindchange="numberChange"></cu-stepper>
-        </view>
-      </view>
       <view class="cu-item">
         <view class="content">
           <text class="text-grey">订单备注</text>
@@ -63,35 +56,34 @@
         </view>
       </view>
       <view class="cu-item">
+        <view class="content">
+          <text class="text-grey">活动</text>
+        </view>
+        <view class="action" style="width:50vw;">
+          <text wx:if="{{item.activityRule.activityRuleType.uid==3}}">{{item.activityRule.activityRule1}}%折扣</text>
+           <text wx:if="{{item.activityRule.activityRuleType.uid==2}}">满{{item.activityRule.activityRule1}}减{{item.activityRule.activityRule2}}元宝</text>
+        </view>
+      </view>
+      <view class="cu-item">
         <view class="content"></view>
         <view class="action">
-          共{{number}}件 小计：
-          <text class="text-red" wx:if="{{byProducts[item].price.ingot>0}}">{{byProducts[item].price.ingot*number[index]}}元宝 </text>
-          <text class="text-red" wx:if="{{byProducts[item].price.credit>0}}">{{byProducts[item].price.credit*number[index]}}积分</text>
+          共{{item.number}}件 小计：
+          <text class="text-red" wx:if="{{item.product.price.ingot>0}}">{{item.product.price.ingot*item.number}}元宝 </text>
+          <text class="text-red" wx:if="{{item.product.price.credit>0}}">{{item.product.price.credit*number[index]}}积分</text>
         </view>
       </view>
     </view>
   </view>
 </view>
-<view class="cu-list menu sm-border card-menu" wx:for="{{productId}}">
-  <view class="cu-item arrow" wx:for="{{byProducts[item].activityRules}}" wx:key="unique" bindtap="showActivity" data-target="{{item}}" wx:if="{{tool.applicableForActivity(byActivityRules[item].activityApplyForCustomerTypes,userInfo.customerType)}}">
-    <view class="content">
-      <text class="text-grey ">{{byActivityRules[item].activityRuleType.name}}</text>
-    </view>
-    <view class="action ">
-      <text wx:if="{{byActivityRules[item].activityRuleType.uid==3}}">{{byActivityRules[item].activityRule1}}%折扣</text>
-      <text wx:if="{{byActivityRules[item].activityRuleType.uid==2}}">购物满{{byActivityRules[item].activityRule1}}{{byActivityRules[item].activityRule2.operation=='plus'?'赠':'减'}}{{byActivityRules[item].activityRule2.number}}{{byActivityRules[item].activityRule2.currency}}</text>
-    </view>
-  </view>
-</view>
+
 <view class="cu-bar bg-white tabbar border shop padding " style="position:fixed;bottom:0px;width:100vw; ">
   <view class="action "></view>
   <view class="action " style="width:80vw; ">
-    共{{number}}件,合计:
-    <text class="text-red text-lg margin-right " wx:if="{{ingot>0}}">{{ingot}}元宝</text>
-    <text class="text-red text-lg margin-right " wx:if="{{credit>0}}">{{credit}}积分</text>
-    <text class="text-red text-lg margin-right " wx:if="{{credit==0&&ingot==0}}">0</text>
-    <button class="cu-btn bg-blue round shadow-blur " style="width:35%; " bindtap="_placeOrder">提交订单</button>
+    共{{tool.orderTotalProductNumber(byOrders[orderId].products)}}件,合计:
+    <text class="text-red text-lg margin-right " wx:if="{{byOrders[orderId].amount.ingot>0}}">{{byOrders[orderId].amount.ingot}}元宝</text>
+    <text class="text-red text-lg margin-right " wx:if="{{byOrders[orderId].amount.credit>0}}">{{byOrders[orderId].amount.credit}}积分</text>
+    <text class="text-red text-lg margin-right " wx:if="{{byOrders[orderId].amount.credit==0&&byOrders[orderId].amount.ingot==0}}">0</text>
+    <button class="cu-btn bg-blue round shadow-blur " style="width:35%; " bindtap="_payCart">提交订单</button>
   </view>
 </view>
 <view class="cu-modal bottom-modal {{showModal?'show':''}}">
@@ -148,9 +140,9 @@
     </view>
     <view class="grid col-3 padding-sm">
       <view wx:for="{{checkbox}}" class="padding-xs" wx:key="{{index}}">
-        <button class="cu-btn blue lg block {{item.checked?'bg-blue':'line-blue'}}" bindtap="ChooseCheckbox" data-value="{{item.value}}" style="width:30vw;"> 
-        <input wx:if="{{item.name=='自定义'}}" placeholder="{{item.name}}" id="selfInputCharge" bindinput="chargeInput" type="number"></input>
-        <text wx:else>{{item.name}}</text>
+        <button class="cu-btn blue lg block {{item.checked?'bg-blue':'line-blue'}}" bindtap="ChooseCheckbox" data-value="{{item.value}}" style="width:30vw;">
+          <input wx:if="{{item.name=='自定义'}}" placeholder="{{item.name}}" id="selfInputCharge" bindinput="chargeInput" type="number"></input>
+          <text wx:else>{{item.name}}</text>
         </button>
       </view>
     </view>

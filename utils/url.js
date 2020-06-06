@@ -36,4 +36,5 @@ export const url={
   changeCartProductNumber:()=>`${HOME}/cart/changeNumber`,
   deleteCartItem:()=>`${HOME}/cart`,
   payCart:()=>`${HOME}/payCart`,
+  placeProductOrder:()=>`${HOME}/order/product`,
 } 

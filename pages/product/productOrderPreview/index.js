@@ -18,32 +18,6 @@ Page({
     ingot: 0,
     credit: 0,
     addressId: null,
-    errMsg: "",
-    modalName: "",
-    errModal: false,
-    charge: 0,
-    checkbox: [{
-      value: 50,
-      name: '50元',
-      checked: false,
-    }, {
-      value: 100,
-      name: '100元',
-      checked: false,
-    }, {
-      value: 200,
-      name: '200元',
-      checked: false,
-    }, {
-      value: 500,
-      name: '500元',
-      checked: false,
-    }, {
-      name: "自定义",
-      checked: false,
-      value: -1,
-
-    }],
   },
 
   /**
@@ -73,55 +47,14 @@ Page({
     });
     this.storeBindings = createStoreBindings(this, {
       store: order,
-      actions: ['placeProductOrder'],
+      actions: ['placeProductOrder','placeOrder'],
     });
 
 
   },
-  _charge: function () {
-    const { charge, userInfo } = this.data;
-    const thiz = this;
-    this.charge(charge, userInfo.uid)
-      .then(res => {
-        showToast("充值成功");
-        //跳转到订单详情
-        setTimeout(function () {
-          wx.redirectTo({
-            url: `../orderDetail/index?orderId=${res.uid}`,
-          })
-        }, 2000)
-      })
-      .catch(err => {
-
-      })
-  },
-  chargeInput: function (e) {
-    let items = this.data.checkbox;
-    for (let i = 0, lenI = items.length; i < lenI; ++i) {
-      if (items[i].name == "自定义") {
-        items[i].value = e.detail.value;
-      }
-    }
+  hideModal:function(){
     this.setData({
-      charge: e.detail.value,
-      checkbox: items
-    })
-  },
-  ChooseCheckbox(e) {
-    let items = this.data.checkbox;
-    let values = e.currentTarget.dataset.value;
-    this.setData({
-      charge: values
-    })
-    for (let i = 0, lenI = items.length; i < lenI; ++i) {
-      if (items[i].value == values) {
-        items[i].checked = true;
-      } else {
-        items[i].checked = false;
-      }
-    }
-    this.setData({
-      checkbox: items
+      showModal:false
     })
   },
   psInput: function (e) {
@@ -252,7 +185,7 @@ Page({
   },
 
   _placeOrder: function () {
-    const { productId, number, userInfo, byProducts, addressId, byActivityRules, activityBitmap, ps, deliveryMode, shopId } = this.data;
+    const { productId, number, userInfo, byProducts, byActivityRules, activityBitmap } = this.data;
     let products = new Array();
     productId.forEach((uid, index) => {
       let activityRuleId = null;
@@ -273,18 +206,12 @@ Page({
     let order = {
       customer: { uid: userInfo.uid },
       products,
-      buyerPs: ps,
-    }
-    if (deliveryMode == "selfPick") {
-      order = { ...order, deliverMode: deliveryMode, placeOrderWay: { uid: shopId } }
-    } else {
-      order = { ...order, deliverMode: deliveryMode, address: { uid: addressId } };
     }
     console.log("order", order);
-    this.placeProductOrder(order)
-      .then(res=>{
+    this.placeOrder(order)
+      .then(res => {
         wx.redirectTo({
-          url: `../orderDetail/index?orderId=${res.uid}`
+          url: `../../order/cartOrderPreview/index?orderId=${res.uid}`
         })
       })
       .catch(err => {
@@ -295,19 +222,6 @@ Page({
           })
         }
       })
-  },
-  hideModal: function () {
-    this.setData({
-      modalName: ""
-    })
-    wx.redirectTo({
-      url: '../orderDetail/index'
-    })
-  },
-  showModal: function (e) {
-    this.setData({
-      modalName: e.currentTarget.dataset.target
-    })
   },
 
   /**

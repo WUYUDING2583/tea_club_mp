@@ -48,11 +48,10 @@ var dateFormat = function(timestamp, format) {
 }
 
 var applicableForActivity = function(activityApplyForCustomerTypes, customerType) {
-  var list = activityApplyForCustomerTypes.filter(function(item) {
-    return item.uid == customerType.uid
-  });
-  if (list.length > 0) {
-    return true;
+  for (var i = 0; i < activityApplyForCustomerTypes.length;i++){
+    if (activityApplyForCustomerTypes[i].uid==customerType.uid){
+      return true;
+    }
   }
   return false;
 }

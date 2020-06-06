@@ -112,7 +112,7 @@ Page({
     this.placeOrder(order)
       .then(res=>{
         wx.navigateTo({
-          url: `../order/orderPreview/index?orderId=${res.uid}`,
+          url: `../order/cartOrderPreview/index?orderId=${res.uid}`,
         })
       })
       .catch(err => {

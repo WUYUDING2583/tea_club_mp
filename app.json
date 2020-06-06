@@ -1,8 +1,8 @@
 {
   "pages": [
-    "pages/order/orderResult/index",
     "pages/index/index",
-    "pages/order/orderPreview/index",
+    "pages/order/orderResult/index",
+    "pages/order/cartOrderPreview/index",
     "pages/cart/index",
     "pages/box/boxSlot/index",
     "pages/order/reservePreview/index",
@@ -20,7 +20,9 @@
     "pages/article/articleDetail/index",
     "pages/product/productDetail/index",
     "pages/product/productList/index",
-    "pages/box/boxDetail/index"
+    "pages/box/boxDetail/index",
+    "pages/order/orderPreview/index",
+    "pages/product/productOrderPreview/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

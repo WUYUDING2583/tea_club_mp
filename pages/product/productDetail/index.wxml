@@ -103,31 +103,6 @@
             </view>
           </view>
         </view>
-        <view class="cu-bar bg-white solid-bottom margin-top" wx:if="{{modalType=='purchase'}}">
-          <view class="action">
-            <text class="cuIcon-title text-orange "></text> 配送方式
-          </view>
-          <view class="action margin-right">
-            <view class="margin-right">
-              <button class="cu-btn {{deliveryMode=='selfPick'?'bg-blue text-white':'text-grey'}}" data-target="selfPick" bindtap="selectDelivery" style="width:25vw;">门店自提</button>
-            </view>
-            <view>
-              <button class="cu-btn {{deliveryMode=='delivery'?'bg-blue text-white':'text-grey'}}" data-target="delivery" bindtap="selectDelivery" style="width:25vw;">邮递</button>
-            </view>
-          </view>
-        </view>
-        <view class="cu-bar bg-white solid-bottom margin-top" wx:if="{{deliveryMode=='selfPick'}}">
-          <view class="action">
-            <text class="cuIcon-title text-orange "></text> 请选择门店
-          </view>
-          <view class="action margin-right cu-form-group">
-            <picker bindchange="shopPickerChange" value="{{shopIndex}}" range="{{shopNameList}}">
-              <view class="picker">
-                {{shopIndex?shopNameList[shopIndex]:'选择门店'}}
-              </view>
-            </picker>
-          </view>
-        </view>
         <view class="cu-bar bg-white solid-bottom margin-top">
           <view class="action">
             <text class="cuIcon-title text-orange "></text> 购买数量

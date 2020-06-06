@@ -51,6 +51,22 @@ export const order = observable({
           console.log(err)
         })
     })
+  }), 
+  placeProductOrder: action(function (order) {
+    const thiz = this;
+    return new Promise((resolve, reject) => {
+      post(url.placeProductOrder(), order)
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          console.log(err);
+          if (err.code == 500700) {
+            //余额不足
+            reject(err);
+          }
+        })
+    })
   }),
   placeOrder: action(function (order) {
     const thiz=this;
