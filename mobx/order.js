@@ -18,6 +18,8 @@ export const order = observable({
   byOrdersPayed: new Object(),
   ordersShipped: new Array(),
   byOrdersShipped: new Object(),
+  ordersRefund:new Array(),
+  byOrdersRefund:new Object(),
   
 
   // 计算属性
@@ -39,6 +41,19 @@ export const order = observable({
         })
     })
 
+  }),
+  fetchRefund:action(function(page,userId){
+    return new Promise((resolve, reject) => {
+      get(url.fetchRefund(page, userId))
+        .then(res => {
+          this.convertStatusOrdersToPlainStructure(res, 'refund');
+          resolve(res);
+        })
+        .catch(err => {
+          console.log(err);
+          reject(err);
+        })
+    })
   }),
   fetchPayed: action(function (page, userId) {
     return new Promise((resolve, reject) => {
@@ -105,22 +120,72 @@ export const order = observable({
         byOrders[order.uid]=order;
       }
     });
+    const thiz=this;
     switch(status){
       case 'all':
+        orders =orders.filter(uid=>{
+          let noRepeat=true;
+          thiz.ordersAll.forEach(item=>{
+            if(uid==item){
+              noRepeat=false;
+            }
+          })
+          return noRepeat;
+        })
         this.ordersAll = this.ordersAll.concat(orders);
         this.byOrdersAll = { ...this.byOrdersAll, ...byOrders };
         break;
       case 'unpay':
+        orders =orders.filter(uid => {
+          let noRepeat = true;
+          thiz.ordersUnpay.forEach(item => {
+            if (uid == item) {
+              noRepeat = false;
+            }
+          })
+          return noRepeat;
+        })
         this.ordersUnpay = this.ordersUnpay.concat(orders);
         this.byOrdersUnpay = { ...this.byOrdersUnpay, ...byOrders };
         break;
       case 'payed':
+        orders =orders.filter(uid => {
+          let noRepeat = true;
+          thiz.ordersPayed.forEach(item => {
+            if (uid == item) {
+              noRepeat = false;
+            }
+          })
+          return noRepeat;
+        })
         this.ordersPayed = this.ordersPayed.concat(orders);
         this.byOrdersPayed = { ...this.byOrdersPayed, ...byOrders };
         break;
       case 'shipped':
+        orders=orders.filter(uid => {
+          let noRepeat = true;
+          thiz.ordersShipped.forEach(item => {
+            if (uid == item) {
+              noRepeat = false;
+            }
+          })
+          return noRepeat;
+        })
         this.ordersShipped = this.ordersShipped.concat(orders);
         this.byOrdersShipped = { ...this.byOrdersShipped, ...byOrders };
+        break;
+      case 'refund':
+        orders =orders.filter(uid => {
+          let noRepeat = true;
+          thiz.ordersRefund.forEach(item => {
+            if (uid == item) {
+              noRepeat = false;
+            }
+          })
+          return noRepeat;
+        })
+        this.ordersRefund = this.ordersRefund.concat(orders);
+        this.byOrdersRefund = { ...this.byOrdersRefund, ...byOrders };
         break;
     }
   }),
@@ -132,6 +197,18 @@ export const order = observable({
         })
         .catch(err=>{
           console.log(err);
+          reject(err)
+        })
+    })
+  }),
+  refund: action(function (orderId, refundReason) {
+    return new Promise((resolve, reject) => {
+      post(url.refund(orderId), refundReason)
+        .then(res => {
+          this.removeOrder(orderId);
+          resolve(res)
+        })
+        .catch(err => {
           reject(err)
         })
     })

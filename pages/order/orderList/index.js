@@ -16,12 +16,14 @@ Page({
   data: {
     StatusBar: app.globalData.StatusBar,
     CustomBar: app.globalData.CustomBar,
-    tab:0,//0 所有类型订单，1 待付款订单，2 代发货订单，3 待收货订单
+    tab:0,//0 所有类型订单，1 待付款订单，2 代发货订单，3 待收货订单，4 退款/售后
     page_all:0,
     page_unpay:0,
     page_payed:0,
     page_shipped:0,
+    page_refund:0,
     isBottom:false,
+    operationOrderId:null,
     errMsg:"",
     modalName: "",
     charge: 0,
@@ -47,6 +49,8 @@ Page({
       value: -1,
 
     }],
+    RefundReason: app.globalData.RefundReason,
+    refundIndex:null,
   },
 
   /**
@@ -60,16 +64,18 @@ Page({
     });
     this.storeBindings = createStoreBindings(this, {
       store: order,
-      fields: ['ordersAll','byOrdersAll','ordersUnpay','byOrdersUnpay','ordersPayed','byOrdersPayed','ordersShipped','byOrdersShipped'],
-      actions: ['fetchAll', 'resetOrderList', 'fetchPayed', 'fetchUnpay', 'fetchShipped', 'cancelOrder','removeOrder']
+      fields: ['ordersAll','byOrdersAll','ordersUnpay','byOrdersUnpay','ordersPayed','byOrdersPayed','ordersShipped','byOrdersShipped','ordersRefund','byOrdersRefund'],
+      actions: ['fetchAll', 'resetOrderList', 'fetchPayed', 'fetchUnpay', 'fetchShipped', 'cancelOrder', 'removeOrder','fetchRefund','refund']
     });
 
   },
   fetchOrders: function (tab,isPageZero=false) {
-    const { page_all, page_payed, page_shipped, page_unpay, userInfo } = this.data;
+    const { page_all, page_payed, page_shipped, page_unpay,
+      page_refund, userInfo } = this.data;
     let currentPage=0;
     switch(tab){
       case 1:
+      case "1":
         currentPage = isPageZero ? 0 : page_unpay + 1;
         this.fetchUnpay(currentPage,userInfo.uid)
           .then((res) => {
@@ -89,6 +95,7 @@ Page({
           })
         break;
       case 2:
+      case "2":
         currentPage = isPageZero ? 0 : page_payed + 1;
         this.fetchPayed(currentPage, userInfo.uid)
           .then((res) => {
@@ -108,6 +115,7 @@ Page({
           })
         break;
       case 3:
+      case "3":
         currentPage = isPageZero ? 0 : page_shipped + 1;
         this.fetchShipped(currentPage, userInfo.uid)
           .then((res) => {
@@ -121,6 +129,26 @@ Page({
               if (!isPageZero) {
                 this.setData({
                   page_shipped: page_shipped + 1
+                })
+              }
+            }
+          })
+        break;
+      case 4:
+      case "4":
+        currentPage = isPageZero ? 0 : page_refund + 1;
+        this.fetchRefund(currentPage, userInfo.uid)
+          .then((res) => {
+            if (res.length == 0) {
+              //没有了
+              showToast("没有更多了...");
+              this.setData({
+                isBottom: true,
+              })
+            } else {
+              if (!isPageZero) {
+                this.setData({
+                  page_refund: page_refund + 1
                 })
               }
             }
@@ -155,13 +183,14 @@ Page({
       page_unpay: 0,
       page_payed: 0,
       page_shipped: 0,
+      page_refund: 0,
     });
     this.resetOrderList();
     this.fetchOrders(e.detail.current,true);
   },
   tab_click: function (e) {//点击tab切换
     var that = this;
-    if (that.data.tab === e.target.dataset.current) {
+    if (that.data.tab == e.target.dataset.current) {
       return false;
     } else {
       that.setData({
@@ -171,9 +200,10 @@ Page({
         page_unpay: 0,
         page_payed: 0,
         page_shipped: 0,
+        page_refund: 0,
       })
-      this.resetOrderList();
-      this.fetchOrders(e.detail.current, true);
+      that.resetOrderList();
+      that.fetchOrders(e.target.dataset.current, true);
     }
   },
   scrollToBottom:function(){
@@ -186,13 +216,13 @@ Page({
   hideModal:function(){
     this.setData({
       modalName: "",
-      cancelOrderId: null
+      operationOrderId: null
     });
   },
-  showCancelModal: function (e) {
+  showOrderModal: function (e) {
     this.setData({
-      modalName: "cancelOrderModal",
-      cancelOrderId: e.currentTarget.dataset.target
+      modalName: e.currentTarget.dataset.modal,
+      operationOrderId: e.currentTarget.dataset.target
     });
     
   },
@@ -246,12 +276,12 @@ Page({
       })
   },
   _cancelOrder:function(e){
-    const { cancelOrderId } = this.data;
+    const { operationOrderId } = this.data;
     this.setData({
       modalName: "",
-      cancelOrderId: null
+      operationOrderId: null
     });
-    this.cancelOrder(cancelOrderId)
+    this.cancelOrder(operationOrderId)
       .then(res=>{
         showToast("取消订单成功");
       })
@@ -278,11 +308,36 @@ Page({
       })
     
   },
-  _refund:function(e){
-    e.currentTarget.dataset.target
+
+  _refund:function(){
+    const { refundIndex, RefundReason, userInfo, operationOrderId } = this.data;
+    this.setData({
+      modalName: "",
+      operationOrderId: null,
+      refundIndex:null,
+    });
+    if(refundIndex==null){
+      showToast("请选择退款理由");
+      return;
+    }
+    this.refund(operationOrderId,RefundReason[refundIndex])
+      .then(res=>{
+        showToast("申请退款成功，等待系统管理员审核");
+      })
+      .catch(err=>{
+        showToast(err.error);
+      })
   },
+
   _showTrackInfo:function(e){
     e.currentTarget.dataset.target
+  },
+
+  PickerChange(e) {
+    console.log(e);
+    this.setData({
+      refundIndex: e.detail.value
+    })
   },
 
 

@@ -10,6 +10,7 @@
   <view class="bre swiper-tab-list {{tab==1 ? 'on' : ''}}" data-current="1" bindtap="tab_click">待付款</view>
   <view class="swiper-tab-list {{tab==2 ? 'on' : ''}}" data-current="2" bindtap="tab_click">待发货</view>
   <view class="swiper-tab-list {{tab==3 ? 'on' : ''}}" data-current="3" bindtap="tab_click">待收货</view>
+  <view class="swiper-tab-list {{tab==4 ? 'on' : ''}}" data-current="4" bindtap="tab_click">退款/售后</view>
 </view>
 
 <swiper current="{{tab}}" class="swiper-box" duration="300" style="height:calc(100vh - {{CustomBar}}px - 50px)" bindchange="tab_slide">
@@ -48,6 +49,15 @@
       <view class="text-grey text-center" wx:if="{{isBottom}}">没有啦.....</view>
     </scroll-view>
   </swiper-item>
+
+  <swiper-item>
+    <scroll-view scroll-y style="height:100%;" bindscrolltolower="scrollToBottom">
+      <view wx:for="{{ordersRefund}}" wx:key="unique">
+        <template is="orderCard" data="{{...byOrdersRefund[item]}}"></template>
+      </view>
+      <view class="text-grey text-center" wx:if="{{isBottom}}">没有啦.....</view>
+    </scroll-view>
+  </swiper-item>
 </swiper>
 
 <view class="cu-modal {{modalName=='cancelOrderModal'?'show':''}}">
@@ -62,9 +72,37 @@
       确认取消订单？
     </view>
     <view class="cu-bar bg-white justify-end">
-      <view class="action flex justify-between"style="width:100%;">
+      <view class="action flex justify-between" style="width:100%;">
         <button class="cu-btn line-green text-green" style="width:40%" bindtap="hideModal">取消</button>
         <button class="cu-btn bg-green margin-left" style="width:40%" bindtap="_cancelOrder">确定</button>
+      </view>
+    </view>
+  </view>
+</view>
+
+
+<view class="cu-modal {{modalName=='refundOrderModal'?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white justify-end">
+      <view class="content">退款</view>
+      <view class="action" bindtap="hideModal">
+        <text class="cuIcon-close text-red"></text>
+      </view>
+    </view>
+    <view class="padding-xl bg-white">
+      <view class="cu-form-group margin-top">
+        <view class="title">退款理由</view>
+        <picker bindchange="PickerChange" value="{{refundIndex}}" range="{{RefundReason}}">
+          <view class="picker">
+            {{refundIndex?RefundReason[refundIndex]:'请选择退款理由'}}
+          </view>
+        </picker>
+      </view>
+    </view>
+    <view class="cu-bar bg-white justify-end">
+      <view class="action flex justify-between" style="width:100%;">
+        <button class="cu-btn line-green text-green" style="width:40%" bindtap="hideModal">取消</button>
+        <button class="cu-btn bg-green margin-left" style="width:40%" bindtap="_refund">确定</button>
       </view>
     </view>
   </view>

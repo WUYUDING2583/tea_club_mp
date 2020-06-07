@@ -30,6 +30,12 @@ App({
   },
   globalData: {
     Phone:"",
+    RefundReason:[
+      '数量拍错了',
+      '收货地址拍错',
+      '暂时不需要了',
+      '其他'
+    ],
     ColorList: [{
         title: '嫣红',
         name: 'red',

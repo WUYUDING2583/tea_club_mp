@@ -52,14 +52,14 @@
             <text wx:if="{{amount.credit>0}}">{{amount.credit}}积分</text>
           </view>
         </view>
-        <view class="cu-item">
+        <view class="cu-item" wx:if="{{status.status!='requestRefund'&&status.status!='refunded'}}">
           <view class="content text-green"></view>
           <view class="action flex justify-between" style="width:60%;" wx:if="{{status.status=='unpay'}}">
-            <button class="cu-btn round line-green" style="width:45%;" bindtap="showCancelModal" data-target="{{uid}}">取消订单</button>
+            <button class="cu-btn round line-green" style="width:45%;" bindtap="showOrderModal" data-modal="cancelOrderModal" data-target="{{uid}}">取消订单</button>
             <button class="cu-btn round line-blue" style="width:45%;"bindtap="_pay" data-target="{{uid}}">付款</button>
           </view>
           <view class="action" style="width:30%;" wx:elif="{{status.status=='payed'}}">
-            <button class="cu-btn round line-green" style="width:100%;"bindtap="_refund" data-target="{{uid}}">退款</button>
+            <button class="cu-btn round line-green" style="width:100%;"bindtap="showOrderModal" data-modal="refundOrderModal" data-target="{{uid}}">退款</button>
           </view>
           <view class="action flex justify-between" style="width:60%;" wx:elif="{{status.status=='shipped'}}">
             <button class="cu-btn round line-green" style="width:45%;"bindtap="_refund" data-target="{{uid}}">退货</button>

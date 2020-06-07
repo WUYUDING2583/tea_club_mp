@@ -42,5 +42,7 @@ export const url={
   fetchUnpay: (page, userId) => `${HOME}/orders/unpay/${page}/${userId}`,
   fetchPayed: (page, userId) => `${HOME}/orders/payed/${page}/${userId}`,
   fetchShipped: (page, userId) => `${HOME}/orders/shipped/${page}/${userId}`,
+  fetchRefund: (page, userId) => `${HOME}/orders/refund/${page}/${userId}`,
+  refund: (orderId) => `${HOME}/order/refund/${orderId}`,
 
 } 
