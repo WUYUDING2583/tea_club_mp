@@ -38,5 +38,9 @@ export const url={
   payCart:()=>`${HOME}/payCart`,
   placeProductOrder:()=>`${HOME}/order/product`,
   fetchAddress:(addressId)=>`${HOME}/address/${addressId}`,
-  fetchAll:(page, userId)=>`${HOME}/orders/all/${page}/${userId}`,
+  fetchAll: (page, userId) => `${HOME}/orders/all/${page}/${userId}`,
+  fetchUnpay: (page, userId) => `${HOME}/orders/unpay/${page}/${userId}`,
+  fetchPayed: (page, userId) => `${HOME}/orders/payed/${page}/${userId}`,
+  fetchShipped: (page, userId) => `${HOME}/orders/shipped/${page}/${userId}`,
+
 } 

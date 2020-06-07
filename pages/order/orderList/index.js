@@ -6,6 +6,7 @@ import { user } from "../../../mobx/user.js";
 import { showToast } from "../../../utils/request.js";
 
 var common=require("../../../utils/util.js");
+var app=getApp()
 
 Page({
 
@@ -19,6 +20,9 @@ Page({
     page_payed:0,
     page_shipped:0,
     isBottom:false,
+    modalName:"",
+    StatusBar: app.globalData.StatusBar,
+    CustomBar: app.globalData.CustomBar,
   },
 
   /**
@@ -32,10 +36,91 @@ Page({
     });
     this.storeBindings = createStoreBindings(this, {
       store: order,
-      fields: ['ordersAll','byOrdersAll'],
-      actions: ['fetchAll']
+      fields: ['ordersAll','byOrdersAll','ordersUnpay','byOrdersUnpay','ordersPayed','byOrdersPayed','ordersShipped','byOrdersShipped'],
+      actions: ['fetchAll', 'resetOrderList', 'fetchPayed', 'fetchUnpay', 'fetchShipped','cancelOrder']
     });
 
+  },
+  fetchOrders: function (tab,isPageZero=false) {
+    const { page_all, page_payed, page_shipped, page_unpay, userInfo } = this.data;
+    let currentPage=0;
+    switch(tab){
+      case 1:
+        currentPage = isPageZero ? 0 : page_unpay + 1;
+        this.fetchUnpay(currentPage,userInfo.uid)
+          .then((res) => {
+            if (res.length == 0) {
+              //没有了
+              showToast("没有更多了...");
+              this.setData({
+                isBottom: true,
+              })
+            } else {
+              if (!isPageZero) {
+                this.setData({
+                  page_unpay: page_unpay + 1
+                })
+              }
+            }
+          })
+        break;
+      case 2:
+        currentPage = isPageZero ? 0 : page_payed + 1;
+        this.fetchPayed(currentPage, userInfo.uid)
+          .then((res) => {
+            if (res.length == 0) {
+              //没有了
+              showToast("没有更多了...");
+              this.setData({
+                isBottom: true,
+              })
+            } else {
+              if (!isPageZero) {
+                this.setData({
+                  page_payed: page_payed + 1
+                })
+              }
+            }
+          })
+        break;
+      case 3:
+        currentPage = isPageZero ? 0 : page_shipped + 1;
+        this.fetchShipped(currentPage, userInfo.uid)
+          .then((res) => {
+            if (res.length == 0) {
+              //没有了
+              showToast("没有更多了...");
+              this.setData({
+                isBottom: true,
+              })
+            } else {
+              if (!isPageZero) {
+                this.setData({
+                  page_shipped: page_shipped + 1
+                })
+              }
+            }
+          })
+        break;
+      default:
+        currentPage = isPageZero ? 0 : page_all + 1;
+        this.fetchAll(currentPage, userInfo.uid)
+          .then((res) => {
+            if (res.length == 0) {
+              //没有了
+              showToast("没有更多了...");
+              this.setData({
+                isBottom: true,
+              })
+            } else {
+              if (!isPageZero) {
+                this.setData({
+                  page_all: page_all + 1
+                })
+              }
+            }
+          })
+    }
   },
   tab_slide: function (e) {//滑动切换tab 
     var that = this;
@@ -47,6 +132,8 @@ Page({
       page_payed: 0,
       page_shipped: 0,
     });
+    this.resetOrderList();
+    this.fetchOrders(e.detail.current,true);
   },
   tab_click: function (e) {//点击tab切换
     var that = this;
@@ -61,24 +148,63 @@ Page({
         page_payed: 0,
         page_shipped: 0,
       })
+      this.resetOrderList();
+      this.fetchOrders(e.detail.current, true);
     }
   },
-  fetchAll:function(page){
-    const {userInfo}=this.data;
-    this.fetchAll(page,userInfo.uid)
+  scrollToBottom:function(){
+    console.log("scrollToBottom");
+    const { tab, isBottom } = this.data;
+    if (!isBottom) {
+      this.fetchOrders(tab, false);
+    }
+  },
+  hideModal:function(){
+    this.setData({
+      modalName: "",
+      cancelOrderId: null
+    });
+  },
+  showCancelModal: function (e) {
+    this.setData({
+      modalName: "cancelOrderModal",
+      cancelOrderId: e.currentTarget.dataset.target
+    });
+    
+  },
+  _cancelOrder:function(e){
+    const { cancelOrderId } = this.data;
+    this.setData({
+      modalName: "",
+      cancelOrderId: null
+    });
+    this.cancelOrder(cancelOrderId)
       .then(res=>{
-
+        showToast("取消订单成功");
       })
       .catch(err=>{
-        showToast(err.error)
+        showToast(err.error);
       })
   },
+  _pay:function(e){
+    e.currentTarget.dataset.target
+  },
+  _refund:function(e){
+    e.currentTarget.dataset.target
+  },
+  _showTrackInfo:function(e){
+    e.currentTarget.dataset.target
+  },
+
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
     const { page_all, userInfo } = this.data; 
+    this.setData({
+      userInfo:{...userInfo,uid:17}
+    })
     this.fetchAll(page_all, 17);
     // this.fetchAll(page_all,userInfo.uid);
   },
@@ -116,35 +242,6 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-    console.log("on reach bottom");
-    const {tab,page_all,page_payed,page_shipped,page_unpay,userInfo}=this.data;
-    // let currentPage=page_all;
-    // switch(tab){
-    //   case 1:
-    //     currentPage=page_unpay;
-    //     break;
-    //   case 2:
-    //     currentPage=page_payed;
-    //     break;
-    //   case 3:
-    //     currentPage=page_shipped;
-    //     break;
-    //   default:
-    //     currentPage=page_all;
-    // }
-    this.fetchAll(page_all+1,17)
-      .then((res)=>{
-        if(res.length==0){
-          //没有了
-          this.setData({
-            isBottom:true,
-          })
-        }else{
-          this.setData({
-            page_all:page_all+1
-          })
-        }
-      })
   },
 
   /**

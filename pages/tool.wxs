@@ -146,6 +146,17 @@ var orderTotalProductNumber=function(products){
   return total;
 }
 
+var getOrderStatus=function(status){
+  switch(status){
+    case 'unpay':
+      return "等待买家付款";
+    case 'payed':
+      return '等待卖家发货';
+    case 'shipped':
+      return '等待买家收货';
+  }
+}
+
 module.exports = {
   arrayLengthRandom: getArrayLengthRandom,
   dateFormat: dateFormat,
@@ -156,4 +167,5 @@ module.exports = {
   convertTimestampToHHMM: convertTimestampToHHMM,
   convertTimestampToyyyMMdd: convertTimestampToyyyMMdd,
   orderTotalProductNumber: orderTotalProductNumber,
+  getOrderStatus: getOrderStatus,
 }
