@@ -1,6 +1,5 @@
 // pages/order/orderList/index.js
 import { createStoreBindings } from 'mobx-miniprogram-bindings';
-import { product } from "../../../mobx/product.js";
 import { order } from "../../../mobx/order.js";
 import { user } from "../../../mobx/user.js";
 import { showToast } from "../../../utils/request.js";

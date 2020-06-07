@@ -44,5 +44,9 @@ export const url={
   fetchShipped: (page, userId) => `${HOME}/orders/shipped/${page}/${userId}`,
   fetchRefund: (page, userId) => `${HOME}/orders/refund/${page}/${userId}`,
   refund: (orderId) => `${HOME}/order/refund/${orderId}`,
+  fetchUnpayReservations: (page, userId) => `${HOME}/reservations/unpay/${page}/${userId}`,
+  fetchPayedReservations: (page, userId) => `${HOME}/reservations/payed/${page}/${userId}`,
+  fetchCompleteReservations: (page, userId) => `${HOME}/reservations/complete/${page}/${userId}`,
+  fetchRefundReservations: (page, userId) => `${HOME}/reservations/refund/${page}/${userId}`,
 
 } 

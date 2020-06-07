@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/order/reservationList/index",
     "pages/index/index",
     "pages/order/orderList/index",
     "pages/order/orderResult/index",

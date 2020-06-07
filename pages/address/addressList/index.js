@@ -20,7 +20,7 @@ Page({
     const select=options.select=="true"?true:false;
     this.setData({
       select,
-      pageTitle:"选择收货地址"
+      pageTitle: select?"选择收货地址":"我的收货地址"
     })
     this.storeBindings = createStoreBindings(this, {
       store: user,

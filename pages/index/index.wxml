@@ -1,8 +1,9 @@
-<cu-custom bgColor="bg-gradual-blue" isBack="{{false}}">
-  <view slot="backText">返回</view>
-  <view slot="content">研茶</view>
-</cu-custom>
 <scroll-view id="main" scroll-y class="DrawerPage {{drawerVisible?'show':''}}">
+  <cu-custom bgColor="bg-gradual-blue" isBack="{{false}}">
+    <view slot="backText">返回</view>
+    <view slot="content">研茶</view>
+  </cu-custom>
+  
   <view class="box">
     <view class="cu-bar search bg-white fixed" style="top:{{CustomBar}}px">
       <view class="cu-avatar round" style="background-image:url({{userInfo.avatarUrl}});" bindtap="showDrawer"></view>
@@ -124,17 +125,19 @@
   <view class="cu-list menu sm-border card-menu margin-top">
     <view class="cu-item arrow">
       <navigator hover-class="none" url="../order/orderList/index">
-      <button class="cu-btn content">
-        <text class="cuIcon-deliver text-grey"></text>
-        <text class="text-grey">我的订单</text>
-      </button>
+        <button class="cu-btn content">
+          <text class="cuIcon-deliver text-grey"></text>
+          <text class="text-grey">我的订单</text>
+        </button>
       </navigator>
     </view>
     <view class="cu-item arrow">
-      <button class="cu-btn content">
-        <text class="cuIcon-send text-olive"></text>
-        <text class="text-grey">我的预约</text>
-      </button>
+      <navigator hover-class="none" url="../order/reservationList/index">
+        <button class="cu-btn content">
+          <text class="cuIcon-send text-olive"></text>
+          <text class="text-grey">我的预约</text>
+        </button>
+      </navigator>
     </view>
     <view class="cu-item arrow">
       <navigator hover-class="none" url="../address/addressList/index?select=false">

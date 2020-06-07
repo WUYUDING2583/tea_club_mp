@@ -157,7 +157,10 @@ var getOrderStatus=function(status){
     case 'requestRefund':
       return "退款中,等待管理员审核";
     case 'refunded':
+    case 'refund':
       return "退款成功";
+    case 'complete':
+     return "预约已完成";
   }
 }
 
