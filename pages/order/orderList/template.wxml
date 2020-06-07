@@ -62,8 +62,8 @@
             <button class="cu-btn round line-green" style="width:100%;"bindtap="showOrderModal" data-modal="refundOrderModal" data-target="{{uid}}">退款</button>
           </view>
           <view class="action flex justify-between" style="width:60%;" wx:elif="{{status.status=='shipped'}}">
-            <button class="cu-btn round line-green" style="width:45%;"bindtap="_refund" data-target="{{uid}}">退货</button>
-            <button class="cu-btn round line-blue" style="width:45%;"bindtap="_showTrackInfo" data-target="{{uid}}">查看物流</button>
+            <button class="cu-btn round line-green" style="width:45%;"bindtap="showOrderModal" data-modal="refundOrderModal" data-target="{{uid}}">退货</button>
+            <button class="cu-btn round line-blue" style="width:45%;"bindtap="showOrderModal" data-modal="trackInfoModal" data-target="{{uid}}">查看物流</button>
           </view>
         </view>
       </view>

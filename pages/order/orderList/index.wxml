@@ -46,7 +46,13 @@
       <view wx:for="{{ordersShipped}}" wx:key="unique">
         <template is="orderCard" data="{{...byOrdersShipped[item]}}"></template>
       </view>
-      <view class="text-grey text-center" wx:if="{{isBottom}}">没有啦.....</view>
+      <view class="text-grey text-center padding-xl" style="height:100%;" wx:if="{{ordersShipped.length==0}}">
+        <view class="cu-avatar xl round margin-top-xl">
+          <view class="cuIcon-discover text-blue margin"></view>
+        </view>
+        <view class="text-lg margin">您没有相关的订单</view>
+      </view>
+      <view class="text-grey text-center" wx:elif="{{isBottom}}">没有啦.....</view>
     </scroll-view>
   </swiper-item>
 
@@ -55,7 +61,8 @@
       <view wx:for="{{ordersRefund}}" wx:key="unique">
         <template is="orderCard" data="{{...byOrdersRefund[item]}}"></template>
       </view>
-      <view class="text-grey text-center" wx:if="{{isBottom}}">没有啦.....</view>
+      <view class="text-grey text-center" wx:if="{{ordersRefund.length==0}}">您没有相关的订单</view>
+      <view class="text-grey text-center" wx:elif="{{isBottom}}">没有啦.....</view>
     </scroll-view>
   </swiper-item>
 </swiper>
@@ -144,6 +151,21 @@
           <text wx:else>{{item.name}}</text>
         </button>
       </view>
+    </view>
+  </view>
+</view>
+
+
+<view class="cu-modal {{modalName=='trackInfoModal'?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white justify-end">
+      <view class="content">物流信息</view>
+      <view class="action" bindtap="hideModal">
+        <text class="cuIcon-close text-red"></text>
+      </view>
+    </view>
+    <view class="padding-xl">
+      {{trackInfo}}
     </view>
   </view>
 </view>

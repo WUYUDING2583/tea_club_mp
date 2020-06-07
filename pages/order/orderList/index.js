@@ -216,7 +216,8 @@ Page({
   hideModal:function(){
     this.setData({
       modalName: "",
-      operationOrderId: null
+      operationOrderId: null,
+      trackInfo:""
     });
   },
   showOrderModal: function (e) {
@@ -224,6 +225,20 @@ Page({
       modalName: e.currentTarget.dataset.modal,
       operationOrderId: e.currentTarget.dataset.target
     });
+    if (e.currentTarget.dataset.modal == "trackInfoModal") {
+      let trackInfo="";
+      const {byOrdersShipped}=this.data;
+      if (byOrdersShipped[e.currentTarget.dataset.target].trackInfo.companyName==null){
+        trackInfo += `配送人联系方式：${byOrdersShipped[e.currentTarget.dataset.target].trackInfo.phone}\n`;
+        trackInfo += `配送人信息：${byOrdersShipped[e.currentTarget.dataset.target].trackInfo.description}`
+      } else {
+        trackInfo += `物流公司：${byOrdersShipped[e.currentTarget.dataset.target].trackInfo.companyName}\n`;
+        trackInfo += `物流单号：${byOrdersShipped[e.currentTarget.dataset.target].trackInfo.trackingId}`;
+      }
+      this.setData({
+        trackInfo
+      })
+    }
     
   },
   chargeInput: function (e) {
