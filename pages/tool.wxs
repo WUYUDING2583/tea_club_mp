@@ -155,7 +155,7 @@ var getOrderStatus=function(status){
     case 'shipped':
       return '等待买家收货';
     case 'requestRefund':
-      return "等待管理员审核";
+      return "退款中,等待管理员审核";
     case 'refunded':
       return "退款成功";
   }

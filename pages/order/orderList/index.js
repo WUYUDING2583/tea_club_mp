@@ -361,11 +361,7 @@ Page({
    */
   onReady: function () {
     const { page_all, userInfo } = this.data; 
-    this.setData({
-      userInfo:{...userInfo,uid:17}
-    })
-    this.fetchAll(page_all, 17);
-    // this.fetchAll(page_all,userInfo.uid);
+    this.fetchAll(page_all,userInfo.uid);
   },
 
   /**
