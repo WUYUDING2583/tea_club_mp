@@ -69,3 +69,43 @@
     </view>
   </view>
 </view>
+
+
+<view class="cu-modal {{modalName=='errModal'?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white justify-end">
+      <view class="content">余额不足</view>
+      <view class="action" bindtap="hideModal">
+        <text class="cuIcon-close text-red"></text>
+      </view>
+    </view>
+    <view class="padding-xl">
+      <view>{{errMsg}}</view>
+      <view>是否充值？</view>
+    </view>
+    <view class="cu-bar bg-white flex justify-around ">
+      <view class="action ">
+        <button class="cu-btn line-green text-green" style="width:30vw;" bindtap="hideModal">取消</button>
+        <view style="width:10vw;"></view>
+        <button class="cu-btn bg-green " style="width:30vw;" bindtap="showModal" data-target="chargeModal">确定</button>
+      </view>
+    </view>
+  </view>
+</view>
+
+<view class="cu-modal bottom-modal {{modalName=='chargeModal'?'show':''}}" bindtap="hideModal">
+  <view class="cu-dialog" catchtap>
+    <view class="cu-bar bg-white">
+      <view class="action text-blue" bindtap="hideModal">取消</view>
+      <view class="action text-green" bindtap="_charge">确定</view>
+    </view>
+    <view class="grid col-3 padding-sm">
+      <view wx:for="{{checkbox}}" class="padding-xs" wx:key="{{index}}">
+        <button class="cu-btn blue lg block {{item.checked?'bg-blue':'line-blue'}}" bindtap="ChooseCheckbox" data-value="{{item.value}}" style="width:30vw;">
+          <input wx:if="{{item.name=='自定义'}}" placeholder="{{item.name}}" id="selfInputCharge" bindinput="chargeInput" type="number"></input>
+          <text wx:else>{{item.name}}</text>
+        </button>
+      </view>
+    </view>
+  </view>
+</view>

@@ -14,15 +14,39 @@ Page({
    * 页面的初始数据
    */
   data: {
+    StatusBar: app.globalData.StatusBar,
+    CustomBar: app.globalData.CustomBar,
     tab:0,//0 所有类型订单，1 待付款订单，2 代发货订单，3 待收货订单
     page_all:0,
     page_unpay:0,
     page_payed:0,
     page_shipped:0,
     isBottom:false,
-    modalName:"",
-    StatusBar: app.globalData.StatusBar,
-    CustomBar: app.globalData.CustomBar,
+    errMsg:"",
+    modalName: "",
+    charge: 0,
+    checkbox: [{
+      value: 50,
+      name: '50元',
+      checked: false,
+    }, {
+      value: 100,
+      name: '100元',
+      checked: false,
+    }, {
+      value: 200,
+      name: '200元',
+      checked: false,
+    }, {
+      value: 500,
+      name: '500元',
+      checked: false,
+    }, {
+      name: "自定义",
+      checked: false,
+      value: -1,
+
+    }],
   },
 
   /**
@@ -32,12 +56,12 @@ Page({
     this.storeBindings = createStoreBindings(this, {
       store: user,
       fields: ['userInfo',],
-      actions: ['pay']
+      actions: ['pay','charge']
     });
     this.storeBindings = createStoreBindings(this, {
       store: order,
       fields: ['ordersAll','byOrdersAll','ordersUnpay','byOrdersUnpay','ordersPayed','byOrdersPayed','ordersShipped','byOrdersShipped'],
-      actions: ['fetchAll', 'resetOrderList', 'fetchPayed', 'fetchUnpay', 'fetchShipped','cancelOrder']
+      actions: ['fetchAll', 'resetOrderList', 'fetchPayed', 'fetchUnpay', 'fetchShipped', 'cancelOrder','removeOrder']
     });
 
   },
@@ -172,6 +196,55 @@ Page({
     });
     
   },
+  chargeInput: function (e) {
+    let items = this.data.checkbox;
+    for (let i = 0, lenI = items.length; i < lenI; ++i) {
+      if (items[i].name == "自定义") {
+        items[i].value = e.detail.value;
+      }
+    }
+    this.setData({
+      charge: e.detail.value,
+      checkbox: items
+    })
+  },
+  ChooseCheckbox(e) {
+    let items = this.data.checkbox;
+    let values = e.currentTarget.dataset.value;
+    this.setData({
+      charge: values
+    })
+    for (let i = 0, lenI = items.length; i < lenI; ++i) {
+      if (items[i].value == values) {
+        items[i].checked = true;
+      } else {
+        items[i].checked = false;
+      }
+    }
+    this.setData({
+      checkbox: items
+    })
+  },
+  showModal:function(e){
+    this.setData({
+      modalName: e.currentTarget.dataset.target
+    })
+  },
+
+  _charge: function () {
+    const { charge, userInfo } = this.data;
+    const thiz = this;
+    this.charge(charge, userInfo.uid)
+      .then(res => {
+        showToast("充值成功");
+        this.setData({
+          modalName: ""
+        })
+      })
+      .catch(err => {
+        showToast(err.error);
+      })
+  },
   _cancelOrder:function(e){
     const { cancelOrderId } = this.data;
     this.setData({
@@ -187,7 +260,23 @@ Page({
       })
   },
   _pay:function(e){
-    e.currentTarget.dataset.target
+    const {userInfo}=this.data;
+    this.pay(userInfo.uid, e.currentTarget.dataset.target)
+      .then(res=>{
+        this.removeOrder(e.currentTarget.dataset.target);
+        showToast("付款成功");
+      })
+      .catch(err=>{
+        if (err.code == 500700) {
+          this.setData({
+            modalName: "errModal",
+            errMsg: err.error
+          })
+        }else{
+          showToast(err.error)
+        }
+      })
+    
   },
   _refund:function(e){
     e.currentTarget.dataset.target

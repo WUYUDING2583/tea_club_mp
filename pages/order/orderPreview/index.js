@@ -170,6 +170,8 @@ Page({
             modalName:"errModal",
             errMsg:err.error
           })
+        } else {
+          showToast(err.error)
         }
       })
   },
