@@ -10,7 +10,10 @@ Page({
    * 页面的初始数据
    */
   data: {
-    page:0
+    page:0,
+    modalName: "",
+    noticeId: null,
+    isBottom:false
   },
 
   /**
@@ -25,9 +28,68 @@ Page({
     this.storeBindings = createStoreBindings(this, {
       store: notice,
       fields: ['notifications','byNotifications'],
-      actions: ['fetchNotifications']
+      actions: ['fetchNotifications', 'readNotification','clearUnRead']
     });
 
+  },
+
+  scrollToBottom:function(){
+    const { page, isBottom,userInfo}=this.data;
+    if(!isBottom){
+      this.fetchNotifications(userInfo.uid,page+1)
+        .then(res=>{
+          if (res.length == 0) {
+            //没有了
+            showToast("没有更多了...");
+            this.setData({
+              isBottom: true,
+            })
+          } else {
+              this.setData({
+                page: page + 1
+              })
+          }
+        })
+        .catch(err=>{
+          showToast(err.error);
+        })
+    }
+  },
+
+  _clearUnRead:function(){
+    const {userInfo,notifications,byNotifications}=this.data;
+    const unreadNotice=notifications.filter(uid=>!byNotifications[uid].read);
+    if(unreadNotice.length>0){
+      this.clearUnRead(userInfo.uid)
+        .catch(err => {
+          showToast(err.error);
+        })
+    }else{
+      wx.showToast({
+        title: '全都是已读的哦',
+        icon: 'none',
+        duration: 1500,
+        mask: true,
+      })
+    }
+  },
+
+  _readNotification:function(e){
+    this.setData({
+      modalName:"noticeModal",
+      noticeId: e.currentTarget.dataset.target
+    });
+    this.readNotification(e.currentTarget.dataset.target)
+      .catch(err=>{
+        showToast(err.error);
+      })
+  },
+
+  hideModal:function(){
+    this.setData({
+      modalName:"",
+      noticeId:null
+    })
   },
 
   /**
@@ -35,17 +97,10 @@ Page({
    */
   onReady: function () {
     const {userInfo,page}=this.data;
-    this.setData({
-      userInfo:{uid:17}
-    })
-    this.fetchNotifications(17, page)
-      .catch(err => {
+    this.fetchNotifications(userInfo.uid,page)
+      .catch(err=>{
         showToast(err.error);
       })
-    // this.fetchNotifications(userInfo.uid,page)
-    //   .catch(err=>{
-    //     showToast(err.error);
-    //   })
   },
 
   /**

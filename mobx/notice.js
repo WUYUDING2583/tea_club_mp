@@ -1,5 +1,5 @@
 import { configure, observable, action } from 'mobx-miniprogram';
-import { get, post, _delete } from "../utils/request.js";
+import { get, post, _delete,put } from "../utils/request.js";
 import { url } from "../utils/url.js";
 
 // 不允许在动作外部修改状态
@@ -17,6 +17,47 @@ export const notice = observable({
   },
 
   // actions
+  clearUnRead:action(function(userId){
+    return new Promise((resolve,reject)=>{
+      put(url.clearUnRead(userId),{})
+        .then(res=>{
+          this.setAllRead();
+          resolve(res);
+        })
+        .catch(err=>{
+          console.log(err);
+          reject(err);
+        })
+    })
+  }),
+  setAllRead:action(function(){
+    let byNotifications=new Object();
+    this.notifications.forEach(uid=>{
+      if(!byNotifications[uid]){
+        byNotifications[uid]={...this.byNotifications[uid],read:true}
+      }
+    });
+    this.byNotifications=byNotifications;
+  }),
+  readNotification:action(function(noticeId){
+    return new Promise((resolve,reject)=>{
+      put(url.readNotification(noticeId),{})
+        .then(res=>{
+          this.setNotificationRead(noticeId);
+          resolve(res);
+        })
+        .catch(err=>{
+          console.log(err);
+          reject(res);
+        })
+    })
+  }),
+  setNotificationRead:action(function(noticeId){
+    this.byNotifications={
+      ...this.byNotifications,
+      [noticeId]:{...this.byNotifications[noticeId],read:true}
+    }
+  }),
   fetchUnreadNotifications: action(function (userId) {
     return new Promise((resolve, reject) => {
       get(url.fetchUnreadNotifications(userId))

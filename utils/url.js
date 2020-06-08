@@ -51,5 +51,6 @@ export const url={
   reservationRefund:(orderId)=>`${HOME}/reservations/refund/${orderId}`,
   fetchNotifications:(userId,page)=>`${HOME}/notice/${userId}/${page}`,
   fetchUnreadNotifications: (userId) => `${HOME}/notice/unread/${userId}`,
-
+  readNotification:(noticeId)=>`${HOME}/notice/${noticeId}`,
+  clearUnRead:(userId)=>`${HOME}/notice/clear/${userId}`,
 } 

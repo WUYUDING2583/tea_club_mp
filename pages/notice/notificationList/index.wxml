@@ -1,7 +1,7 @@
 <!--pages/notice/notificationList/index.wxml-->
 <wxs src="../../tool.wxs" module="tool" />
 
-<scroll-view scroll-y>
+<scroll-view scroll-y bindscrolltolower="scrollToBottom">
 
   <cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
     <view slot="backText">返回</view>
@@ -9,15 +9,28 @@
   </cu-custom>
 
   <view class="text-center margin">
-    <view>
+    <view bindtap="_clearUnRead">
       <text class="cuIcon-light"></text>清除未读
     </view>
   </view>
 
   <view class="cu-list menu-avatar">
-    <view class="cu-item" wx:for="{{notifications}}" wx:key="unique">
-      <view class="cu-avatar round bg-green lg">
+
+    <view class="cu-item" wx:for="{{notifications}}" wx:key="unique" bindtap="_readNotification" data-target="{{item}}">
+      <view class="cu-avatar round bg-green lg" wx:if="{{byNotifications[item].type==1}}">
         <text class="cuIcon-info"></text>
+      </view>
+      <view class="cu-avatar round bg-red lg" wx:if="{{byNotifications[item].type==4}}">
+        <text class="cuIcon-like"></text>
+      </view>
+      <view class="cu-avatar round bg-blue lg" wx:if="{{byNotifications[item].type==2}}">
+        <text class="cuIcon-notice"></text>
+      </view>
+      <view class="cu-avatar round bg-orange lg" wx:if="{{byNotifications[item].type==3}}">
+        <text class="cuIcon-activity"></text>
+      </view>
+      <view class="cu-avatar round bg-mauve lg" wx:if="{{byNotifications[item].type==0}}">
+        <text class="cuIcon-discover"></text>
       </view>
       <view class="content">
         <view class="text-grey">{{byNotifications[item].title}}</view>
@@ -27,9 +40,33 @@
       </view>
       <view class="action">
         <view class="text-grey text-xs">{{tool.convertTimestampToVarTimestring(byNotifications[item].time)}}</view>
-        <view class="cu-tag round bg-red sm" wx:if="{{!byNotifications[item].isRead}}"></view>
+        <view class="cu-tag round bg-red sm" wx:if="{{!byNotifications[item].read}}"></view>
       </view>
     </view>
+
   </view>
 
+  <view class="text-grey text-center padding-xl" style="height:100%;" wx:if="{{notifications.length==0}}">
+    <view class="cu-avatar xl round margin-top-xl">
+      <view class="cuIcon-notice text-blue margin"></view>
+    </view>
+    <view class="text-lg margin">目前没有消息哦</view>
+  </view>
+  <view class="text-grey text-center" wx:elif="{{isBottom}}">没有啦.....</view>
+
 </scroll-view>
+
+
+<view class="cu-modal {{modalName=='noticeModal'?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white justify-end">
+      <view class="content">{{byNotifications[noticeId].title}}</view>
+      <view class="action" bindtap="hideModal">
+        <text class="cuIcon-close text-red"></text>
+      </view>
+    </view>
+    <view class="padding-xl">
+      {{byNotifications[noticeId].detail}}
+    </view>
+  </view>
+</view>
