@@ -122,8 +122,9 @@ Page({
       .then(res=>{
         showToast("预约成功");
         setTimeout(function(){
+          let page=getCurrentPages()
           wx.navigateBack({
-            delta: 2,
+            delta: page.length,
           })
         }, 2500)
       })

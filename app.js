@@ -20,19 +20,6 @@ App({
 
     var Phone=wx.getStorageSync("phone")||"";
     this.globalData.Phone = Phone;
-    if(Phone!=""){
-      wx.connectSocket({
-        url: `ws://192.168.1.228:8080/websocket/mina/${Phone}`,
-        header: {
-          'content-type': 'application/json'
-        },
-        protocols: ['protocol1']
-      })
-    }
-    wx.onSocketOpen(function(){
-      console.log("websocket on");
-    })
-
     // 登录
     wx.login({
       success: res => {
@@ -42,7 +29,50 @@ App({
 
     //
   },
+  initSocket() {
+    let that = this
+    that.globalData.localSocket = wx.connectSocket({
+      // url: 'wss://test.enzhico.net/app'
+      url: `ws://192.168.1.228:8080/websocket/mina/${that.globalData.Phone}`
+    })
+    that.globalData.localSocket.onOpen(function (res) {
+      console.log('WebSocket连接已打开！readyState=' + that.globalData.localSocket.readyState)
+      while (socketMsgQueue.length > 0) {
+        var msg = socketMsgQueue.shift();
+        that.sendSocketMessage(msg);
+      }
+    })
+    that.globalData.localSocket.onMessage(function (res) {
+      console.log("websocket on message",res);
+      that.globalData.callback(res)
+    })
+    that.globalData.localSocket.onError(function (res) {
+      console.log('readyState=' + that.globalData.localSocket.readyState)
+    })
+    that.globalData.localSocket.onClose(function (res) {
+      console.log('WebSocket连接已关闭！readyState=' + that.globalData.localSocket.readyState)
+      that.initSocket()
+    })
+  },
+  //统一发送消息
+  sendSocketMessage: function (msg) {
+    if (this.globalData.localSocket.readyState === 1) {
+      this.globalData.localSocket.send({
+        data: JSON.stringify(msg)
+      })
+    } else {
+      socketMsgQueue.push(msg)
+    }
+  },
+  onShow: function (options) {
+    if (this.globalData.localSocket.readyState !== 0 && this.globalData.localSocket.readyState !== 1) {
+      console.log('开始尝试连接WebSocket！readyState=' + this.globalData.localSocket.readyState)
+      this.initSocket()
+    }
+  },
   globalData: {
+    localSocket: {},
+    callback: function () { },
     Phone:"",
     RefundReason:[
       '数量拍错了',

@@ -156,20 +156,19 @@ Page({
     this.setData({
       drawerVisible: false
     })
-  },
-  request() {
-    // 测试request
-    wx.request({
-      url: url.test(), //仅为示例，并非真实的接口地址
-      header: {
-        'content-type': 'application/json' // 默认值
-      },
-      success(res) {
-        console.log(res)
-      },
-      complete: function() {
-        console.log("request complete")
+  }, 
+  onShow: function () {
+    var that = this;
+    const {userInfo}=this.data;
+    app.globalData.callback = function (res) {
+      if (res.data=="success"){
+        console.log("fetchUnreadNotifications on websocket");
+        that.fetchUnreadNotifications(userInfo.uid)
+          .catch(err=>{
+            showToast(err.error);
+          })
       }
-    })
-  }
+    }
+  },
+
 })
