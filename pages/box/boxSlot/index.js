@@ -61,7 +61,7 @@ Page({
       showToast("请选择预约时间段");
       return;
     }
-    const reservations = selectedSlot.map(reservationTime => ({ reservationTime, boxId }));
+    const reservations = selectedSlot.map(reservationTime => ({ reservationTime, box:{uid:boxId} }));
     let ingot = 0;
     let credit = 0;
     reservations.forEach(reservation => {

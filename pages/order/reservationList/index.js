@@ -62,7 +62,7 @@ Page({
     this.storeBindings = createStoreBindings(this, {
       store: order,
       fields: ['reservationsUnpay', 'byReservationsUnpay', 'reservationsPayed', 'byReservationsPayed', 'reservationsComplete', 'byReservationsComplete', 'reservationsRefund', 'byReservationsRefund'],
-      actions: ['fetchUnpayReservations', 'resetReservations', 'fetchPayedReservations', 'fetchCompleteReservations', 'fetchRefundReservations', 'cancelOrder','removeOrder']
+      actions: ['fetchUnpayReservations', 'resetReservations', 'fetchPayedReservations', 'fetchCompleteReservations', 'fetchRefundReservations', 'cancelOrder', 'removeOrder','reservationRefund']
     });
 
   },
@@ -272,7 +272,7 @@ Page({
       checkbox: items
     })
   },
-  
+
   showModal: function (e) {
     this.setData({
       modalName: e.currentTarget.dataset.target
@@ -289,6 +289,27 @@ Page({
         this.setData({
           modalName: ""
         })
+      })
+      .catch(err => {
+        showToast(err.error);
+      })
+  },
+
+
+  _refund: function () {
+    const { userInfo, operationOrderId ,byReservationsPayed} = this.data;
+    this.setData({
+      modalName: "",
+      operationOrderId: null,
+    });
+    //订单内的预约时间段已按照时间升序排列
+    if (byReservationsPayed[operationOrderId].reservations[0].reservationTime - new Date().getTime()<1000*60*120){
+      showToast("已超过可取消预约时间，无法取消此订单");
+      return;
+    }
+    this.reservationRefund(operationOrderId)
+      .then(res => {
+        showToast("退款成功");
       })
       .catch(err => {
         showToast(err.error);

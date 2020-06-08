@@ -36,6 +36,19 @@ export const order = observable({
   },
 
   // actions
+  reservationRefund: action(function (orderId) {
+    return new Promise((resolve, reject) => {
+      post(url.reservationRefund(orderId),{})
+        .then(res => {
+          this.removeOrder(orderId);
+          resolve(res);
+        })
+        .catch(err => {
+          console.log(err);
+          reject(err);
+        })
+    })
+  }),
   fetchRefundReservations: action(function (page, userId) {
     return new Promise((resolve, reject) => {
       get(url.fetchRefundReservations(page, userId))

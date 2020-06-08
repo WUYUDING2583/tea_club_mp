@@ -72,9 +72,9 @@ Page({
     this.fetchOrder(options.orderId)
       .then(res=>{
         this.setData({
-          boxId:res.reservations[0].boxId
+          boxId:res.reservations[0].box.uid
         })
-        this.fetchBox(res.reservations[0].boxId)
+        this.fetchBox(res.reservations[0].box.uid)
 
       })
       .catch(err=>{

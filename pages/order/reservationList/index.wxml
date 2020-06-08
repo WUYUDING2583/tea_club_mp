@@ -103,20 +103,13 @@
 <view class="cu-modal {{modalName=='refundOrderModal'?'show':''}}">
   <view class="cu-dialog">
     <view class="cu-bar bg-white justify-end">
-      <view class="content">退款</view>
+      <view class="content">取消订单</view>
       <view class="action" bindtap="hideModal">
         <text class="cuIcon-close text-red"></text>
       </view>
     </view>
     <view class="padding-xl bg-white">
-      <view class="cu-form-group margin-top">
-        <view class="title">退款理由</view>
-        <picker bindchange="PickerChange" value="{{refundIndex}}" range="{{RefundReason}}">
-          <view class="picker">
-            {{refundIndex?RefundReason[refundIndex]:'请选择退款理由'}}
-          </view>
-        </picker>
-      </view>
+    确认取消订单？
     </view>
     <view class="cu-bar bg-white justify-end">
       <view class="action flex justify-between" style="width:100%;">

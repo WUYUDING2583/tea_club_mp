@@ -21,7 +21,7 @@
             <text class="text-grey">预约时间段</text>
           </view>
           <view class="action text-grey text-sm">
-            <text wx:for="{{reservations}}" wx:key="unique">{{tool.convertTimestampToyyyMMdd(item.reservationTime)}} {{tool.convertTimestampToHHMM(item.reservationTime)}}~{{tool.convertTimestampToHHMM(item.reservationTime+item.box.duration*1000*60)}}</text>
+            <view wx:for="{{reservations}}" wx:key="unique">{{tool.convertTimestampToyyyMMdd(item.reservationTime)}} {{tool.convertTimestampToHHMM(item.reservationTime)}}~{{tool.convertTimestampToHHMM(item.reservationTime+item.box.duration*1000*60)}}</view>
           </view>
         </view>
         <view class="cu-item">
@@ -33,25 +33,28 @@
           </view>
         </view>
         <view class="cu-item">
-          <view class="content text-green" wx:if="status.status=='unpayed'">等待买家付款</view>
-          <view class="content text-green" wx:elif="status.status=='payed'">预约待进行</view>
-          <view class="content text-green" wx:elif="status.status=='complete'">预约已完成</view>
-          <view class="content text-green" wx:elif="status.status=='refunded'">订单已退款</view>
+          <view class="content text-green" wx:if="{{status.status=='unpay'}}">等待买家付款</view>
+          <view class="content text-green" wx:elif="{{status.status=='payed'}}">预约待进行</view>
+          <view class="content text-green" wx:elif="{{status.status=='complete'}}">预约已完成</view>
+          <view class="content text-green" wx:elif="{{status.status=='refunded'}}">订单已退款</view>
           <view class="action">
-            <text wx:if="{{status.status!='unpay'}}">实付款</text>
+            <text wx:if="{{status.status=='refunded'}}">已退款</text>
+            <text wx:elif="{{status.status!='unpay'}}">实付款</text>
             <text wx:else>需付款</text>
             <text wx:if="{{amount.ingot>0}}">{{amount.ingot}}元宝 </text>
             <text wx:if="{{amount.credit>0}}">{{amount.credit}}积分</text>
           </view>
         </view>
         <view class="cu-item" wx:if="{{status.status!='refunded'&&status.status!='complete'}}">
-          <view class="content text-green"></view>
+          <view class="content">
+            <text wx:if="{{status.status=='payed'}}">预约时间两小时前可随时取消订单</text>
+          </view>
           <view class="action flex justify-between" style="width:60%;" wx:if="{{status.status=='unpay'}}">
             <button class="cu-btn round line-green" style="width:45%;" bindtap="showOrderModal" data-modal="cancelOrderModal" data-target="{{uid}}">取消订单</button>
-            <button class="cu-btn round line-blue" style="width:45%;"bindtap="_pay" data-target="{{uid}}">付款</button>
+            <button class="cu-btn round line-blue" style="width:45%;" bindtap="_pay" data-target="{{uid}}">付款</button>
           </view>
           <view class="action" style="width:30%;" wx:elif="{{status.status=='payed'}}">
-            <button class="cu-btn round line-green" style="width:100%;"bindtap="showOrderModal" data-modal="refundOrderModal" data-target="{{uid}}">退款</button>
+            <button class="cu-btn round line-green" style="width:100%;" bindtap="showOrderModal" data-modal="refundOrderModal" data-target="{{uid}}">取消订单</button>
           </view>
         </view>
       </view>
