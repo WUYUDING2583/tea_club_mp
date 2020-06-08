@@ -367,6 +367,9 @@ export const order = observable({
     this.ordersUnpay = this.ordersUnpay.filter((uid) => uid != orderId);
     this.ordersPayed = this.ordersPayed.filter((uid) => uid != orderId);
     this.ordersShipped = this.ordersShipped.filter((uid) => uid != orderId);
+    this.reservationsUnpay = this.reservationsUnpay.filter((uid) => uid != orderId);
+    this.reservationsPayed = this.reservationsPayed.filter((uid) => uid != orderId);
+    this.reservationsComplete = this.reservationsComplete.filter((uid) => uid != orderId);
   }),
   fetchLatestUnpayOrder:action(function(userId){
     return new Promise((resolve,reject)=>{

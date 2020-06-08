@@ -62,7 +62,7 @@ Page({
     this.storeBindings = createStoreBindings(this, {
       store: order,
       fields: ['reservationsUnpay', 'byReservationsUnpay', 'reservationsPayed', 'byReservationsPayed', 'reservationsComplete', 'byReservationsComplete', 'reservationsRefund', 'byReservationsRefund'],
-      actions: ['fetchUnpayReservations', 'resetReservations', 'fetchPayedReservations', 'fetchCompleteReservations','fetchRefundReservations']
+      actions: ['fetchUnpayReservations', 'resetReservations', 'fetchPayedReservations', 'fetchCompleteReservations', 'fetchRefundReservations', 'cancelOrder','removeOrder']
     });
 
   },
@@ -190,6 +190,109 @@ Page({
           })
         break;
     }
+  },
+
+
+  showOrderModal: function (e) {
+    this.setData({
+      modalName: e.currentTarget.dataset.modal,
+      operationOrderId: e.currentTarget.dataset.target
+    });
+  },
+
+
+  hideModal: function () {
+    this.setData({
+      modalName: "",
+      operationOrderId: null,
+    });
+  },
+
+
+  _cancelOrder: function (e) {
+    const { operationOrderId } = this.data;
+    this.setData({
+      modalName: "",
+      operationOrderId: null
+    });
+    this.cancelOrder(operationOrderId)
+      .then(res => {
+        showToast("取消订单成功");
+      })
+      .catch(err => {
+        showToast(err.error);
+      })
+  },
+
+
+  _pay: function (e) {
+    const { userInfo } = this.data;
+    const thiz=this;
+    this.pay(userInfo.uid, e.currentTarget.dataset.target)
+      .then(res => {
+        this.removeOrder(e.currentTarget.dataset.target);
+        this.storeBindings.updateStoreBindings();
+        showToast("付款成功");
+      })
+      .catch(err => {
+        if (err.code == 500700) {
+          this.setData({
+            modalName: "errModal",
+            errMsg: err.error
+          })
+        } else {
+          showToast(err.error)
+        }
+      })
+
+  },
+
+
+  showModal: function (e) {
+    this.setData({
+      modalName: e.currentTarget.dataset.target
+    })
+  },
+
+
+  ChooseCheckbox(e) {
+    let items = this.data.checkbox;
+    let values = e.currentTarget.dataset.value;
+    this.setData({
+      charge: values
+    })
+    for (let i = 0, lenI = items.length; i < lenI; ++i) {
+      if (items[i].value == values) {
+        items[i].checked = true;
+      } else {
+        items[i].checked = false;
+      }
+    }
+    this.setData({
+      checkbox: items
+    })
+  },
+  
+  showModal: function (e) {
+    this.setData({
+      modalName: e.currentTarget.dataset.target
+    })
+  },
+
+
+  _charge: function () {
+    const { charge, userInfo } = this.data;
+    const thiz = this;
+    this.charge(charge, userInfo.uid)
+      .then(res => {
+        showToast("充值成功");
+        this.setData({
+          modalName: ""
+        })
+      })
+      .catch(err => {
+        showToast(err.error);
+      })
   },
 
   /**
