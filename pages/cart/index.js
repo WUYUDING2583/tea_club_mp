@@ -129,7 +129,8 @@ Page({
    */
   onReady: function () {
     // this.fetchCart(17);
-    console.log("cart on ready");
+    console.log("cart on ready"); 
+    this.storeBindings.updateStoreBindings();
     if(this.data.phone.length==0){
       //未登录，跳转至登录页面
       wx.redirectTo({

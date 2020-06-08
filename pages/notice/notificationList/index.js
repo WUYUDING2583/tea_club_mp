@@ -79,10 +79,13 @@ Page({
       modalName:"noticeModal",
       noticeId: e.currentTarget.dataset.target
     });
-    this.readNotification(e.currentTarget.dataset.target)
-      .catch(err=>{
-        showToast(err.error);
-      })
+    const {byNotifications}=this.data;
+    if (!byNotifications[e.currentTarget.dataset.target].read){
+      this.readNotification(e.currentTarget.dataset.target)
+        .catch(err => {
+          showToast(err.error);
+        })
+    }
   },
 
   hideModal:function(){

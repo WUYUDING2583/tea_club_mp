@@ -22,7 +22,7 @@
   </view>
   <view class="cu-form-group align-start">
 		<view class="title">详细地址</view>
-		<textarea maxlength="-1" disabled="{{modalName!=null}}" bindinput="detailInput" placeholder="如道路、门牌号、小区、楼栋号、单元室等" value="{{detail}}"></textarea>
+		<textarea maxlength="-1"  bindinput="detailInput" placeholder="如道路、门牌号、小区、楼栋号、单元室等" value="{{detail}}"></textarea>
 	</view>
 	<view class="cu-form-group">
 		<view class="title">设为默认地址</view>
@@ -31,4 +31,27 @@
 </form>
 <view class="flex padding justify-center">
   <button class="cu-btn bg-green lg" style="width:80vw" bindtap="save"><text class="cuIcon-loading2 iconfont-spin" wx:if="{{retrieveRequestQuantity>0}}"></text>保存</button>
+</view>
+
+<view class="text-center padding" style="display:fixed;bottom:0" wx:if="{{addressId!=null}}" bindtap="showModal">删除收货地址</view>
+
+
+<view class="cu-modal {{modalName=='deleteModal'?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white justify-end">
+      <view class="content">删除地址</view>
+      <view class="action" bindtap="hideModal">
+        <text class="cuIcon-close text-red"></text>
+      </view>
+    </view>
+    <view class="padding-xl">
+      确认要删除此地址？
+    </view>
+    <view class="cu-bar bg-white justify-end">
+      <view class="action flex justify-between" style="width:100%;">
+        <button class="cu-btn line-green text-green" style="width:40%;" bindtap="hideModal">取消</button>
+        <button class="cu-btn bg-green " style="width:40%;" bindtap="_deleteAddress">确定</button>
+      </view>
+    </view>
+  </view>
 </view>

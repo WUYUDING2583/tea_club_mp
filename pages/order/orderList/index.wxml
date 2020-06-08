@@ -19,7 +19,7 @@
       <view wx:for="{{ordersAll}}" wx:key="unique">
         <template is="orderCard" data="{{...byOrdersAll[item]}}"></template>
       </view>
-      <view class="text-grey text-center padding-xl" style="height:100%;" wx:if="{{ordersShipped.length==0}}">
+      <view class="text-grey text-center padding-xl" style="height:100%;" wx:if="{{ordersAll.length==0}}">
         <view class="cu-avatar xl round margin-top-xl">
           <view class="cuIcon-discover text-blue margin"></view>
         </view>
@@ -34,7 +34,7 @@
       <view wx:for="{{ordersUnpay}}" wx:key="unique">
         <template is="orderCard" data="{{...byOrdersUnpay[item]}}"></template>
       </view>
-      <view class="text-grey text-center padding-xl" style="height:100%;" wx:if="{{ordersShipped.length==0}}">
+      <view class="text-grey text-center padding-xl" style="height:100%;" wx:if="{{ordersUnpay.length==0}}">
         <view class="cu-avatar xl round margin-top-xl">
           <view class="cuIcon-discover text-blue margin"></view>
         </view>
@@ -49,7 +49,7 @@
       <view wx:for="{{ordersPayed}}" wx:key="unique">
         <template is="orderCard" data="{{...byOrdersPayed[item],isBottom}}"></template>
       </view>
-      <view class="text-grey text-center padding-xl" style="height:100%;" wx:if="{{ordersShipped.length==0}}">
+      <view class="text-grey text-center padding-xl" style="height:100%;" wx:if="{{ordersPayed.length==0}}">
         <view class="cu-avatar xl round margin-top-xl">
           <view class="cuIcon-discover text-blue margin"></view>
         </view>
@@ -79,7 +79,7 @@
       <view wx:for="{{ordersRefund}}" wx:key="unique">
         <template is="orderCard" data="{{...byOrdersRefund[item]}}"></template>
       </view>
-      <view class="text-grey text-center padding-xl" style="height:100%;" wx:if="{{ordersShipped.length==0}}">
+      <view class="text-grey text-center padding-xl" style="height:100%;" wx:if="{{ordersRefund.length==0}}">
         <view class="cu-avatar xl round margin-top-xl">
           <view class="cuIcon-discover text-blue margin"></view>
         </view>

@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/notice/notificationList/index",
     "pages/index/index",
+    "pages/notice/notificationList/index",
     "pages/order/reservationList/index",
     "pages/order/orderList/index",
     "pages/order/orderResult/index",

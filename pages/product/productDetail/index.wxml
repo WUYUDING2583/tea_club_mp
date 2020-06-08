@@ -1,19 +1,19 @@
 <!--pages/product/productDetail/index.wxml-->
 <wxs src="../../tool.wxs" module="tool" />
-<view class='cu-custom'>
-  <view class="cu-bar fixed bg-shadeTop" style="height:{{CustomBar}}px;padding-top:{{StatusBar}}px;">
-    <navigator class='action' open-type="navigateBack" delta="1" hover-class="none">
-      <text class='cuIcon-back'></text> 返回
-    </navigator>
-    <view class='content' style='top:{{StatusBar}}px;'>{{byProducts[productId].name}}</view>
-  </view>
-</view>
-<scroll-view scroll-y="{{!showModal}}" style="height:100vh;">
+<!-- <scroll-view scroll-y="{{!showModal}}" style="height:100vh;"> -->
+
+  <cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+    <view slot="backText">返回</view>
+    <view slot="content">{{byProducts[productId].name}}</view>
+  </cu-custom>
+
   <swiper class="screen-swiper round-dot" indicator-dots="true" circular="true" autoplay="true" interval="5000" duration="500">
+
     <swiper-item wx:for="{{byProducts[productId].photos}}" wx:key="unique">
       <image src="{{byProductPhotos[item]}}" mode='aspectFill'></image>
     </swiper-item>
   </swiper>
+
   <view id="content" class="padding bg-white">
     <view id="price" class="margin-bottom-sm">
       <text class="text-red text-xl" wx:if="{{byProducts[productId].price.ingot>0}}">{{byProducts[productId].price.ingot}}元宝 </text>
@@ -67,7 +67,8 @@
   <view class="cu-list menu margin-bottom-xl">
     <image wx:for="{{byProducts[productId].productDetails}}" wx:key="unique" src="{{byProductPhotos[item]}}" />
   </view>
-</scroll-view>
+<!-- </scroll-view> -->
+
 <view class="cu-bar bg-white tabbar border shop" style="position:fixed;bottom:0;width:100vw;">
   <navigator hover-class="none" url="../../cart/index">
     <view class="action">
@@ -82,6 +83,7 @@
     <button class="cu-btn bg-blue round shadow-blur" style="width:40%" bindtap="showSelectModal" data-target="purchase">立即订购</button>
   </view>
 </view>
+
 <cu-bottom-modal show="{{showModal}}" bindhideModal="hideModal">
   <view wx:if="{{modalName=='activityCustomer'}}" class="margin-xl">
     <text wx:for="{{byActivityRules[ruleIndex].activityApplyForCustomerTypes}}" wx:key="unique">{{item.name}}</text>

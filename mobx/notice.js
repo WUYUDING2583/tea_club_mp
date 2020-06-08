@@ -13,7 +13,7 @@ export const notice = observable({
 
   // 计算属性
   get unreadNotificationNumber() {
-    return this.notifications.filter(item=>!item.isRead).length;
+    return this.notifications.filter(item=>!item.read).length;
   },
 
   // actions

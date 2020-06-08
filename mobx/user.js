@@ -3,7 +3,7 @@ import {
   observable,
   action
 } from 'mobx-miniprogram'
-import { get,post } from "../utils/request.js";
+import { get,post,_delete } from "../utils/request.js";
 import { url } from "../utils/url.js";
 import {app as appActions} from "./app.js";
 
@@ -22,6 +22,23 @@ export const user = observable({
   byAddresses:new Object(),
 
   // actions
+  deleteAddress:action(function(addressId){
+    return new Promise((resolve,reject)=>{
+      _delete(url.deleteAddress(addressId))
+        .then(res=>{
+          this.removeAddress(addressId);
+          resolve(res);
+        })
+        .catch(err=>{
+          console.log(err);
+          reject(err);
+        })
+    })
+  }),
+  removeAddress:action(function(addressId){
+    const addresses=this.userInfo.addresses.filter(uid=>uid!=addressId);
+    this.userInfo={...this.userInfo,addresses};
+  }),
   fetchAddress:action(function(addressId){
     const thiz=this;
     return new Promise((resolve,reject)=>{

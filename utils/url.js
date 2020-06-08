@@ -53,4 +53,5 @@ export const url={
   fetchUnreadNotifications: (userId) => `${HOME}/notice/unread/${userId}`,
   readNotification:(noticeId)=>`${HOME}/notice/${noticeId}`,
   clearUnRead:(userId)=>`${HOME}/notice/clear/${userId}`,
+  deleteAddress:(addressId)=>`${HOME}/address/${addressId}`,
 } 

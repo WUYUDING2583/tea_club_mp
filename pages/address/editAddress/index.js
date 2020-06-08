@@ -15,7 +15,8 @@ Page({
     region: ['浙江省', '杭州市', '西湖区'],
     detail:"",
     isDefaultAddress:false,
-    addressId:null
+    addressId:null,
+    modalName:"",
   },
 
   /**
@@ -30,7 +31,7 @@ Page({
     this.storeBindings = createStoreBindings(this, {
       store: user,
       fields: ['userInfo','byAddresses'],
-      actions: ['saveAddress','fetchAddress'],
+      actions: ['saveAddress', 'fetchAddress','deleteAddress'],
     });
     this.storeBindings = createStoreBindings(this, {
       store: appActions,
@@ -39,6 +40,33 @@ Page({
 
 
   },
+
+  showModal:function(){
+    this.setData({
+      modalName:"deleteModal"
+    })
+  },
+
+  hideModal:function(){
+    this.setData({
+      modalName:""
+    })
+  },
+
+  _deleteAddress:function(){
+    const {addressId}=this.data;
+    this.hideModal();
+    this.deleteAddress(addressId)
+      .then(res=>{
+        wx.navigateBack({
+          delta: 1,
+        })
+      })
+      .catch(err=>{
+        showToast(err.error);
+      })
+  },
+
   RegionChange: function (e) {
     this.setData({
       region: e.detail.value

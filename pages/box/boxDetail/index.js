@@ -2,6 +2,7 @@
 import { createStoreBindings } from 'mobx-miniprogram-bindings'
 import { shop } from '../../../mobx/shop';
 import { box } from '../../../mobx/box';
+import { user } from '../../../mobx/user';
 
 var common=require("../../../utils/util.js");
 var app=getApp()
@@ -36,12 +37,24 @@ Page({
       fields: ['boxes', 'byBoxes','byReservations'],
       actions: ['fetchShopBoxes','fetchReservations'],
     });
+    this.storeBindings = createStoreBindings(this, {
+      store: user,
+      fields: ['phone'],
+      actions: [],
+    });
   },
   navigateToReserve:function(){
-    const {shopId,boxId}=this.data;
-    wx.navigateTo({
-      url: `../boxSlot/index?boxId=${boxId}&shopId=${shopId}`,
-    })
+    const {shopId,boxId,phone}=this.data;
+    if(phone.length==0){
+      //未登录
+      wx.navigateTo({
+        url: '../../login/index',
+      })
+    }else{
+      wx.navigateTo({
+        url: `../boxSlot/index?boxId=${boxId}&shopId=${shopId}`,
+      })
+    }
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

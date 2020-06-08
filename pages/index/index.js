@@ -158,7 +158,8 @@ Page({
     })
   }, 
   onShow: function () {
-    var that = this;
+    var that = this; 
+    this.storeBindings.updateStoreBindings()
     const {userInfo}=this.data;
     app.globalData.callback = function (res) {
       if (res.data=="success"){

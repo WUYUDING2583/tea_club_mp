@@ -327,6 +327,7 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
+    this.storeBindings.updateStoreBindings();
     const {page_unpay,userInfo}=this.data;
     this.fetchUnpayReservations(page_unpay, userInfo.uid);
 

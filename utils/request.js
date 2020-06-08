@@ -13,9 +13,7 @@ export const get=(url,needLoading=true)=>{
         'content-type': 'application/json' // 默认值
       },
       complete(res) {
-        if (needLoading) {
-          wx.hideLoading();
-        }
+        wx.hideLoading();
         console.log(`request ${url} res`, res.data);
         if (res.data.data.status == 404) {
           showToast("404,资源不存在");
@@ -32,7 +30,7 @@ export const get=(url,needLoading=true)=>{
 
 }
 
-export const post = (url, params,needLoading = true) => {
+export const post = (url, params={},needLoading = true) => {
   if (needLoading) {
     wx.showLoading({
       title: '加载中...',
@@ -48,9 +46,7 @@ export const post = (url, params,needLoading = true) => {
       method:"POST",
       data: params,
       complete(res) {
-        if (needLoading) {
-          wx.hideLoading();
-        }
+        wx.hideLoading();
         console.log(`request ${url} res`, res.data);
         if (res.data.data == null && res.data.code != 200){
           if (res.data.code != 500700 && res.data.code != 500600){
@@ -72,7 +68,7 @@ export const post = (url, params,needLoading = true) => {
 
 }
 
-export const _delete = (url, params, needLoading = true) => {
+export const _delete = (url, params={}, needLoading = true) => {
   if (needLoading) {
     wx.showLoading({
       title: '加载中...',
@@ -88,9 +84,7 @@ export const _delete = (url, params, needLoading = true) => {
       method: "DELETE",
       data: params,
       complete(res) {
-        if (needLoading) {
-          wx.hideLoading();
-        }
+        wx.hideLoading();
         console.log(`request ${url} res`, res.data);
         if (res.data.data == null && res.data.code != 200) {
           if (res.data.code != 500700 && res.data.code != 500600) {
@@ -113,7 +107,7 @@ export const _delete = (url, params, needLoading = true) => {
 }
 
 
-export const put = (url, params, needLoading = true) => {
+export const put = (url, params={}, needLoading = true) => {
   if (needLoading) {
     wx.showLoading({
       title: '加载中...',
@@ -129,9 +123,7 @@ export const put = (url, params, needLoading = true) => {
       method: "PUT",
       data: params,
       complete(res) {
-        if (needLoading) {
           wx.hideLoading();
-        }
         console.log(`request ${url} res`, res.data);
         if (res.data.data == null && res.data.code != 200) {
           if (res.data.code != 500700 && res.data.code != 500600) {
