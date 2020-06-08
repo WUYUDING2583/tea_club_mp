@@ -49,5 +49,7 @@ export const url={
   fetchCompleteReservations: (page, userId) => `${HOME}/reservations/complete/${page}/${userId}`,
   fetchRefundReservations: (page, userId) => `${HOME}/reservations/refund/${page}/${userId}`,
   reservationRefund:(orderId)=>`${HOME}/reservations/refund/${orderId}`,
+  fetchNotifications:(userId,page)=>`${HOME}/notice/${userId}/${page}`,
+  fetchUnreadNotifications: (userId) => `${HOME}/notice/unread/${userId}`,
 
 } 

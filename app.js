@@ -20,6 +20,18 @@ App({
 
     var Phone=wx.getStorageSync("phone")||"";
     this.globalData.Phone = Phone;
+    if(Phone!=""){
+      wx.connectSocket({
+        url: `ws://192.168.1.228:8080/websocket/mina/${Phone}`,
+        header: {
+          'content-type': 'application/json'
+        },
+        protocols: ['protocol1']
+      })
+    }
+    wx.onSocketOpen(function(){
+      console.log("websocket on");
+    })
 
     // 登录
     wx.login({
@@ -27,6 +39,8 @@ App({
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
       }
     })
+
+    //
   },
   globalData: {
     Phone:"",

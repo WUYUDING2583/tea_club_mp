@@ -10,7 +10,7 @@
       <text class='cuIcon-titles text-orange '></text> 共{{cartTotal}}件商品
     </view>
     <view class='action'>
-      <button class="cu-btn {{isManagement?'bg-green':'bg-blue'}} shadow" style="width:20vw;" bindtap="manage">{{isManagement?"完成":"管理"}}</button>
+      <button class="cu-btn {{isManagement?'line-blue':'line-green'}} shadow" style="width:20vw;" bindtap="manage">{{isManagement?"完成":"管理"}}</button>
     </view>
   </view>
 

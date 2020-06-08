@@ -175,14 +175,18 @@ export const user = observable({
   //根据手机号获取用户信息
   getUserInfoByPhone:action(function(phone){
     // const thiz=
-    get(url.getUserInfoByPhone(phone))
-      .then((res)=>{
-        this.setUserInfo(res);
-        this.setPhoneNumber(phone);
-      })
-      .catch(err=>{
-        console.log(err);
-      })
+    return new Promise((resolve,reject)=>{
+      get(url.getUserInfoByPhone(phone))
+        .then((res) => {
+          this.setUserInfo(res);
+          this.setPhoneNumber(phone);
+          resolve(res);
+        })
+        .catch(err => {
+          console.log(err);
+          reject(err);
+        })
+    })
   }),
   //保存用户收货地址
   saveAddress: action(function (params) {

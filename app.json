@@ -1,7 +1,8 @@
 {
   "pages": [
-    "pages/order/reservationList/index",
     "pages/index/index",
+    "pages/notice/notificationList/index",
+    "pages/order/reservationList/index",
     "pages/order/orderList/index",
     "pages/order/orderResult/index",
     "pages/cart/index",
@@ -16,7 +17,6 @@
     "pages/address/editAddress/index",
     "pages/address/addressList/index",
     "pages/login/index",
-    "pages/logs/logs",
     "pages/article/articleList/index",
     "pages/article/articleDetail/index",
     "pages/product/productDetail/index",

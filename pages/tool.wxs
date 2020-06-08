@@ -130,6 +130,28 @@ var convertTimestampToHHMM = function(timestamp) {
   return h + m;
 }
 
+var convertTimestampToVarTimestring = function (timestamp) {
+  var date = getDate(timestamp);
+  var Y = date.getFullYear() + '-';
+  var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+  var D = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + ' ';
+  var h = (date.getHours() < 10 ? "0" + date.getHours() : date.getHours()) + ':';
+  var m = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes());
+  var today=getDate();
+  var tY = today.getFullYear();
+  var tM = today.getMonth();
+  var tD = today.getDate();
+  if (date.getFullYear()==tY){
+    if (tM == date.getMonth() && tD == date.getDate()){
+        return h+m;
+    }else{
+      return M+D+h+m;
+    }
+  }else{
+    return Y+M+D+h+m;
+  }
+}
+
 var convertTimestampToyyyMMdd=function(timestamp){
   var date = getDate(timestamp);
   var Y = date.getFullYear() + '-';
@@ -175,4 +197,5 @@ module.exports = {
   convertTimestampToyyyMMdd: convertTimestampToyyyMMdd,
   orderTotalProductNumber: orderTotalProductNumber,
   getOrderStatus: getOrderStatus,
+  convertTimestampToVarTimestring: convertTimestampToVarTimestring,
 }

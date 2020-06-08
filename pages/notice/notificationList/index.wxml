@@ -1,0 +1,35 @@
+<!--pages/notice/notificationList/index.wxml-->
+<wxs src="../../tool.wxs" module="tool" />
+
+<scroll-view scroll-y>
+
+  <cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+    <view slot="backText">返回</view>
+    <view slot="content">我的通知</view>
+  </cu-custom>
+
+  <view class="text-center margin">
+    <view>
+      <text class="cuIcon-light"></text>清除未读
+    </view>
+  </view>
+
+  <view class="cu-list menu-avatar">
+    <view class="cu-item" wx:for="{{notifications}}" wx:key="unique">
+      <view class="cu-avatar round bg-green lg">
+        <text class="cuIcon-info"></text>
+      </view>
+      <view class="content">
+        <view class="text-grey">{{byNotifications[item].title}}</view>
+        <view class="text-gray text-sm flex">
+          <text class="text-cut">{{byNotifications[item].detail}}</text>
+        </view>
+      </view>
+      <view class="action">
+        <view class="text-grey text-xs">{{tool.convertTimestampToVarTimestring(byNotifications[item].time)}}</view>
+        <view class="cu-tag round bg-red sm" wx:if="{{!byNotifications[item].isRead}}"></view>
+      </view>
+    </view>
+  </view>
+
+</scroll-view>

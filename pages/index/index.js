@@ -10,7 +10,8 @@ import {
 import {app as appActions} from "../../mobx/app.js";
 import {product} from "../../mobx/product.js";
 import {box} from "../../mobx/box.js";
-import {cart} from "../../mobx/cart.js";
+import { cart } from "../../mobx/cart.js";
+import { notice } from "../../mobx/notice.js";
 
 const app = getApp()
 
@@ -50,6 +51,11 @@ Page({
       store: cart,
       fields: ['cartTotal'],
     });
+    this.storeBindings = createStoreBindings(this, {
+      store: notice,
+      fields: ['unreadNotificationNumber'],
+      actions: ['fetchUnreadNotifications']
+    });
     const thiz=this;
 
     // 获取用户信息
@@ -73,6 +79,9 @@ Page({
     if(this.data.Phone.length>0){
       //获取用户信息
       this.getUserInfoByPhone(this.data.Phone)
+        .then(res=>{
+          this.fetchUnreadNotifications(res.uid);
+        })
     }
 
     // //获取走马灯展示
@@ -82,6 +91,13 @@ Page({
     //获取热门包厢
     this.fetchHotBoxes();
   },
+
+  navigateToNotification:function(){
+    wx.navigateTo({
+      url: '../notice/notificationList/index',
+    })
+  },
+
   //用户确定登录
   getPhoneNumber(e) {
     //发送到后台解密

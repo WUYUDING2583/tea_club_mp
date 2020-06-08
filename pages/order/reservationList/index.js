@@ -328,11 +328,7 @@ Page({
    */
   onReady: function () {
     const {page_unpay,userInfo}=this.data;
-    this.setData({
-      userInfo:{uid:17}
-    })
-    this.fetchUnpayReservations(page_unpay, 17);
-    // this.fetchUnpayReservations(page_unpay, userInfo.uid);
+    this.fetchUnpayReservations(page_unpay, userInfo.uid);
 
   },
 
