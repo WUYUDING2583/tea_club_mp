@@ -160,3 +160,18 @@
   </view>
 </view>
 
+
+<view class="cu-modal {{modalName=='shopAddressModal'?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white justify-end">
+      <view class="content">门店地址</view>
+      <view class="action" bindtap="hideModal">
+        <text class="cuIcon-close text-red"></text>
+      </view>
+    </view>
+    <view class="padding-xl">
+      {{shopAddress}}
+    </view>
+  </view>
+</view>
+

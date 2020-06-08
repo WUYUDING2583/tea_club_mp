@@ -24,6 +24,14 @@
             <view wx:for="{{reservations}}" wx:key="unique">{{tool.convertTimestampToyyyMMdd(item.reservationTime)}} {{tool.convertTimestampToHHMM(item.reservationTime)}}~{{tool.convertTimestampToHHMM(item.reservationTime+item.box.duration*1000*60)}}</view>
           </view>
         </view>
+        <view class="cu-item" wx:if="{{status.status!='refunded'}}" bindtap="showShopAddress" data-target="{{placeOrderWay.address}}">
+          <view class="content">
+            <text class="text-grey">所属门店</text>
+          </view>
+          <view class="action text-grey text-sm">
+            <text>{{placeOrderWay.name}}</text><text class="cuIcon-right margin-left text-black"></text>
+          </view>
+        </view>
         <view class="cu-item">
           <view class="content">
             <text class="text-grey">下单时间</text>
