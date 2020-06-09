@@ -1,6 +1,37 @@
-<!--pages/charge/record/index.wxml-->
+<wxs src="../../tool.wxs" module="tool" />
 
 <cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
   <view slot="backText">返回</view>
   <view slot="content">充值记录</view>
 </cu-custom>
+
+<scroll-view scroll-y bindscrolltolower="scrollToBottom" style="height:100vh;">
+
+
+  <view class="cu-list menu-avatar margin-bottom">
+    <view class="cu-item" wx:for="{{charges}}" wx:key="unique">
+      <view class="cu-avatar bg-red round lg">
+        <text class="cuIcon-recharge"></text>
+      </view>
+      <view class="content">
+        <view class="text-grey">{{byCharges[item].description.description}}</view>
+        <view class="text-gray text-sm flex">
+          {{tool.convertTimestampToVarTimestring(byCharges[item].time)}}
+        </view>
+      </view>
+      <view class="action">
+        <text class="text-black">{{byCharges[item].amount}}元</text>
+      </view>
+    </view>
+  </view>
+
+
+  <view class="text-grey text-center padding-xl" style="height:100%;" wx:if="{{charges.length==0}}">
+    <view class="cu-avatar xl round margin-top-xl">
+      <view class="cuIcon-notice text-blue margin"></view>
+    </view>
+    <view class="text-lg margin">目前没有充值记录哦</view>
+  </view>
+  <view class="text-grey text-center margin-bottom" wx:elif="{{isBottom}}">没有啦.....</view>
+
+</scroll-view>

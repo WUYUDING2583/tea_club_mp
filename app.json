@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/charge/record/index",
     "pages/consume/index",
     "pages/box/boxProductList/index",
     "pages/notice/notificationList/index",
@@ -25,8 +26,7 @@
     "pages/product/productList/index",
     "pages/box/boxDetail/index",
     "pages/order/orderPreview/index",
-    "pages/product/productOrderPreview/index",
-    "pages/charge/record/index"
+    "pages/product/productOrderPreview/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

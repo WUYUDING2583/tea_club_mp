@@ -56,4 +56,5 @@ export const url={
   deleteAddress:(addressId)=>`${HOME}/address/${addressId}`,
   fetchBoxProduct: () => `${HOME}/boxProduct`,
   fetchBills: (userId,page)=>`${HOME}/bills/${userId}/${page}`,
+  fetchChargeRecords: (userId, page) => `${HOME}/charge/${userId}/${page}`,
 } 

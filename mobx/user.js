@@ -22,8 +22,45 @@ export const user = observable({
   byAddresses:new Object(),
   bills:new Array(),
   byBills:new Object(),
+  charges:new Array(),
+  byCharges:new Object(),
 
   // actions
+  fetchChargeRecords:action(function(userId, page) {
+    return new Promise((resolve, reject) => {
+      get(url.fetchChargeRecords(userId, page))
+        .then(res => {
+          this.convertChargesToPlainStructure(res);
+          resolve(res);
+        })
+        .catch(err => {
+          console.log(err);
+          reject(err);
+        })
+    })
+  }),
+  convertChargesToPlainStructure: action(function (data) {
+    let charges = new Array();
+    let byCharges = new Object();
+    data.forEach(item => {
+      charges.push(item.uid);
+      if (!byCharges[item.uid]) {
+        byCharges[item.uid] = item;
+      }
+    });
+    const thiz = this;
+    charges = charges.filter(uid => {
+      let isRepeat = false;
+      thiz.charges.forEach(item => {
+        if (uid == item) {
+          isRepeat = true
+        }
+      });
+      return !isRepeat;
+    })
+    this.charges = this.charges.concat(charges);
+    this.byCharges = { ...this.byCharges, ...byCharges };
+  }),
   fetchBills:action(function(userId,page){
     return new Promise((resolve,reject)=>{
       get(url.fetchBills(userId,page))

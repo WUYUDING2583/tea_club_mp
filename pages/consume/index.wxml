@@ -55,6 +55,6 @@
     </view>
     <view class="text-lg margin">目前没有消费记录哦</view>
   </view>
-  <view class="text-grey text-center" wx:elif="{{isBottom}}">没有啦.....</view>
+  <view class="text-grey text-center margin-bottom" wx:elif="{{isBottom}}">没有啦.....</view>
 
 </scroll-view>
