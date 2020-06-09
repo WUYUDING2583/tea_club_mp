@@ -98,6 +98,7 @@ Page({
     })
   },
 
+
   //用户确定登录
   getPhoneNumber(e) {
     //发送到后台解密

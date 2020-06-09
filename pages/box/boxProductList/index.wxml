@@ -1,0 +1,6 @@
+<!--pages/box/boxProductList/index.wxml-->
+
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">{{byBoxes[boxId].name}}</view>
+</cu-custom>

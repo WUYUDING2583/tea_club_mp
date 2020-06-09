@@ -12,10 +12,9 @@
         <input type="text" placeholder="搜索产品、包厢、文章" confirm-type="search"></input>
       </view>
       <view class="action">
-        <view class="cuIcon-scan"></view>
-          <view class="cuIcon-notice margin-left" bindtap="navigateToNotification">
-            <view wx:if="{{unreadNotificationNumber>0}}" class="cu-tag badge">{{unreadNotificationNumber}}</view>
-          </view>
+        <view class="cuIcon-notice" bindtap="navigateToNotification">
+          <view wx:if="{{unreadNotificationNumber>0}}" class="cu-tag badge">{{unreadNotificationNumber}}</view>
+        </view>
       </view>
     </view>
   </view>
@@ -74,8 +73,10 @@
         <text class="cuIcon-title text-blue"></text>热门包厢
       </view>
       <view class="action text-grey text-sm">
-        查看全部
-        <text class="cuIcon-right xsm text-grey"></text>
+        <navigator hover-class="none" url="../box/boxProductList/index?boxId=4">
+          查看全部
+          <text class="cuIcon-right xsm text-grey"></text>
+        </navigator>
       </view>
     </view>
     <view class="cu-list grid col-3 no-border">
