@@ -97,16 +97,18 @@ export const product = observable({
       byProductTypes[item.type.uid] = { ...item.type,products: byProductTypes[item.type.uid].products.concat([item.uid])};
 
       let activityRules = new Array();
-      item.activityRules.forEach(rule => {
-        activityRules.push(rule.uid);
-        if(!byActivityRules[rule.uid]){
-          byActivityRules[rule.uid] = rule;
-        }
-      })
-      //活动规则按优先级高低排序
-      activityRules.sort((a, b) => {//优先级数字越小等级越高
-        return byActivityRules[a].activity.priority - byActivityRules[b].activity.priority;
-      })
+      if (item.activityRules){
+        item.activityRules.forEach(rule => {
+          activityRules.push(rule.uid);
+          if (!byActivityRules[rule.uid]) {
+            byActivityRules[rule.uid] = rule;
+          }
+        })
+        //活动规则按优先级高低排序
+        activityRules.sort((a, b) => {//优先级数字越小等级越高
+          return byActivityRules[a].activity.priority - byActivityRules[b].activity.priority;
+        })
+      }
       if(!byProducts[item.uid]){
         byProducts[item.uid] = { ...item,photo:`data:image/jpeg;base64,${item.photos[0].photo}`,activityRules};
       }

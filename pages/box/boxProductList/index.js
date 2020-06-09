@@ -4,6 +4,8 @@ import { createStoreBindings } from 'mobx-miniprogram-bindings';
 import { user } from '../../../mobx/user';
 import { box } from '../../../mobx/box';
 import { product } from '../../../mobx/product';
+import { order } from '../../../mobx/order';
+import {showToast} from "../../../utils/request.js"
 
 var app=getApp();
 
@@ -54,6 +56,11 @@ Page({
       store: product,
       fields: ['products', 'byProducts', 'productTypes', 'byProductTypes','byActivityRules'],
       actions: ['fetchBoxProduct'],
+    });
+    this.storeBindings = createStoreBindings(this, {
+      store: order,
+      fields: [],
+      actions: ['placeOrder'],
     });
     
     if (app.globalData.Phone.length==0){
@@ -194,6 +201,45 @@ Page({
 
   },
 
+  _placeOrder:function(){
+    const { byProducts, userInfo, selectProducts, byActivityRules, activityBitmap ,boxId} = this.data;
+    let products = new Array();
+    for(let uid in selectProducts){
+      let activityRuleId = null;
+      byProducts[uid].activityRules.forEach(ruleId => {
+        const activityId = byActivityRules[ruleId].activity.uid;
+        if (activityBitmap[activityId] && activityBitmap[activityId][ruleId]) {
+          if (activityBitmap[activityId][ruleId].indexOf(uid) != -1) {
+            activityRuleId = ruleId;
+          }
+        }
+      })
+      let orderProduct = { product: { uid}, number: selectProducts[uid] };
+      if (activityRuleId != null) {
+        orderProduct = { ...orderProduct, activityRule: { uid: activityRuleId } };
+      }
+      products.push(orderProduct);
+    }
+    if (products.length == 0) {
+      showToast("请选择商品");
+      return;
+    }
+    let order = {
+      customer: { uid: userInfo.uid },
+      products,
+      boxOrder:{uid:boxId}
+    }
+    console.log("order", order);
+    this.placeOrder(order)
+      .then(res => {
+        wx.navigateTo({
+          url: `../../order/orderPreview/index?orderId=${res.uid}`,
+        })
+      })
+      .catch(err => {
+        showToast(err.error);
+      })
+  },
 
   calculateAmount: function () {
     const { byProducts, userInfo, selectProducts, byActivityRules } = this.data

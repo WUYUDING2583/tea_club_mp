@@ -18,7 +18,7 @@ Page({
   },
   showOrderDetail:function(){
     wx.redirectTo({
-      url: `../orderDetail/index?orderId=${this.data.orderId}`
+      url: `../orderList/index`
     })
   },
 
