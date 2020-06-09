@@ -1,6 +1,100 @@
 <!--pages/box/boxProductList/index.wxml-->
+<wxs src="../../tool.wxs" module="tool" />
 
-<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
-  <view slot="backText">返回</view>
+<cu-custom bgColor="bg-gradual-blue" isBack="{{false}}" isCustom="{{true}}">
   <view slot="content">{{byBoxes[boxId].name}}</view>
 </cu-custom>
+
+
+<view class="VerticalBox">
+
+  <scroll-view class="VerticalNav nav" scroll-y scroll-with-animation scroll-top="{{VerticalNavTop}}" style="height:calc(100vh - 60px)">
+    <view class="cu-item {{index==TabCur?'text-green cur':''}}" wx:for="{{productTypes}}" wx:key="unique" bindtap='tabSelect' data-id="{{index}}">
+      {{byProductTypes[item].name}}
+    </view>
+  </scroll-view>
+
+  <scroll-view class="VerticalMain" scroll-y scroll-with-animation style="height:calc(100vh - 60px)" scroll-into-view="main-{{MainCur}}" bindscroll="VerticalMain">
+    <view class="padding-top padding-lr" wx:for="{{productTypes}}" wx:key="unique" id="main-{{index}}">
+      <view class='cu-bar solid-bottom bg-white'>
+        <view class='action'>
+          <text class='cuIcon-title text-green'></text>{{byProductTypes[item].name}} </view>
+      </view>
+      <view class="cu-list menu-avatar">
+        <view class="cu-item" wx:for="{{byProductTypes[item].products}}" wx:key="unique" data-id="{{item}}">
+          <view class="cu-avatar round lg" style="background-image:url({{byProducts[item].photo}});"></view>
+          <view class="content">
+            <view class="text-grey">{{byProducts[item].name}}</view>
+            <view class="text-gray text-sm flex">
+              <text class="text-cut">
+								{{byProducts[item].description}}
+              </text>
+            </view>
+          </view>
+          <view class="action" style="width:20vw;">
+            <view class="text-grey text-xs">
+              <text wx:if="{{byProducts[item].price.ingot>0}}">{{byProducts[item].price.ingot}}元宝</text>
+              <text wx:if="{{byProducts[item].price.credit>0}}">{{byProducts[item].price.credit}}积分</text>
+              <view>
+                <button bindtap="add" class="cu-btn round icon line-blue sm animation-{{animation==item?'slide-bottom':''}} animation-reverse margin-sm basis-sm shadow" aria-disabled="false" data-target="{{item}}" role="button">
+                  <text class="cuIcon-add"></text>
+                </button>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+</view>
+
+
+<view class="cu-bar bg-white tabbar border shop" style="position:fixed;bottom:0;width:100%;">
+  <view class="action" bindtap="showModal" data-target="cartModal">
+    <view class="cuIcon-cart">
+      <view class="cu-tag badge" wx:if="{{selectProductNumber>0}}">{{selectProductNumber}}</view>
+    </view>
+    购物车
+  </view>
+  <view class="action" style="width:30vw;" wx:if="{{ingot>0||credit>0}}">总价：<text class="text-lg text-red" wx:if="{{ingot>0}}">{{ingot}}元宝</text><text class="text-lg text-red" wx:if="{{credit>0}}">{{credit}}积分</text></view>
+  <view class="action" style="width:30vw;">
+    <view class="btn-group">
+      <button class="cu-btn bg-red round shadow-blur margin-right" style="width:100%;">结算</button>
+    </view>
+  </view>
+</view>
+
+<!-- {{modalName=='cartModal'?'show':''}} -->
+<view class="cu-modal bottom-modal {{modalName=='cartModal'?'show':''}}" style="position:fixed;bottom:50px;">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white">
+      <view class="action text-green"></view>
+      <view class="action text-blue" bindtap="hideModal">
+        <text class="cuIcon-close"></text>
+      </view>
+    </view>
+    <view class="padding">
+      <view class="text-right text-grey" bindtap="clearCart">
+        <text class="cuIcon-delete margin-right-xs"></text>清空
+      </view>
+
+      <view class="cu-list menu-avatar margin-top">
+        <view class="cu-item" wx:for="{{selectProducts}}" wx:key="unique">
+          <view class="cu-avatar round lg" style="background-image:url({{byProducts[index].photo}});"></view>
+          <view class="content">
+            <view class="text-grey">{{byProducts[index].name}}</view>
+            <view class="text-gray text-sm flex">
+              <text wx:if="{{byProducts[index].price.ingot>0}}">{{byProducts[index].price.ingot}}元宝</text>
+              <text wx:if="{{byProducts[index].price.credit>0}}">{{byProducts[index].price.credit}}积分</text>
+            </view>
+          </view>
+          <view class="action" style="width:35vw;">
+            <cu-stepper min="0" bindchange="numberChange" option="{{index}}"  number="{{item}}"></cu-stepper>
+          </view>
+        </view>
+      </view>
+
+    </view>
+  </view>
+</view>

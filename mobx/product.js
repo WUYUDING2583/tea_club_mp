@@ -69,11 +69,22 @@ export const product = observable({
         })
     })
   }),
+  fetchBoxProduct: action(function () {
+    return new Promise((resolve, reject) => {
+      get(url.fetchBoxProduct())
+        .then(res => {
+          const productTypes = this.convertProductsToPlainStructure(res);
+          resolve(productTypes);
+        })
+    })
+
+  }),
   convertProductsToPlainStructure:action(function(data){
     let products=new Array();
     let byProducts=new Object();
     let productTypes=new Array();
-    let byProductTypes=new Object();
+    let byProductTypes = new Object();
+    let byActivityRules = new Object();
     data.forEach(item=>{
       products.push(item.uid);
       if(productTypes.indexOf(item.type.uid)==-1){
@@ -84,14 +95,27 @@ export const product = observable({
         byProductTypes[item.type.uid].products=new Array();
       }
       byProductTypes[item.type.uid] = { ...item.type,products: byProductTypes[item.type.uid].products.concat([item.uid])};
+
+      let activityRules = new Array();
+      item.activityRules.forEach(rule => {
+        activityRules.push(rule.uid);
+        if(!byActivityRules[rule.uid]){
+          byActivityRules[rule.uid] = rule;
+        }
+      })
+      //活动规则按优先级高低排序
+      activityRules.sort((a, b) => {//优先级数字越小等级越高
+        return byActivityRules[a].activity.priority - byActivityRules[b].activity.priority;
+      })
       if(!byProducts[item.uid]){
-        byProducts[item.uid] = { ...item,photo:`data:image/jpeg;base64,${item.photos[0].photo}`};
+        byProducts[item.uid] = { ...item,photo:`data:image/jpeg;base64,${item.photos[0].photo}`,activityRules};
       }
     });
     this.products=products;
     this.byProducts=byProducts;
     this.productTypes=productTypes;
     this.byProductTypes=byProductTypes;
+    this.byActivityRules=byActivityRules;
     return productTypes;
   }),
   fetchHotProducts: action(function() {
