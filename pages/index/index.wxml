@@ -9,7 +9,7 @@
       <view class="cu-avatar round" style="background-image:url({{userInfo.avatarUrl}});" bindtap="showDrawer"></view>
       <view class="search-form round">
         <text class="cuIcon-search"></text>
-        <input type="text" placeholder="搜索产品、包厢、文章" confirm-type="search"></input>
+        <input type="text" placeholder="搜索产品、包厢、文章" confirm-type="search" bindconfirm="_search"></input>
       </view>
       <view class="action">
         <view class="cuIcon-notice" bindtap="navigateToNotification">
@@ -53,16 +53,14 @@
       <view class="action">
         <text class="cuIcon-title text-blue"></text>热销产品
       </view>
-      <view class="action text-grey text-sm">
-        查看全部
-        <text class="cuIcon-right xsm text-grey"></text>
-      </view>
     </view>
     <view class="cu-list grid col-3 no-border">
       <view class="cu-item" wx:for="{{hotProducts}}" wx:key="unique">
-        <view class="flex justify-center">
-          <view class="cu-avatar xl" style="background-image:url({{item.photo}})"></view>
-        </view>
+        <navigator hover-class="none" url="../product/productDetail/index?uid={{item.uid}}" open-type="navigate">
+          <view class="flex justify-center">
+            <view class="cu-avatar xl" style="background-image:url({{item.photo}})"></view>
+          </view>
+        </navigator>
       </view>
     </view>
   </view>
@@ -72,16 +70,10 @@
       <view class="action">
         <text class="cuIcon-title text-blue"></text>热门包厢
       </view>
-      <view class="action text-grey text-sm">
-        <navigator hover-class="none" url="../box/boxProductList/index?boxId=4">
-          查看全部
-          <text class="cuIcon-right xsm text-grey"></text>
-        </navigator>
-      </view>
     </view>
     <view class="cu-list grid col-3 no-border">
       <view class="cu-item" wx:for="{{hotBoxes}}" wx:key="unique">
-        <view class="flex justify-center">
+        <view class="flex justify-center" bindtap="navigateToBox" data-boxId="{{item.uid}}" data-shopId="{{item.shop.uid}}">
           <view class="cu-avatar xl" style="background-image:url({{item.photo}})"></view>
         </view>
       </view>

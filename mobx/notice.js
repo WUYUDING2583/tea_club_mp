@@ -97,7 +97,7 @@ export const notice = observable({
     const thiz=this;
     notifications=notifications.filter(uid=>{
       let isRepeat=false;
-      thiz.otifications.forEach(item=>{
+      thiz.notifications.forEach(item=>{
         if(uid==item){
           isRepeat=true
         }

@@ -32,7 +32,7 @@
       <view class="cu-avatar round bg-mauve lg" wx:if="{{byNotifications[item].type==0}}">
         <text class="cuIcon-discover"></text>
       </view>
-      <view class="cu-avatar round bg-pink lg" wx:else>
+      <view class="cu-avatar round bg-pink lg" wx:if="{{byNotifications[item].type==5}}">
         <text class="cuIcon-evaluate"></text>
       </view>
       <view class="content">
@@ -55,7 +55,7 @@
     </view>
     <view class="text-lg margin">目前没有消息哦</view>
   </view>
-  <view class="text-grey text-center" wx:elif="{{isBottom}}">没有啦.....</view>
+  <view class="text-grey text-center margin" wx:elif="{{isBottom}}">没有啦.....</view>
 
 </scroll-view>
 

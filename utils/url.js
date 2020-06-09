@@ -58,4 +58,6 @@ export const url={
   fetchBills: (userId,page)=>`${HOME}/bills/${userId}/${page}`,
   fetchChargeRecords: (userId, page) => `${HOME}/charge/${userId}/${page}`,
   activityPresentMoney:(userId)=>`${HOME}/activity/present/${userId}`,
+  search:(value)=>`${HOME}/search?value=${value}`,
+  fetchArticle:(articleId)=>`${HOME}/article/${articleId}`, 
 } 

@@ -30,19 +30,40 @@ Page({
     this.storeBindings = createStoreBindings(this, {
       store: shop,
       fields: ['byShops'],
-      actions: [],
+      actions: ['getShop'],
     });
     this.storeBindings = createStoreBindings(this, {
       store: box,
       fields: ['boxes', 'byBoxes','byReservations'],
-      actions: ['fetchShopBoxes','fetchReservations'],
+      actions: ['fetchShopBoxes', 'fetchReservations','fetchBox'],
     });
     this.storeBindings = createStoreBindings(this, {
       store: user,
       fields: ['phone'],
       actions: [],
     });
+
+
   },
+
+  onReady:function(){
+    const {boxId,shopId}=this.data;
+
+    this.fetchBox(boxId)
+      .catch(err => {
+        showToast(err.error);
+      })
+    this.getShop(shopId)
+      .catch(err => {
+        showToast(err.error);
+      })
+  },
+
+  onShow: function () {
+    this.storeBindings.updateStoreBindings();
+
+  },
+
   navigateToReserve:function(){
     const {shopId,boxId,phone}=this.data;
     if(phone.length==0){

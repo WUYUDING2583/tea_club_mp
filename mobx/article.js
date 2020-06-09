@@ -12,26 +12,30 @@ export const article = observable({
   byArticles:new Object(),
 
   // actions
+  fetchArticle:action(function(articleId){
+    return new Promise((resolve,reject)=>{
+      get(url.fetchArticle(articleId))
+        .then(res=>{
+          this.convertArticleToPlainStructure(res);
+          resolve(res);
+        })
+        .catch(err=>{
+          console.log(err);
+          reject(err);
+        })
+    })
+  }),
+  convertArticleToPlainStructure:action(function(data){
+    if(this.articles.indexOf(data.uid)==-1){
+      this.articles=this.articles.concat([data.uid]);
+    }
+    this.byArticles = { ...this.byArticles, [data.uid]: { ...data, photo: `data:image/jpeg;base64,${data.photo.photo}`}}
+  }),
   fetchArticles: action(function () {
     get(url.fetchArticles())
     .then((res)=>{
       this.convertArticlesToPlainStructure(res);
     })
-    // app.startRetrieveRequest();
-    // const thiz = this;
-    // wx.request({
-    //   url: url.fetchArticles(),
-    //   header: {
-    //     'content-type': 'application/json' // 默认值
-    //   },
-    //   success(res) {
-    //     console.log("fetch articles res", res);
-    //     thiz.convertArticlesToPlainStructure(res.data.data);
-    //   },
-    //   complete() {
-    //     app.finishRetrieveRequest();
-    //   }
-    // })
   }),
   convertArticlesToPlainStructure:action(function(data){
     let articles=new Array();

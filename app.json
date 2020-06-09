@@ -26,7 +26,8 @@
     "pages/product/productList/index",
     "pages/box/boxDetail/index",
     "pages/order/orderPreview/index",
-    "pages/product/productOrderPreview/index"
+    "pages/product/productOrderPreview/index",
+    "pages/searchResult/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

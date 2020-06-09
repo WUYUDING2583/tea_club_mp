@@ -1,0 +1,84 @@
+<!--pages/searchResult/index.wxml-->
+
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">研茶</view>
+</cu-custom>
+
+
+<view class="box">
+  <view class="cu-bar search bg-white fixed" style="top:{{CustomBar}}px">
+    <view class="search-form round">
+      <text class="cuIcon-search"></text>
+      <input type="text" value="{{value}}" placeholder="搜索产品、包厢、文章" confirm-type="search" bindconfirm="_search"></input>
+    </view>
+  </view>
+</view>
+
+<view class="cu-bar bg-white solid-bottom" style="margin-top:50px">
+  <view class="action">
+    <text class="cuIcon-title text-orange "></text> 文章
+  </view>
+</view>
+<view class="cu-list menu-avatar">
+  <view class="cu-item" wx:for="{{searchArticles}}" wx:key="unique" bindtap="navigateToArticleDetail" data-target="{{item}}">
+    <view class="cu-avatar round lg" style="background-image:url({{bySearchArticles[item].photo}});"></view>
+    <view class="content">
+      <view class="text-grey">{{bySearchArticles[item].title}}</view>
+      <view class="text-gray text-sm flex">
+        <text class="text-cut">{{bySearchArticles[item].description}}</text>
+      </view>
+    </view>
+  </view>
+  <view class="cu-item" wx:if="{{searchArticles.length==0}}">
+    <view class="content">
+      <view class="text-grey">无匹配项...</view>
+    </view>
+  </view>
+</view>
+
+
+<view class="cu-bar bg-white solid-bottom margin-top">
+  <view class="action">
+    <text class="cuIcon-title text-orange "></text> 商品
+  </view>
+</view>
+<view class="cu-list menu-avatar">
+  <view class="cu-item" wx:for="{{searchProducts}}" wx:key="unique" bindtap="navigateToProductDetail" data-target="{{item}}">
+    <view class="cu-avatar round lg" style="background-image:url({{bySearchProducts[item].photo}});"></view>
+    <view class="content">
+      <view class="text-grey">{{bySearchProducts[item].name}}</view>
+      <view class="text-gray text-sm flex">
+        <text class="text-cut">{{bySearchProducts[item].description}}</text>
+      </view>
+    </view>
+  </view>
+  <view class="cu-item" wx:if="{{searchProducts.length==0}}">
+    <view class="content">
+      <view class="text-grey">无匹配项...</view>
+    </view>
+  </view>
+</view>
+
+
+<view class="cu-bar bg-white solid-bottom margin-top">
+  <view class="action">
+    <text class="cuIcon-title text-orange "></text> 包厢
+  </view>
+</view>
+<view class="cu-list menu-avatar">
+  <view class="cu-item" wx:for="{{searchBoxes}}" wx:key="unique"bindtap="navigateToBoxDetail" data-target="{{item}}">
+    <view class="cu-avatar round lg" style="background-image:url({{bySearchBoxes[item].photo}});"></view>
+    <view class="content">
+      <view class="text-grey">{{bySearchBoxes[item].name}}</view>
+      <view class="text-gray text-sm flex">
+        <text class="text-cut">{{bySearchBoxes[item].description}}</text>
+      </view>
+    </view>
+  </view>
+  <view class="cu-item" wx:if="{{searchBoxes.length==0}}">
+    <view class="content">
+      <view class="text-grey">无匹配项...</view>
+    </view>
+  </view>
+</view>

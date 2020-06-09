@@ -12,6 +12,9 @@ import {product} from "../../mobx/product.js";
 import {box} from "../../mobx/box.js";
 import { cart } from "../../mobx/cart.js";
 import { notice } from "../../mobx/notice.js";
+import { shop } from "../../mobx/shop.js";
+import { search } from "../../mobx/search.js";
+import {showToast} from "../../utils/request.js";
 
 const app = getApp()
 
@@ -56,6 +59,16 @@ Page({
       fields: ['unreadNotificationNumber'],
       actions: ['fetchUnreadNotifications']
     });
+    this.storeBindings = createStoreBindings(this, {
+      store: shop,
+      fields: [],
+      actions: ['getShop'],
+    });
+    this.storeBindings = createStoreBindings(this, {
+      store: search,
+      fields: [],
+      actions: ['search'],
+    });
     const thiz=this;
 
     // 获取用户信息
@@ -98,6 +111,26 @@ Page({
     })
   },
 
+  navigateToBox:function(e){
+    const {boxid,shopid}=e.currentTarget.dataset;
+    this.getShop(shopid);
+    wx.navigateTo({
+      url: `../box/boxDetail/index?boxId=${boxid}&shopId=${shopid}`,
+    })
+  },
+
+  _search:function(e){
+    const {value}=e.detail;
+    this.search(value)
+      .then(res=>{
+        wx.navigateTo({
+          url: `../searchResult/index?value=${value}`,
+        })
+      })
+      .catch(err=>{
+        showToast(err.error);
+      })
+  },
 
   //用户确定登录
   getPhoneNumber(e) {

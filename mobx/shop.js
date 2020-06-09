@@ -24,13 +24,18 @@ export const shop = observable({
 
   // actions
   getShop:action(function(shopId){
-    get(url.getShop(shopId))
-      .then(res=>{
-        this.convertShopToPlainStructure(res);
-      })
-      .catch(err=>{
-        console.log(err);
-      })
+    return new Promise((resolve, reject) => {
+      get(url.getShop(shopId))
+        .then(res => {
+          this.convertShopToPlainStructure(res);
+          resolve(res);
+        })
+        .catch(err => {
+          console.log(err);
+          reject(err);
+        })
+
+    })
   }),
   convertShopToPlainStructure:action(function(shop){
     const openHours = shop.openHours;
