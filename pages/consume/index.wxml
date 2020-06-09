@@ -27,7 +27,7 @@
   </view>
 </view>
 
-<scroll-view scroll-y bindscrolltolower="scrollToBottom" style="height:100vh;">
+<scroll-view scroll-y bindscrolltolower="scrollToBottom" style="height:100vh;" refresher-enabled bindrefresherrefresh="refresh" refresher-triggered="{{refresh}}">
 
 
   <view class="cu-list menu-avatar margin-bottom">
@@ -54,6 +54,7 @@
       <view class="cuIcon-notice text-blue margin"></view>
     </view>
     <view class="text-lg margin">目前没有消费记录哦</view>
+    <view class="text-lg margin"bindtap="refresh">点击刷新</view>
   </view>
   <view class="text-grey text-center margin-bottom" wx:elif="{{isBottom}}">没有啦.....</view>
 

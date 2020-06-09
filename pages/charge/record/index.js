@@ -11,7 +11,8 @@ Page({
    */
   data: {
     page: 0,
-    isBottom: false
+    isBottom: false, 
+    refresh: false
   },
 
   /**
@@ -26,6 +27,26 @@ Page({
 
   },
 
+  refresh: function () {
+    const { userInfo } = this.data;
+    this.setData({
+      refresh: true
+    })
+    this.fetchChargeRecords(userInfo.uid, 0)
+      .then(res => {
+        this.setData({
+          refresh: false
+        })
+      })
+      .catch(err => {
+        showToast(err.error);
+      })
+    this.setData({
+      page: 0
+    })
+
+
+  },
 
   scrollToBottom: function () {
     const { page, isBottom, userInfo } = this.data;
@@ -61,7 +82,7 @@ Page({
         })
     } else {
       wx.navigateTo({
-        url: '../login/index',
+        url: '../../login/index',
       })
     }
 

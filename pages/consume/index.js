@@ -14,7 +14,8 @@ Page({
   data: {
     CustomBar: app.globalData.CustomBar,
     page:0,
-    isBottom:false
+    isBottom:false,
+    refresh:false,
   },
 
   /**
@@ -26,6 +27,27 @@ Page({
       fields: ['userInfo','bills','byBills'],
       actions: ['fetchBills'],
     });
+
+  },
+
+
+  refresh: function () {
+    const { userInfo } = this.data;
+    this.setData({
+      refresh: true
+    })
+    this.fetchBills(userInfo.uid, 0)
+      .then(res=>{
+        this.setData({
+          refresh:false
+        })
+      })
+      .catch(err => {
+        showToast(err.error);
+      })
+    this.setData({
+      page:0
+    })
 
   },
 
