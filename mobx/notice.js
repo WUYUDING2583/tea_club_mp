@@ -94,8 +94,18 @@ export const notice = observable({
         byNotifications[item.uid]=item;
       }
     });
-    this.notifications=notifications;
-    this.byNotifications=byNotifications;
+    const thiz=this;
+    notifications=notifications.filter(uid=>{
+      let isRepeat=false;
+      thiz.otifications.forEach(item=>{
+        if(uid==item){
+          isRepeat=true
+        }
+      });
+      return !isRepeat;
+    })
+    this.notifications=this.notifications.concat(notifications);
+    this.byNotifications={...this.byNotifications,...byNotifications};
   }),
 
 })

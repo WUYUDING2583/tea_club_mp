@@ -1,0 +1,6 @@
+<!--pages/charge/record/index.wxml-->
+
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">充值记录</view>
+</cu-custom>

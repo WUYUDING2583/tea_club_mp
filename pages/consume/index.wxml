@@ -1,0 +1,60 @@
+<!--pages/consume/index.wxml-->
+<wxs src="../tool.wxs" module="tool" />
+
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">消费记录</view>
+</cu-custom>
+
+
+<view class="cu-list menu-avatar fixed margin-bottom" style="top:{{CustomBar}}px;">
+
+  <view class="cu-item">
+    <view class="cu-avatar round bg-green lg">
+      <text class="cuIcon-recharge text-white"></text>
+    </view>
+    <view class="content">
+      <view class="text-grey">余额:
+        <text class="text-lg text-green">{{userInfo.ingot}}元宝</text>
+        <text class="text-lg text-green">{{userInfo.credit}}积分</text>
+      </view>
+    </view>
+    <view class="action">
+      <navigator hover-class="none" url="../charge/index">
+        <view class="text-blue">充值</view>
+      </navigator>
+    </view>
+  </view>
+</view>
+
+<scroll-view scroll-y bindscrolltolower="scrollToBottom" style="height:100vh;">
+
+
+  <view class="cu-list menu-avatar margin-bottom">
+    <view class="cu-item" wx:for="{{bills}}" wx:key="unique">
+      <view class="cu-avatar bg-{{byBills[item].description.uid==3?'blue':byBills[item].description.uid==4?'red':byBills[item].description.uid==1?'green':byBills[item].description.uid==2?'cyan':byBills[item].description.uid==5?'mauve':''}} round lg">
+        <text class="cuIcon-{{byBills[item].description.uid==3?'moneybag':byBills[item].description.uid==4?'favor':byBills[item].description.uid==1?'same':byBills[item].description.uid==2?'shop':byBills[item].description.uid==5?'activity':''}}"></text>
+      </view>
+      <view class="content">
+        <view class="text-grey">{{byBills[item].description.description}}</view>
+        <view class="text-gray text-sm flex">
+          {{tool.convertTimestampToVarTimestring(byBills[item].time)}}
+        </view>
+      </view>
+      <view class="action">
+        <text class="text-black" wx:if="{{byBills[item].ingot>0}}">{{byBills[item].ingot}}元宝</text>
+        <text class="text-black" wx:if="{{byBills[item].credit>0}}">{{byBills[item].credit}}积分</text>
+      </view>
+    </view>
+  </view>
+
+
+  <view class="text-grey text-center padding-xl" style="height:100%;" wx:if="{{bills.length==0}}">
+    <view class="cu-avatar xl round margin-top-xl">
+      <view class="cuIcon-notice text-blue margin"></view>
+    </view>
+    <view class="text-lg margin">目前没有消费记录哦</view>
+  </view>
+  <view class="text-grey text-center" wx:elif="{{isBottom}}">没有啦.....</view>
+
+</scroll-view>

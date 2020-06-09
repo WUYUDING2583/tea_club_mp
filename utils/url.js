@@ -55,4 +55,5 @@ export const url={
   clearUnRead:(userId)=>`${HOME}/notice/clear/${userId}`,
   deleteAddress:(addressId)=>`${HOME}/address/${addressId}`,
   fetchBoxProduct: () => `${HOME}/boxProduct`,
+  fetchBills: (userId,page)=>`${HOME}/bills/${userId}/${page}`,
 } 

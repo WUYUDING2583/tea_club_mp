@@ -1,7 +1,7 @@
 <!--pages/notice/notificationList/index.wxml-->
 <wxs src="../../tool.wxs" module="tool" />
 
-<scroll-view scroll-y bindscrolltolower="scrollToBottom">
+<scroll-view scroll-y bindscrolltolower="scrollToBottom" style="height:100vh;">
 
   <cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
     <view slot="backText">返回</view>

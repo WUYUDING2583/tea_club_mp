@@ -1,7 +1,8 @@
 {
   "pages": [
-    "pages/box/boxProductList/index",
     "pages/index/index",
+    "pages/consume/index",
+    "pages/box/boxProductList/index",
     "pages/notice/notificationList/index",
     "pages/order/reservationList/index",
     "pages/order/orderList/index",
@@ -24,7 +25,8 @@
     "pages/product/productList/index",
     "pages/box/boxDetail/index",
     "pages/order/orderPreview/index",
-    "pages/product/productOrderPreview/index"
+    "pages/product/productOrderPreview/index",
+    "pages/charge/record/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

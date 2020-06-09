@@ -163,10 +163,18 @@
       </navigator>
     </view>
     <view class="cu-item arrow">
-      <navigator hover-class="none" url="../logs/logs" open-type="redirect">
+      <navigator hover-class="none" url="../charge/record/index">
         <button class="cu-btn content">
-          <text class="cuIcon-myfill text-purple"></text>
-          <text class="text-grey">我的账户</text>
+          <text class="cuIcon-recharge text-purple"></text>
+          <text class="text-grey">充值记录</text>
+        </button>
+      </navigator>
+    </view>
+    <view class="cu-item arrow">
+      <navigator hover-class="none" url="../consume/index">
+        <button class="cu-btn content">
+          <text class="cuIcon-form text-mauve"></text>
+          <text class="text-grey">消费记录</text>
         </button>
       </navigator>
     </view>

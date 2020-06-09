@@ -20,8 +20,45 @@ export const user = observable({
   userInfo: new Object(),
   phone:"",
   byAddresses:new Object(),
+  bills:new Array(),
+  byBills:new Object(),
 
   // actions
+  fetchBills:action(function(userId,page){
+    return new Promise((resolve,reject)=>{
+      get(url.fetchBills(userId,page))
+        .then(res=>{
+          this.convertBillsToPlainStructure(res);
+          resolve(res);
+        })
+        .catch(err=>{
+          console.log(err);
+          reject(err);
+        })
+    })
+  }),
+  convertBillsToPlainStructure:action(function(data){
+    let bills=new Array();
+    let byBills=new Object();
+    data.forEach(item=>{
+      bills.push(item.uid);
+      if(!byBills[item.uid]){
+        byBills[item.uid]=item;
+      }
+    });
+    const thiz=this;
+    bills = bills.filter(uid => {
+      let isRepeat = false;
+      thiz.bills.forEach(item => {
+        if (uid == item) {
+          isRepeat = true
+        }
+      });
+      return !isRepeat;
+    })
+    this.bills=this.bills.concat(bills);
+    this.byBills={...this.byBills,...byBills};
+  }),
   deleteAddress:action(function(addressId){
     return new Promise((resolve,reject)=>{
       _delete(url.deleteAddress(addressId))
@@ -84,6 +121,7 @@ export const user = observable({
     return new Promise((resolve,reject)=>{
       post(url.charge(value,userId),{})
         .then(res=>{
+          this.changeBalance(res);
           resolve(res);
         })
         .catch(err=>{
@@ -91,6 +129,9 @@ export const user = observable({
           reject(err);
         })
     })
+  }),
+  changeBalance:action(function(balance){
+    this.userInfo={...this.userInfo,...balance};
   }),
   setUserInfo: action(function(userInfo) {
     let byAddresses=new Object();
