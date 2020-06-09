@@ -3,7 +3,7 @@ import {
   observable,
   action
 } from 'mobx-miniprogram'
-import { get,post,_delete } from "../utils/request.js";
+import { get,post,_delete ,put} from "../utils/request.js";
 import { url } from "../utils/url.js";
 import {app as appActions} from "./app.js";
 
@@ -26,6 +26,18 @@ export const user = observable({
   byCharges:new Object(),
 
   // actions
+  activityPresentMoney:action(function(userId,amount){
+    return new Promise((resolve,reject)=>{
+      put(url.activityPresentMoney(userId), amount)
+        .then(res => {
+          this.changeBalance(res);
+          resolve(res);
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    })
+  }),
   fetchChargeRecords:action(function(userId, page) {
     return new Promise((resolve, reject) => {
       get(url.fetchChargeRecords(userId, page))

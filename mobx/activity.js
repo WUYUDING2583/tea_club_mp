@@ -8,9 +8,9 @@ configure({ enforceActions: 'observed' });
 export const activity = observable({
 
   // 数据字段
-  activities: [],
-  byActivities: {},
-  readingActivity:{},
+  activities: new Array(),
+  byActivities: new Object(),
+  readingActivity:new Object(),
 
  
 
@@ -28,6 +28,7 @@ export const activity = observable({
   }),
   convertReadingActivityToPlainStructure: action(function (data) {
     this.readingActivity = data;
+
   })
 
 })

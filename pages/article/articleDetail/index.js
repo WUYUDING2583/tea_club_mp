@@ -40,31 +40,27 @@ Page({
     this.storeBindings = createStoreBindings(this, {
       store: user,
       fields: ['userInfo', 'phoneNumber'],
+      actions: ['activityPresentMoney'],
     });
     this.storeBindings = createStoreBindings(this, {
       store: balance,
       fields: ['credit', 'ingot'],
-      actions: ['addIngot','addCredit'],
     });
 
     const thiz=this;
     //获取阅读活动
     this.fetchReadingActivity()
-      .then((data)=> {
-        console.log("after",data);
-        thiz.setData({
-          readingActivity:data
-        })
-        thiz.startKeepTime();
-      });
 
   },
-  startKeepTime:function(){
+  startKeepTime: function () {
+    this.storeBindings.updateStoreBindings();
+    const thiz=this;
+    const { userInfo, readingActivity}=this.data;
     let isApplicable=false;
-    if (this.data.readingActivity != null) {
-      if(this.data.phoneNumber.length>0){
-        this.data.readingActivity.activityApplyForCustomerTypes.forEach(function(item){
-          if(item.uid==this.data.userInfo.customerType.uid){
+    if (readingActivity != null) {
+      if(userInfo.uid){
+        readingActivity.activityApplyForCustomerTypes.forEach(function(item){
+          if(item.uid==userInfo.customerType.uid){
             isApplicable=true;
           }
         })
@@ -72,15 +68,23 @@ Page({
         console.log("未登录")
       }
     }
+    console.log("isApplicable", isApplicable);
     if(isApplicable){
-      let timer=setTimeout(function(){
-        if(this.data.readingActivity.activityRule2.currency=="ingot"){
-          this.addIngot(this.data.userInfo.uid, this.data.readingActivity.activityRule2.number);
-        }else{
-          this.addCredit(this.data.userInfo.uid, this.data.readingActivity.activityRule2.number);
+      setTimeout(function(){
+        console.log("add");
+        let amount=new Object();
+        if(readingActivity.activityRule2.currency=="ingot"){
+          amount = { ingot: readingActivity.activityRule2.number,credit:0}
+        } else {
+          amount = { credit: readingActivity.activityRule2.number, ingot: 0 }
         }
-      }, this.data.readingActivity.activityRule1)
+        thiz.activityPresentMoney(userInfo.uid,amount)
+      }, readingActivity.activityRule1*1000)
     }
+  },
+
+  onReady:function(){
+    this.startKeepTime();
   },
 
   /**

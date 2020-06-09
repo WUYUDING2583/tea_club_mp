@@ -57,4 +57,5 @@ export const url={
   fetchBoxProduct: () => `${HOME}/boxProduct`,
   fetchBills: (userId,page)=>`${HOME}/bills/${userId}/${page}`,
   fetchChargeRecords: (userId, page) => `${HOME}/charge/${userId}/${page}`,
+  activityPresentMoney:(userId)=>`${HOME}/activity/present/${userId}`,
 } 

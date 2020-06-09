@@ -6,7 +6,7 @@
 </cu-custom>
 <scroll-view>
   <view wx:for="{{articles}}" wx:key="unique">
-    <navigator hover-class="navigator-hover" url="../articleDetail/index?uid={{item}}" open-type="navigate">
+    <navigator hover-class="none" url="../articleDetail/index?uid={{item}}" open-type="navigate">
       <view class="cu-card article">
         <view class="cu-item shadow">
           <view class="title flex">
