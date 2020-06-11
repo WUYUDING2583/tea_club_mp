@@ -31,7 +31,7 @@
 
 
   <view class="cu-list menu-avatar margin-bottom">
-    <view class="cu-item" wx:for="{{bills}}" wx:key="unique">
+    <view class="cu-item" wx:for="{{bills}}" wx:key="index">
       <view class="cu-avatar bg-{{byBills[item].description.uid==3?'blue':byBills[item].description.uid==4?'red':byBills[item].description.uid==1?'green':byBills[item].description.uid==2?'cyan':byBills[item].description.uid==5?'mauve':''}} round lg">
         <text class="cuIcon-{{byBills[item].description.uid==3?'moneybag':byBills[item].description.uid==4?'favor':byBills[item].description.uid==1?'same':byBills[item].description.uid==2?'shop':byBills[item].description.uid==5?'activity':''}}"></text>
       </view>
@@ -41,9 +41,9 @@
           {{tool.convertTimestampToVarTimestring(byBills[item].time)}}
         </view>
       </view>
-      <view class="action">
-        <text class="text-black" wx:if="{{byBills[item].ingot>0}}">{{byBills[item].ingot}}元宝</text>
-        <text class="text-black" wx:if="{{byBills[item].credit>0}}">{{byBills[item].credit}}积分</text>
+      <view class="action" style="width:30vw;">
+        <text class="text-black" wx:if="{{byBills[item].ingot!=0}}">{{byBills[item].ingot}}元宝</text>
+        <text class="text-black" wx:if="{{byBills[item].credit!=0}}">{{byBills[item].credit}}积分</text>
       </view>
     </view>
   </view>

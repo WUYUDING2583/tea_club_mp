@@ -5,7 +5,7 @@
   <view slot="content">订单预览</view>
 </cu-custom>
 
-<view class="cu-card case" wx:for="{{productId}}">
+<view class="cu-card case" wx:for="{{productId}}" wx:key="unique">
   <view class="cu-item shadow">
     <view class="cu-list menu-avatar solid-bottom">
       <view class="cu-item padding">
@@ -42,7 +42,7 @@
     </view>
   </view>
 </view>
-<view class="cu-list menu sm-border card-menu" wx:for="{{productId}}">
+<view class="cu-list menu sm-border card-menu" wx:for="{{productId}}" wx:key="unique">
   <view class="cu-item arrow" wx:for="{{byProducts[item].activityRules}}" wx:key="unique" bindtap="showActivity" data-target="{{item}}" wx:if="{{tool.applicableForActivity(byActivityRules[item].activityApplyForCustomerTypes,userInfo.customerType)}}">
     <view class="content">
       <text class="text-grey ">{{byActivityRules[item].activityRuleType.name}}</text>

@@ -30,7 +30,7 @@
 </view>
 
 <view style="margin-bottom:50px;">
-  <view class="cu-card case" wx:for="{{byOrders[orderId].products}}">
+  <view class="cu-card case" wx:for="{{byOrders[orderId].products}}" wx:key="unique">
     <view class="cu-item shadow">
       <view class="cu-list menu-avatar solid-bottom">
         <view class="cu-item padding">
@@ -103,7 +103,7 @@
             <view class="cu-item ">
               <view class="content flex-sub ">
                 <view>适用客户
-                  <text class="text-gray margin-left " wx:for="{{byActivityRules[ruleId].activityApplyForCustomerTypes}} ">{{item.name}}</text>
+                  <text class="text-gray margin-left " wx:for="{{byActivityRules[ruleId].activityApplyForCustomerTypes}}" wx:key="unique">{{item.name}}</text>
                 </view>
               </view>
             </view>
@@ -141,7 +141,7 @@
       <view class="action text-green" bindtap="_charge">确定</view>
     </view>
     <view class="grid col-3 padding-sm">
-      <view wx:for="{{checkbox}}" class="padding-xs" wx:key="{{index}}">
+      <view wx:for="{{checkbox}}" wx:key="unique" class="padding-xs" wx:key="{{index}}">
         <button class="cu-btn blue lg block {{item.checked?'bg-blue':'line-blue'}}" bindtap="ChooseCheckbox" data-value="{{item.value}}" style="width:30vw;">
           <input wx:if="{{item.name=='自定义'}}" placeholder="{{item.name}}" id="selfInputCharge" bindinput="chargeInput" type="number"></input>
           <text wx:else>{{item.name}}</text>

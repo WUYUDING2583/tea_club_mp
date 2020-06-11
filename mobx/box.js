@@ -26,7 +26,10 @@ export const box = observable({
     })
   }), 
   convertBoxToPlainStructure: action(function (data) {
-    const photos = data.photos.map((photo) => `data:image/jpeg;base64,${photo.photo}`)
+    let photos=null;
+    if (data.photos) {
+      photos = data.photos.map((photo) => `data:image/jpeg;base64,${photo.photo}`)
+    }
     if(this.boxes.indexOf(data.uid)==-1){
       this.boxes=this.boxes.concat([data.uid]);
     }
@@ -35,7 +38,7 @@ export const box = observable({
     }
     this.byBoxes = {
       ...this.byBoxes, [data.uid]: {
-        ...data, photo: `data:image/jpeg;base64,${data.photos[0].photo}`, photos
+        ...data, photo: data.photos?`data:image/jpeg;base64,${data.photos[0].photo}`:null, photos
       }};
   }),
   fetchReservations:action(function(boxId,startTime,endTime){
@@ -87,7 +90,10 @@ export const box = observable({
     let byReservations=new Object();
     data.forEach(item => {
       boxes.push(item.uid)
-      const photos = item.photos.map((photo) =>`data:image/jpeg;base64,${photo.photo}`)
+      let photos=null;
+      if (item.photos) {
+        photos = item.photos.map((photo) => `data:image/jpeg;base64,${photo.photo}`)
+      }
       let reservations=new Array();
       item.reservations.forEach((reservation)=>{
         reservations.push(reservation.reservationTime);
@@ -95,7 +101,7 @@ export const box = observable({
       })
       if(!byBoxes[item.uid]){
         byBoxes[item.uid] = {
-          ...item, photo: `data:image/jpeg;base64,${item.photos[0].photo}`, photos, reservations
+          ...item, photo: item.photos?`data:image/jpeg;base64,${item.photos[0].photo}`:null, photos, reservations
         }
       }
     });
@@ -107,7 +113,7 @@ export const box = observable({
     let hotBoxes = new Array();
     data.forEach(item => {
       hotBoxes.push({
-        ...item.box, number: item.number, photo: `data:image/jpeg;base64,${item.box.photos[0].photo}`
+        ...item.box, number: item.number, photo: item.box.photos?`data:image/jpeg;base64,${item.box.photos[0].photo}`:null
       });
     });
     this.hotBoxes = hotBoxes;

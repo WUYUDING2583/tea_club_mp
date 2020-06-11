@@ -24,6 +24,7 @@ Page({
     errModal:false,
     charge:0,
     deliveryMode:"delivery",
+    isCart:true,
     checkbox: [{
       value: 50,
       name: '50元',
@@ -52,9 +53,11 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    // options.orderId=253;
+    console.log(options);
+    const isCart = options.isCart ? options.isCart:true;
     this.setData({
-      orderId:options.orderId
+      orderId:options.orderId,
+      isCart
     }); 
     this.storeBindings = createStoreBindings(this, {
       store: user,
@@ -146,11 +149,16 @@ Page({
   },
 
   _payCart:function(){
-    const { byOrders, orderId,  addressId,  ps, deliveryMode ,shopId} = this.data;
+    const { byOrders, orderId,  addressId,  ps, deliveryMode ,shopId,isCart,userInfo} = this.data;
+    if(addressId==null&&deliveryMode=="delivery"){
+      showToast("请选择收货地址");
+      return;
+    }
     let order = {
       uid:orderId,
       buyerPs:ps,
       deliverMode: deliveryMode,
+      customer:{uid:userInfo.uid}
     }
     if (deliveryMode=="selfPick"){
       order = { ...order,  placeOrderWay: { uid: shopId }}
@@ -158,7 +166,7 @@ Page({
       order = { ...order,  address: { uid: addressId }};
     }
     console.log("order", order);
-    this.payCart(order)
+    this.payCart(order,isCart)
       .then(res=>{
         wx.redirectTo({
           url: `../orderResult/index?orderId=${this.data.orderId}`,
@@ -191,9 +199,11 @@ Page({
    */
   onReady: function () {
     const {userInfo}=this.data;
-    this.setData({
-      addressId: userInfo.address
-    })
+    if (userInfo.address){
+      this.setData({
+        addressId: userInfo.address
+      })
+    }
   },
 
 

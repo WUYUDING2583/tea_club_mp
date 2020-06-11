@@ -19,7 +19,7 @@
         <image src="{{byShops[item].photo}}" mode="aspectFill"></image>
         <view class="desc">
           <view class="text-content">{{byShops[item].description}}</view>
-          <view>地址：{{byShops[item].address}}</view>
+          <view>{{byShops[item].address}}</view>
           <view>
             <view wx:for="{{byShops[item].openHours}}" wx:key="unique">
               <text>{{item.startTime}}~{{item.endTime}} </text>

@@ -94,7 +94,7 @@
         <view class="cu-list menu-avatar">
           <view class="cu-item">
             <view class="cu-avatar xl" style="background-image:url({{byProducts[productId].photo}});"></view>
-            <view class="content flex-sub">
+            <view class="content flex-sub margin-left">
               <view>
                 <text class="text-red text-xl" wx:if="{{byProducts[productId].price.ingot>0}}">{{byProducts[productId].price.ingot}}元宝 </text>
                 <text class="text-red text-xl" wx:if="{{byProducts[productId].price.credit>0}}">{{byProducts[productId].price.credit}}积分</text>

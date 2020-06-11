@@ -51,7 +51,9 @@ export const shop = observable({
       })
       shop.todayOpenHour = todayOpenHour;
         this.byShops[shop.uid] = { ...shop, photo: shop.photos.length > 0 ? `data:image/jpeg;base64,${shop.photos[0].photo}` : null };
-        this.shops=this.shops.concat([shop.uid]);
+        if(this.shops.indexOf(shop.uid)==-1){
+          this.shops = this.shops.concat([shop.uid]);
+        }
     }
   }),
   getShopList:action(function(){

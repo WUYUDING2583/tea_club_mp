@@ -226,13 +226,14 @@ Page({
     });
     if (e.currentTarget.dataset.modal == "trackInfoModal") {
       let trackInfo="";
-      const {byOrdersShipped}=this.data;
-      if (byOrdersShipped[e.currentTarget.dataset.target].trackInfo.companyName==null){
-        trackInfo += `配送人联系方式：${byOrdersShipped[e.currentTarget.dataset.target].trackInfo.phone}\n`;
-        trackInfo += `配送人信息：${byOrdersShipped[e.currentTarget.dataset.target].trackInfo.description}`
+      const {byOrdersShipped,byOrdersAll,tab}=this.data;
+      let byOrders=tab==0?byOrdersAll:byOrdersShipped;
+      if (byOrders[e.currentTarget.dataset.target].trackInfo.companyName==null){
+        trackInfo += `配送人联系方式：${byOrders[e.currentTarget.dataset.target].trackInfo.phone}\n`;
+        trackInfo += `配送人信息：${byOrders[e.currentTarget.dataset.target].trackInfo.description}`
       } else {
-        trackInfo += `物流公司：${byOrdersShipped[e.currentTarget.dataset.target].trackInfo.companyName}\n`;
-        trackInfo += `物流单号：${byOrdersShipped[e.currentTarget.dataset.target].trackInfo.trackingId}`;
+        trackInfo += `物流公司：${byOrders[e.currentTarget.dataset.target].trackInfo.companyName}\n`;
+        trackInfo += `物流单号：${byOrders[e.currentTarget.dataset.target].trackInfo.trackingId}`;
       }
       this.setData({
         trackInfo
@@ -240,6 +241,12 @@ Page({
     }
     
   },
+
+  //确认收货
+  confirmReceive:function(e){
+    //TODO 
+  },
+  
   chargeInput: function (e) {
     let items = this.data.checkbox;
     for (let i = 0, lenI = items.length; i < lenI; ++i) {

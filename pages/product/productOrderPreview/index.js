@@ -157,7 +157,7 @@ Page({
           ruleIngot += byProducts[productId].price.ingot;
           ruleCredit += byProducts[productId].price.credit;
         });
-        if (activityRule2 == null) {
+        if (activityRule2.number == 0) {
           //折扣
           ingot += ruleIngot * (100 - activityRule1) / 100;
           credit += ruleCredit;
@@ -211,7 +211,7 @@ Page({
     this.placeOrder(order)
       .then(res => {
         wx.redirectTo({
-          url: `../../order/orderPreview/index?orderId=${res.uid}`
+          url: `../../order/orderPreview/index?orderId=${res.uid}&isCart=false`
         })
       })
       .catch(err => {

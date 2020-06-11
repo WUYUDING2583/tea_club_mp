@@ -25,7 +25,7 @@ Page({
     this.storeBindings = createStoreBindings(this, {
       store: user,
       fields: ['userInfo','bills','byBills'],
-      actions: ['fetchBills'],
+      actions: ['fetchBills','getUserInfoByPhone'],
     });
 
   },
@@ -82,6 +82,10 @@ Page({
   onReady: function () {
     const { userInfo,page } = this.data;
     if(userInfo.uid){
+      this.getUserInfoByPhone(userInfo.contact)
+        .catch(err => {
+          showToast(err.error);
+        })
       this.fetchBills(userInfo.uid,page)
         .catch(err => {
           showToast(err.error);

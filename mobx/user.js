@@ -142,9 +142,9 @@ export const user = observable({
   convertAddressToPlainStructure:action(function(data){
     this.byAddresses={...this.byAddresses,[data.uid]:data};
   }),
-  payCart:action(function(order){
+  payCart:action(function(order,isCart){
     return new Promise((resolve,reject)=>{
-      post(url.payCart(),order)
+      post(url.payCart(isCart),order)
         .then(res=>{
           resolve(res);
         })

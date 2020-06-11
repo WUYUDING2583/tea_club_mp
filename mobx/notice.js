@@ -106,6 +106,7 @@ export const notice = observable({
     })
     this.notifications=this.notifications.concat(notifications);
     this.byNotifications={...this.byNotifications,...byNotifications};
+    this.notifications=this.notifications.sort((a,b)=> this.byNotifications[b].time-this.byNotifications[a].time);
   }),
 
 })
