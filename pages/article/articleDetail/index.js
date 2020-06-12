@@ -5,6 +5,7 @@ import { article } from "../../../mobx/article.js";
 import { app as appActions } from "../../../mobx/app.js";
 import { user } from "../../../mobx/user.js";
 import { balance } from "../../../mobx/balance.js";
+import { showToast } from "../../../utils/request.js";
 
 const app = getApp();
 Page({
@@ -33,11 +34,6 @@ Page({
       fields: ['retrieveRequestQuantity', 'updateRequestQuantity'],
     });
     this.storeBindings = createStoreBindings(this, {
-      store: activity,
-      fields: ['readingActivity', 'byActivities'],
-      actions: ['fetchReadingActivity'],
-    });
-    this.storeBindings = createStoreBindings(this, {
       store: user,
       fields: ['userInfo', 'phoneNumber'],
       actions: ['activityPresentMoney'],
@@ -46,23 +42,31 @@ Page({
       store: balance,
       fields: ['credit', 'ingot'],
     });
+    this.storeBindings = createStoreBindings(this, {
+      store: activity,
+      fields: ['readingActivityRule', 'byActivities', 'byActivityRules'],
+      actions: ['fetchReadingActivity'],
+    });
 
-    const thiz=this;
-    //获取阅读活动
-    this.fetchReadingActivity()
 
   },
-  startKeepTime: function () {
+  startKeepTime: function (data) {
     this.storeBindings.updateStoreBindings();
     const thiz=this;
-    const { userInfo, readingActivity}=this.data;
+    const { userInfo}=this.data;
+    const { byActivityRules, activityRules}=data
+    console.log("byActivityRules", byActivityRules)
+    console.log("activityRules", activityRules)
     let isApplicable=false;
-    if (readingActivity != null) {
+    if (activityRules.length>0) {
       if(userInfo.uid){
-        readingActivity.activityApplyForCustomerTypes.forEach(function(item){
-          if(item.uid==userInfo.customerType.uid){
-            isApplicable=true;
-          }
+        console.log("start loop")
+        activityRules.forEach((uid)=>{
+          byActivityRules[uid].activityApplyForCustomerTypes.forEach(item=>{
+            if (userInfo.customerType.uid ==item.uid) {
+              isApplicable = uid;
+            }
+          })
         })
       }else{
         console.log("未登录")
@@ -73,18 +77,27 @@ Page({
       setTimeout(function(){
         console.log("add");
         let amount=new Object();
-        if(readingActivity.activityRule2.currency=="ingot"){
-          amount = { ingot: readingActivity.activityRule2.number,credit:0}
+        if(byActivityRules[isApplicable].activityRule2.currency=="ingot"){
+          amount = { ingot: byActivityRules[isApplicable].activityRule2.number,credit:0}
         } else {
-          amount = { credit: readingActivity.activityRule2.number, ingot: 0 }
+          amount = { credit: byActivityRules[isApplicable].activityRule2.number, ingot: 0 }
         }
         thiz.activityPresentMoney(userInfo.uid,amount)
-      }, readingActivity.activityRule1*1000)
+      }, byActivityRules[isApplicable].activityRule1*1000)
     }
   },
 
-  onReady:function(){
-    this.startKeepTime();
+  onReady: function () {
+    const thiz = this;
+    //获取阅读活动
+    this.fetchReadingActivity()
+      .then(res => {
+        thiz.startKeepTime(res);
+      })
+      .catch(err => {
+        console.log(err);
+        showToast(err.error);
+      })
   },
 
   /**

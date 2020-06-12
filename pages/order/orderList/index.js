@@ -64,7 +64,7 @@ Page({
     this.storeBindings = createStoreBindings(this, {
       store: order,
       fields: ['ordersAll','byOrdersAll','ordersUnpay','byOrdersUnpay','ordersPayed','byOrdersPayed','ordersShipped','byOrdersShipped','ordersRefund','byOrdersRefund'],
-      actions: ['fetchAll', 'resetOrderList', 'fetchPayed', 'fetchUnpay', 'fetchShipped', 'cancelOrder', 'removeOrder','fetchRefund','refund']
+      actions: ['fetchAll', 'resetOrderList', 'fetchPayed', 'fetchUnpay', 'fetchShipped', 'cancelOrder', 'removeOrder', 'fetchRefund', 'refund','confirmReceive']
     });
 
   },
@@ -89,6 +89,10 @@ Page({
                 this.setData({
                   page_unpay: page_unpay + 1
                 })
+              }else{
+                this.setData({
+                  page_unpay: 0
+                })
               }
             }
           })
@@ -108,6 +112,10 @@ Page({
               if (!isPageZero) {
                 this.setData({
                   page_payed: page_payed + 1
+                })
+              } else {
+                this.setData({
+                  page_payed: 0
                 })
               }
             }
@@ -129,6 +137,10 @@ Page({
                 this.setData({
                   page_shipped: page_shipped + 1
                 })
+              } else {
+                this.setData({
+                  page_shipped: 0
+                })
               }
             }
           })
@@ -149,6 +161,10 @@ Page({
                 this.setData({
                   page_refund: page_refund + 1
                 })
+              } else {
+                this.setData({
+                  page_refund: 0
+                })
               }
             }
           })
@@ -167,6 +183,10 @@ Page({
               if (!isPageZero) {
                 this.setData({
                   page_all: page_all + 1
+                })
+              } else {
+                this.setData({
+                  page_all: 0
                 })
               }
             }
@@ -243,8 +263,20 @@ Page({
   },
 
   //确认收货
-  confirmReceive:function(e){
-    //TODO 
+  _confirmReceive:function(e){
+    const {tab}=this.data;
+    console.log(e.currentTarget.dataset.target)
+    this.confirmReceive(e.currentTarget.dataset.target)
+      .then(res=>{
+        showToast("确认收货成功");
+        if(tab==0){
+          this.fetchOrders(tab, true)
+        }
+      })
+      .catch(err=>{
+        console.log(err);
+        showToast(err.error);
+      })
   },
   
   chargeInput: function (e) {
@@ -297,7 +329,7 @@ Page({
       })
   },
   _cancelOrder:function(e){
-    const { operationOrderId } = this.data;
+    const { operationOrderId,tab } = this.data;
     this.setData({
       modalName: "",
       operationOrderId: null
@@ -305,17 +337,23 @@ Page({
     this.cancelOrder(operationOrderId)
       .then(res=>{
         showToast("取消订单成功");
+        if (tab == 0) {
+          this.fetchOrders(tab, true)
+        }
       })
       .catch(err=>{
         showToast(err.error);
       })
   },
   _pay:function(e){
-    const {userInfo}=this.data;
+    const {userInfo,tab}=this.data;
     this.pay(userInfo.uid, e.currentTarget.dataset.target)
       .then(res=>{
         this.removeOrder(e.currentTarget.dataset.target);
         showToast("付款成功");
+        if (tab == 0) {
+          this.fetchOrders(tab, true)
+        }
       })
       .catch(err=>{
         if (err.code == 500700) {
@@ -331,7 +369,7 @@ Page({
   },
 
   _refund:function(){
-    const { refundIndex, RefundReason, userInfo, operationOrderId } = this.data;
+    const { refundIndex, RefundReason, userInfo, operationOrderId,tab } = this.data;
     this.setData({
       modalName: "",
       operationOrderId: null,
@@ -344,6 +382,9 @@ Page({
     this.refund(operationOrderId,RefundReason[refundIndex])
       .then(res=>{
         showToast("申请退款成功，等待系统管理员审核");
+        if (tab == 0) {
+          this.fetchOrders(tab, true)
+        }
       })
       .catch(err=>{
         showToast(err.error);

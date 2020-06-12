@@ -182,7 +182,9 @@ var getOrderStatus=function(status){
     case 'refund':
       return "退款成功";
     case 'complete':
-     return "预约已完成";
+     return "已完成";
+    case 'rejectRefund':
+      return "卖家拒绝退款";
   }
 }
 

@@ -72,6 +72,7 @@ export const user = observable({
     })
     this.charges = this.charges.concat(charges);
     this.byCharges = { ...this.byCharges, ...byCharges };
+    this.charges = this.charges.sort((a, b) => this.byCharges[b].time - this.byCharges[a].time)
   }),
   fetchBills:action(function(userId,page){
     return new Promise((resolve,reject)=>{
@@ -106,7 +107,8 @@ export const user = observable({
       return !isRepeat;
     })
     this.bills=this.bills.concat(bills);
-    this.byBills={...this.byBills,...byBills};
+    this.byBills = { ...this.byBills, ...byBills };
+    this.bills = this.bills.sort((a, b) => this.byBills[b].time - this.byBills[a].time)
   }),
   deleteAddress:action(function(addressId){
     return new Promise((resolve,reject)=>{

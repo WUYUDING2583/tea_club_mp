@@ -1,5 +1,5 @@
 import { configure, observable, action } from 'mobx-miniprogram';
-import { get, post,showToast } from "../utils/request.js";
+import { get, post,showToast,put } from "../utils/request.js";
 import { url } from "../utils/url.js";
 
 // 不允许在动作外部修改状态
@@ -36,6 +36,19 @@ export const order = observable({
   },
 
   // actions
+  confirmReceive:action(function(orderId){
+    return new Promise((resolve,reject)=>{
+      put(url.confirmReceive(orderId))
+        .then(res => {
+          this.removeOrder(orderId);
+          resolve(res)
+        })
+        .catch(err=>{
+          console.log(err);
+          reject(err);
+        })
+    })
+  }),
   reservationRefund: action(function (orderId) {
     return new Promise((resolve, reject) => {
       post(url.reservationRefund(orderId),{})
@@ -243,6 +256,8 @@ export const order = observable({
     this.byOrdersPayed=new Object();
     this.ordersShipped=new Array();
     this.byOrdersShipped=new Object();
+    this.ordersRefund=new Array();
+    this.byOrdersRefund=new Object();
   }),
   fetchAll:action(function(page,userId){
     return new Promise((resolve,reject)=>{
@@ -376,7 +391,6 @@ export const order = observable({
   }),
   removeOrder:action(function(orderId){
     this.orders = this.orders.filter((uid) => uid != orderId);
-    this.ordersAll = this.ordersAll.filter((uid) => uid != orderId);
     this.ordersUnpay = this.ordersUnpay.filter((uid) => uid != orderId);
     this.ordersPayed = this.ordersPayed.filter((uid) => uid != orderId);
     this.ordersShipped = this.ordersShipped.filter((uid) => uid != orderId);

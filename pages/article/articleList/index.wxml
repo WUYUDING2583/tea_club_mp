@@ -5,22 +5,25 @@
   <view slot="content">研茶</view>
 </cu-custom>
 <scroll-view>
+
   <view wx:for="{{articles}}" wx:key="unique">
     <navigator hover-class="none" url="../articleDetail/index?uid={{item}}" open-type="navigate">
-      <view class="cu-card article">
-        <view class="cu-item shadow">
-          <view class="title flex">
-            <view class="text-cut flex-sub">{{byArticles[item].title}}</view>
-            <view class="text-grey text-sm flex-sub text-right">{{tool.dateFormat(byArticles[item].time)}}</view>
+      <view class="cu-card case">
+        <view class=" cu-item shadow ">
+          <view class="image ">
+            <image src="{{byArticles[item].photo}}" mode="widthFix "></image>
+            <view class="cu-tag bg-blue" wx:for="{{byArticles[item].tags}}" wx:key="unique">{{item.name}}</view>
+            <view class="cu-bar bg-shadeBottom ">
+              <text class="text-cut ">{{byArticles[item].description}}</text>
+            </view>
           </view>
-          <view class="content">
-            <image src="{{byArticles[item].photo}}" mode="aspectFill"></image>
-            <view class="desc">
-              <view class="text-cut text-content">{{byArticles[item].description}}</view>
-              <view class="flex">
-                <view wx:for="{{byArticles[item].tags}}" wx:key="unique">
-                  <view class="cu-tag bg-{{ColorList[tool.arrayLengthRandom(ColorList)].name}} light sm round margin-left">{{item.name}}</view>
-                </view>
+          <view class="cu-list menu">
+            <view class="cu-item ">
+              <view class="content">
+                <view class="text-black ">{{byArticles[item].title}}</view>
+              </view>
+              <view class="text-gray text-sm action ">
+                {{tool.dateFormat(byArticles[item].time)}}
               </view>
             </view>
           </view>

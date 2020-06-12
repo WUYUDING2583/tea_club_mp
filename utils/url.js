@@ -60,4 +60,5 @@ export const url={
   activityPresentMoney:(userId)=>`${HOME}/activity/present/${userId}`,
   search:(value)=>`${HOME}/search?value=${value}`,
   fetchArticle:(articleId)=>`${HOME}/article/${articleId}`, 
+  confirmReceive:(orderId)=>`${HOME}/orders/${orderId}`,
 } 

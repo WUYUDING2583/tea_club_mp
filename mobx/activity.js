@@ -10,7 +10,8 @@ export const activity = observable({
   // 数据字段
   activities: new Array(),
   byActivities: new Object(),
-  readingActivity:new Object(),
+  readingActivityRule:new Array(),
+  byActivityRules:new Object(),
 
  
 
@@ -21,14 +22,27 @@ export const activity = observable({
     return new Promise((resolve,reject)=>{
       get(url.fetchReadingActivity())
         .then(res=>{
-          this.convertReadingActivityToPlainStructure(res);
-          return resolve(res);
+          const data=this.convertReadingActivityToPlainStructure(res);
+          resolve(data);
+        })
+        .catch(err=>{
+          console.log(err);
+          reject(err);
         })
     })
   }),
   convertReadingActivityToPlainStructure: action(function (data) {
-    this.readingActivity = data;
-
+    let activityRules=new Array();
+    let byActivityRules=new Object();
+    data.activityRules.forEach(item=>{
+      activityRules.push(item.uid);
+      if(!byActivityRules[item.uid]){
+        byActivityRules[item.uid]=item;
+      }
+    })
+    this.readingActivityRule = activityRules;
+    this.byActivityRules=byActivityRules;
+    return { activityRules, byActivityRules};
   })
 
 })

@@ -20,20 +20,26 @@
       <view class="cu-avatar round bg-green lg" wx:if="{{byNotifications[item].type==1}}">
         <text class="cuIcon-info"></text>
       </view>
-      <view class="cu-avatar round bg-red lg" wx:if="{{byNotifications[item].type==4}}">
+      <view class="cu-avatar round bg-red lg" wx:elif="{{byNotifications[item].type==4}}">
         <text class="cuIcon-like"></text>
       </view>
-      <view class="cu-avatar round bg-blue lg" wx:if="{{byNotifications[item].type==2}}">
+      <view class="cu-avatar round bg-blue lg" wx:elif="{{byNotifications[item].type==2}}">
         <text class="cuIcon-notice"></text>
       </view>
-      <view class="cu-avatar round bg-orange lg" wx:if="{{byNotifications[item].type==3}}">
+      <view class="cu-avatar round bg-orange lg" wx:elif="{{byNotifications[item].type==3}}">
         <text class="cuIcon-activity"></text>
       </view>
-      <view class="cu-avatar round bg-mauve lg" wx:if="{{byNotifications[item].type==0}}">
+      <view class="cu-avatar round bg-mauve lg" wx:elif="{{byNotifications[item].type==0}}">
         <text class="cuIcon-discover"></text>
       </view>
-      <view class="cu-avatar round bg-pink lg" wx:if="{{byNotifications[item].type==5}}">
+      <view class="cu-avatar round bg-pink lg" wx:elif="{{byNotifications[item].type==5}}">
         <text class="cuIcon-evaluate"></text>
+      </view>
+      <view class="cu-avatar round bg-yellow lg" wx:elif="{{byNotifications[item].type==6}}">
+        <text class="cuIcon-ticket"></text>
+      </view>
+      <view class="cu-avatar round bg-cyan lg" wx:else>
+        <text class="cuIcon-footprint"></text>
       </view>
       <view class="content">
         <view class="text-grey">{{byNotifications[item].title}}</view>
