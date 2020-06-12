@@ -23,7 +23,7 @@
           <view>
             <view wx:for="{{byShops[item].openHours}}" wx:key="unique">
               <text>{{item.startTime}}~{{item.endTime}} </text>
-              <text wx:for="{{tool.numberToDayofWeek(item.date)}}">{{item}}</text>
+              <text wx:for="{{tool.numberToDayofWeek(item.date)}}" wx:key="unique">{{item}}</text>
             </view>
           </view>
         </view>

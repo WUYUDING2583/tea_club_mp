@@ -209,7 +209,7 @@ Page({
           ruleIngot += byCartProducts[key].product.price.ingot;
           ruleCredit += byCartProducts[key].product.price.credit;
         });
-        if (activityRule2 == null) {
+        if (activityRule2.number == 0) {
           //折扣
           ingot += ruleIngot * (100 - activityRule1) / 100;
           credit += ruleCredit;

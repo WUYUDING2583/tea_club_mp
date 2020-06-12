@@ -49,7 +49,7 @@
     </view>
     <view class="action ">
       <text wx:if="{{byActivityRules[item].activityRuleType.uid==3}}">{{byActivityRules[item].activityRule1}}%折扣</text>
-      <text wx:if="{{byActivityRules[item].activityRuleType.uid==2}}">购物满{{byActivityRules[item].activityRule1}}{{byActivityRules[item].activityRule2.operation=='plus'?'赠':'减'}}{{byActivityRules[item].activityRule2.number}}{{byActivityRules[item].activityRule2.currency}}</text>
+      <text wx:if="{{byActivityRules[item].activityRuleType.uid==2}}">购物满{{byActivityRules[item].activityRule1}}{{byActivityRules[item].activityRule2.operation=='plus'?'赠':'减'}}{{byActivityRules[item].activityRule2.number}}{{byActivityRules[item].activityRule2.currency=='ingot'?'元宝':'积分'}}</text>
     </view>
   </view>
 </view>

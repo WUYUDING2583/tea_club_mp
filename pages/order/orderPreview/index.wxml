@@ -62,7 +62,7 @@
           </view>
           <view class="action" style="width:50vw;">
             <text wx:if="{{item.activityRule.activityRuleType.uid==3}}">{{item.activityRule.activityRule1}}%折扣</text>
-            <text wx:if="{{item.activityRule.activityRuleType.uid==2}}">满{{item.activityRule.activityRule1}}减{{item.activityRule.activityRule2}}元宝</text>
+            <text wx:if="{{item.activityRule.activityRuleType.uid==2}}">满{{item.activityRule.activityRule1}}减{{item.activityRule.activityRule2.number}}元宝</text>
           </view>
         </view>
         <view class="cu-item">
