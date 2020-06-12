@@ -1,9 +1,9 @@
 {
   "pages": [
+    "pages/box/boxProductList/index",
     "pages/index/index",
     "pages/charge/record/index",
     "pages/consume/index",
-    "pages/box/boxProductList/index",
     "pages/notice/notificationList/index",
     "pages/order/reservationList/index",
     "pages/order/orderList/index",

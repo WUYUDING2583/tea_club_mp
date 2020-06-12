@@ -37,12 +37,14 @@
         </view>
         <view class="cu-item">
           <view class="content">
-            <text class="text-grey" wx:if="{{deliverMode=='selfPick'}}">门店自提</text>
-            <text class="text-grey" wx:if="{{deliverMode=='delivery'}}">收货地址</text>
+            <text class="text-grey" wx:if="{{boxOrder!=null}}">下单包厢</text>
+            <text class="text-grey" wx:elif="{{deliverMode=='selfPick'}}">门店自提</text>
+            <text class="text-grey" wx:elif="{{deliverMode=='delivery'}}">收货地址</text>
           </view>
           <view class="action text-grey text-sm">
-            <text wx:if="{{deliverMode=='selfPick'}}">{{placeOrderWay.name}}</text>
-            <text wx:if="{{deliverMode=='delivery'}}">{{address.province}}{{address.city}}{{address.district}}{{address.detail}}</text>
+            <text wx:if="{{boxOrder!=null}}">{{boxOrder.name}}</text>
+            <text wx:elif="{{deliverMode=='selfPick'}}">{{placeOrderWay.name}}</text>
+            <text wx:elif="{{deliverMode=='delivery'}}">{{address.province}}{{address.city}}{{address.district}}{{address.detail}}</text>
           </view>
         </view>
         <view class="cu-item" wx:if="{{deliverMode=='delivery'}}">
